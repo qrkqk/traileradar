@@ -26,8 +26,8 @@
     display: flex; flex-direction: column; gap: 12px;
     padding: 14px 14px calc(14px + env(safe-area-inset-bottom));
   }
-  .brand { font-size: 12px; color: var(--hint); }
-  h1 { font-size: 18px; margin: 2px 0 0; line-height: 1.4; }
+  .head { text-align: center; }
+  h1 { font-size: 19px; margin: 2px 0 0; line-height: 1.4; }
   .player {
     position: relative; width: 100%; aspect-ratio: 16 / 9;
     background: #000; border-radius: 12px; overflow: hidden;
@@ -40,21 +40,20 @@
     flex: 1; padding: 12px 8px; border: 0; border-radius: 10px;
     font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap;
   }
-  .primary { background: var(--button); color: var(--button-text); }
-  .secondary { background: var(--card); color: var(--text); }
+  .done { background: #2ea043; color: #ffffff; }
+  .youtube { background: var(--card); color: var(--text); display: none; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div>
-    <div class="brand">CinemaRadar 🎬</div>
+  <div class="head">
     <h1 id="title">التريلر</h1>
   </div>
   <div class="player" id="player"><div id="yt"></div></div>
   <div class="msg" id="msg"></div>
   <div class="actions">
-    <button class="primary" id="close">قفل ✖️</button>
-    <button class="secondary" id="youtube">افتح على يوتيوب ↗</button>
+    <button class="youtube" id="youtube">افتح على يوتيوب ↗</button>
+    <button class="done" id="close">تمام شفت التريلر</button>
   </div>
 </div>
 
@@ -98,19 +97,17 @@
     if (tg && tg.openLink) tg.openLink(watchUrl); else window.open(watchUrl, "_blank");
   };
 
-  function showMessage(text) {
+  function showMessage(text, offerYoutube) {
     var box = document.getElementById("msg");
     box.textContent = text;
     box.style.display = "block";
-    // "افتح على يوتيوب" يبقى الزرار الأساسي
-    document.getElementById("youtube").className = "primary";
-    document.getElementById("close").className = "secondary";
+    // "افتح على يوتيوب" بيظهر بس لو الفيديو مش راضي يشتغل هنا
+    if (offerYoutube) document.getElementById("youtube").style.display = "block";
   }
 
   if (!validId) {
     document.getElementById("player").style.display = "none";
-    document.getElementById("youtube").style.display = "none";
-    showMessage("رابط التريلر مش صحيح. افتح الفيلم تاني من البوت.");
+    showMessage("رابط التريلر مش صحيح. افتح الفيلم تاني من البوت.", false);
     return;
   }
 
@@ -118,11 +115,11 @@
   function onPlayerError(event) {
     var code = event && event.data;
     if (code === 101 || code === 150) {
-      showMessage("صاحب الفيديو مانع تشغيله برّه يوتيوب. دوس «افتح على يوتيوب» تتفرج عليه هناك.");
+      showMessage("صاحب الفيديو مانع تشغيله برّه يوتيوب. دوس «افتح على يوتيوب» تتفرج عليه هناك.", true);
     } else if (code === 100) {
-      showMessage("الفيديو ده اتشال من يوتيوب أو بقى خاص.");
+      showMessage("الفيديو ده اتشال من يوتيوب أو بقى خاص.", false);
     } else {
-      showMessage("يوتيوب مش راضي يشغّل الفيديو هنا. دوس «افتح على يوتيوب» تتفرج عليه هناك.");
+      showMessage("يوتيوب مش راضي يشغّل الفيديو هنا. دوس «افتح على يوتيوب» تتفرج عليه هناك.", true);
     }
   }
 

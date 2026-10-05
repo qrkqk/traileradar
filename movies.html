@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<!--
+  CFTRadar - صفحة الأفلام (Telegram Mini App)
+  البوت بيرفعها لوحده على GitHub Pages، وبيرفع بيانات الأفلام على فرع data.
+      movies.html?c=<eg|ae>&s=<s|c>&d=<رابط فولدر البيانات>
+  الألوان من شعار CFTRadar بس: أسود + ذهبي + كريمي (الفشار) + أحمر/أزرق (النظارة).
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>CFTRadar</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root {
+    --bg: #070707; --surface: #121110; --surface-2: #1b1916; --line: #2a2620;
+    --gold: #f0c048; --gold-2: #ffd970; --gold-deep: #c8871a; --amber: #f0a830;
+    --cream: #f3e8cf; --text: #f6f1e6; --muted: #a59d8c;
+    --red: #d80000; --blue: #1e6fff;
+    --gold-grad: linear-gradient(135deg, #ffd970 0%, #f0c048 45%, #c8871a 100%);
+    --glasses: linear-gradient(90deg, var(--blue), var(--red));
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Cairo", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif; }
+  body { min-height: 100vh; padding-bottom: env(safe-area-inset-bottom); }
+  button { font: inherit; border: 0; cursor: pointer; }
+  .ltr { unicode-bidi: plaintext; }
+
+  /* ---------- الهيدر ---------- */
+  header { position: sticky; top: 0; z-index: 5; background: rgba(7,7,7,.92);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 12px 14px 0; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand img { width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 0 14px rgba(240,192,72,.35); }
+  .brand .name { font-weight: 800; font-size: 21px; letter-spacing: .3px; direction: ltr; }
+  .brand .name b { color: var(--cream); } .brand .name span { color: var(--gold); }
+  .country { margin-inline-start: auto; font-size: 13px; color: var(--muted); background: var(--surface);
+    border: 1px solid var(--line); padding: 4px 10px; border-radius: 99px; }
+  .tabs { display: flex; gap: 8px; margin: 12px 0 0; }
+  .tab { flex: 1; padding: 10px 6px; border-radius: 12px; background: var(--surface); color: var(--muted);
+    font-weight: 700; font-size: 15px; border: 1px solid var(--line); }
+  .tab.active { background: var(--gold-grad); color: #1a1205; border-color: transparent;
+    box-shadow: 0 4px 18px rgba(240,192,72,.25); }
+  .tab small { font-weight: 600; opacity: .8; }
+  .glasses-line { height: 3px; margin: 12px -14px 0; background: var(--glasses); opacity: .55; }
+
+  /* ---------- شبكة الأفلام ---------- */
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 14px; }
+  @media (min-width: 560px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  .card { position: relative; border-radius: 14px; overflow: hidden; background: var(--surface);
+    border: 1px solid var(--line); text-align: right; padding: 0; color: inherit; }
+  .card img { display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; background: var(--surface-2); }
+  .card .info { padding: 8px 10px 10px; }
+  .card .title { font-weight: 700; font-size: 14px; line-height: 1.35; display: -webkit-box;
+    -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 38px; }
+  .card .sub { color: var(--muted); font-size: 12px; margin-top: 2px; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; }
+  .badge { position: absolute; top: 8px; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 99px; }
+  .badge.rating { left: 8px; background: rgba(7,7,7,.75); color: var(--gold); border: 1px solid rgba(240,192,72,.55); }
+  .badge.book { right: 8px; background: var(--gold-grad); color: #1a1205; }
+  .empty, .error { text-align: center; color: var(--muted); padding: 60px 24px; line-height: 1.8; }
+  .skeleton { border-radius: 14px; aspect-ratio: 2 / 3.45; background:
+    linear-gradient(100deg, var(--surface) 30%, var(--surface-2) 50%, var(--surface) 70%);
+    background-size: 300% 100%; animation: shine 1.3s infinite; }
+  @keyframes shine { from { background-position: 100% 0; } to { background-position: 0 0; } }
+
+  /* ---------- صفحة الفيلم ---------- */
+  #detail { display: none; }
+  body.in-detail header { display: none; }          /* صفحة الفيلم: التريلر من فوق خالص */
+  .hero { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000 center / cover no-repeat; overflow: hidden; }
+  .hero::after { content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(7,7,7,.15) 0%, rgba(7,7,7,.35) 55%, var(--bg) 100%); pointer-events: none; }
+  .hero iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; z-index: 2; }
+  .play { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 10px; background: transparent; color: var(--cream); }
+  .play .circle { width: 70px; height: 70px; border-radius: 50%; background: var(--gold-grad); display: grid; place-items: center;
+    box-shadow: 0 0 0 6px rgba(240,192,72,.18), 0 8px 26px rgba(240,192,72,.35); }
+  .play .circle::before { content: ""; margin-left: 7px; border-style: solid; border-width: 13px 0 13px 21px;
+    border-color: transparent transparent transparent #1a1205; }   /* ▶ لليمين في أي لغة */
+  .play span { font-weight: 700; letter-spacing: .5px; font-size: 13px; text-shadow: 0 1px 6px #000; }
+  .hero.poster-only .play { display: none; }
+  .body { padding: 4px 16px 28px; margin-top: -18px; position: relative; z-index: 4; }
+  h1 { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.3; color: var(--cream); }
+  .meta { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .chip { font-size: 13px; padding: 4px 11px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); }
+  .chip.gold { color: var(--gold); border-color: rgba(240,192,72,.5); }
+  .actions { display: flex; gap: 10px; margin-top: 16px; }
+  .btn { flex: 1; padding: 13px 10px; border-radius: 14px; font-weight: 800; font-size: 16px; }
+  .btn.primary { background: var(--gold-grad); color: #1a1205; box-shadow: 0 6px 22px rgba(240,192,72,.28); }
+  .btn.outline { background: transparent; color: var(--gold); border: 1.5px solid rgba(240,192,72,.6); }
+  .btn.note { background: var(--surface); color: var(--muted); font-weight: 600; font-size: 14px; cursor: default; }
+  .desc { margin-top: 16px; color: #d8d2c4; line-height: 1.9; font-size: 15px; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .desc.open { -webkit-line-clamp: unset; display: block; }
+  .more { background: none; color: var(--gold); font-weight: 700; padding: 4px 0; }
+  .section-title { margin: 22px 0 10px; font-size: 17px; font-weight: 800; color: var(--cream); display: flex; align-items: center; gap: 8px; }
+  .section-title::before { content: ""; width: 4px; height: 18px; border-radius: 2px; background: var(--gold-grad); }
+  .details { border-top: 1px solid var(--line); }
+  .row { display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .row .k { color: var(--muted); white-space: nowrap; }
+  .row .v { text-align: left; font-weight: 600; }
+  .vox { display: block; text-align: center; margin-top: 18px; color: var(--muted); font-size: 13px; background: none; width: 100%; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <img src="logo.png" alt="">
+    <div class="name"><b>CFT</b><span>Radar</span></div>
+    <div class="country" id="country"></div>
+  </div>
+  <div class="tabs">
+    <button class="tab" data-s="s">يعرض دلوقتي <small id="count-s"></small></button>
+    <button class="tab" data-s="c">يعرض قريبًا <small id="count-c"></small></button>
+  </div>
+  <div class="glasses-line"></div>
+</header>
+
+<main id="list"><div class="grid" id="grid"></div></main>
+
+<section id="detail">
+  <div class="hero" id="hero"><button class="play" id="play"><div class="circle"></div><span>شغّل التريلر</span></button></div>
+  <div class="body">
+    <h1 class="ltr" id="d-title"></h1>
+    <div class="meta" id="d-meta"></div>
+    <div class="chips" id="d-chips"></div>
+    <div class="actions" id="d-actions"></div>
+    <div class="desc ltr" id="d-desc"></div>
+    <button class="more" id="d-more">عرض المزيد</button>
+    <div class="section-title">التفاصيل</div>
+    <div class="details" id="d-details"></div>
+    <button class="vox" id="d-vox">شوف الفيلم على موقع VOX ↗</button>
+  </div>
+</section>
+
+<script>
+(function () {
+  "use strict";
+  var tg = window.Telegram && window.Telegram.WebApp;
+  var q = new URLSearchParams(location.search);
+  var country = (q.get("c") || "eg").replace(/[^a-z]/g, "");
+  var section = q.get("s") === "c" ? "c" : "s";
+  var dataBase = q.get("d") || "";
+  var DATA = null, current = null;
+  var $ = function (id) { return document.getElementById(id); };
+
+  function haptic() { try { tg.HapticFeedback.impactOccurred("light"); } catch (e) {} }
+  if (tg) {
+    try { tg.ready(); tg.expand(); tg.setHeaderColor("#070707"); tg.setBackgroundColor("#070707"); } catch (e) {}
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;   // نص بس - أي حاجة جاية من البيانات ما بتتنفذش
+    return n;
+  }
+  function poster(m) { return m.poster || "no_poster.jpg"; }
+  function openBot(action, m) {          // الصفحة ما تقدرش تكلم البوت -> نرجع للبوت بلينك
+    haptic();
+    if (!DATA.bot) return;
+    var link = "https://t.me/" + DATA.bot + "?start=" + action + "_" + m.id;
+    if (tg && tg.openTelegramLink) { tg.openTelegramLink(link); setTimeout(function () { try { tg.close(); } catch (e) {} }, 400); }
+    else location.href = link;
+  }
+
+  // ---------- القايمة ----------
+  function setTab(s) {
+    section = s;
+    document.querySelectorAll(".tab").forEach(function (t) { t.classList.toggle("active", t.dataset.s === s); });
+    renderGrid();
+  }
+  document.querySelectorAll(".tab").forEach(function (t) {
+    t.onclick = function () { if (t.dataset.s !== section) { haptic(); setTab(t.dataset.s); window.scrollTo(0, 0); } };
+  });
+
+  function renderGrid() {
+    var grid = $("grid"); grid.textContent = "";
+    var ids = DATA[section === "s" ? "whatson" : "comingsoon"] || [];
+    if (!ids.length) { grid.appendChild(el("div", "empty", "مفيش أفلام هنا دلوقتي.")); grid.style.display = "block"; return; }
+    grid.style.display = "";
+    ids.forEach(function (id) {
+      var m = DATA.movies[String(id)]; if (!m) return;
+      var card = el("button", "card");
+      var img = el("img"); img.loading = "lazy"; img.decoding = "async"; img.alt = ""; img.src = poster(m);
+      img.onerror = function () { if (!img.dataset.f) { img.dataset.f = 1; img.src = "no_poster.jpg"; } };
+      card.appendChild(img);
+      if (m.rating) card.appendChild(el("span", "badge rating ltr", m.rating));
+      if (m.bookable) card.appendChild(el("span", "badge book", "احجز"));
+      var info = el("div", "info");
+      info.appendChild(el("div", "title ltr", m.title));
+      var sub = [m.genre, m.section === "c" ? m.release : m.duration].filter(Boolean).join(" • ");
+      info.appendChild(el("div", "sub ltr", sub || " "));
+      card.appendChild(info);
+      card.onclick = function () { haptic(); showDetail(m); };
+      grid.appendChild(card);
+    });
+  }
+
+  // ---------- صفحة الفيلم ----------
+  function showDetail(m) {
+    current = m;
+    $("list").style.display = "none"; $("detail").style.display = "block"; document.body.classList.add("in-detail");
+    window.scrollTo(0, 0);
+    var hero = $("hero");
+    var old = hero.querySelector("iframe"); if (old) old.remove();
+    hero.classList.toggle("poster-only", !m.trailer);
+    hero.style.backgroundImage = "url('" + (m.trailer ? "https://i.ytimg.com/vi/" + m.trailer + "/hqdefault.jpg" : poster(m)).replace(/'/g, "%27") + "')";
+    $("play").style.display = m.trailer ? "" : "none";
+
+    $("d-title").textContent = m.title;
+    $("d-meta").textContent = [m.genre, m.duration].filter(Boolean).join(" • ");
+    var chips = $("d-chips"); chips.textContent = "";
+    if (m.rating) chips.appendChild(el("span", "chip gold ltr", m.rating));
+    if (m.release) chips.appendChild(el("span", "chip ltr", m.release));
+    if (m.language) chips.appendChild(el("span", "chip ltr", m.language));
+
+    var actions = $("d-actions"); actions.textContent = "";
+    if (m.bookable) {
+      var book = el("button", "btn primary", "احجز دلوقتي 🎟"); book.onclick = function () { openBot("b", m); }; actions.appendChild(book);
+    }
+    if (m.section === "c") {
+      var watch = el("button", "btn outline", "راقب 👁"); watch.onclick = function () { openBot("w", m); }; actions.appendChild(watch);
+    }
+    if (!m.bookable && m.section === "s") actions.appendChild(el("div", "btn note", "الحجز لسه ما فتحش"));
+
+    var desc = $("d-desc"); desc.textContent = m.description || ""; desc.classList.remove("open");
+    $("d-more").style.display = (m.description || "").length > 140 ? "" : "none";
+    var details = $("d-details"); details.textContent = "";
+    (m.details || []).forEach(function (p) {
+      var row = el("div", "row"); row.appendChild(el("span", "k", p[0])); row.appendChild(el("span", "v ltr", p[1])); details.appendChild(row);
+    });
+    if (tg && tg.BackButton) tg.BackButton.show();
+  }
+  function hideDetail() {
+    var f = $("hero").querySelector("iframe"); if (f) f.remove();
+    $("detail").style.display = "none"; $("list").style.display = ""; current = null;
+    document.body.classList.remove("in-detail");
+    if (tg && tg.BackButton) tg.BackButton.hide();
+  }
+  if (tg && tg.BackButton) tg.BackButton.onClick(function () { haptic(); hideDetail(); });
+
+  $("play").onclick = function () {               // التريلر فوق اسم الفيلم - بيشتغل هنا جوه الصفحة
+    if (!current || !current.trailer) return;
+    haptic();
+    var f = el("iframe");
+    f.src = "https://www.youtube.com/embed/" + current.trailer + "?autoplay=1&playsinline=1&rel=0&modestbranding=1&origin=" + encodeURIComponent(location.origin);
+    f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen"; f.allowFullscreen = true;
+    $("hero").appendChild(f); $("play").style.display = "none";
+  };
+  $("d-more").onclick = function () { var d = $("d-desc"); d.classList.toggle("open"); this.textContent = d.classList.contains("open") ? "عرض أقل" : "عرض المزيد"; };
+  $("d-vox").onclick = function () {
+    if (!current) return;
+    if (tg && tg.openLink) tg.openLink(current.url); else window.open(current.url, "_blank");
+  };
+
+  // ---------- تحميل البيانات ----------
+  (function loading() {
+    var grid = $("grid");
+    for (var i = 0; i < 6; i++) grid.appendChild(el("div", "skeleton"));
+  })();
+  // البيانات من https بس (أو من جهازك للتجربة)
+  if (!/^(https:\/\/|http:\/\/(127\.0\.0\.1|localhost)[:\/])/.test(dataBase)) { $("grid").textContent = ""; $("grid").appendChild(el("div", "error", "افتح الصفحة من البوت.")); return; }
+  fetch(dataBase.replace(/\/$/, "") + "/" + country + ".json?t=" + Date.now(), { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      DATA = data;
+      $("country").textContent = (data.flag || "") + " " + (data.name || "");
+      $("count-s").textContent = "(" + (data.whatson || []).length + ")";
+      $("count-c").textContent = "(" + (data.comingsoon || []).length + ")";
+      setTab(section);
+    })
+    .catch(function () {
+      $("grid").textContent = ""; $("grid").style.display = "block";
+      $("grid").appendChild(el("div", "error", "مش قادر أجيب الأفلام دلوقتي.\nاقفل الصفحة وافتحها تاني كمان شوية."));
+    });
+})();
+</script>
+</body>
+</html>

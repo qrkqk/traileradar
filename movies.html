@@ -389,8 +389,9 @@
   // ---------- بعت للبوت (الراقب / بلد التنبيهات / تريلر الأدمن) ----------
   function sendToBot(payload, deepLink) {
     haptic("medium");
-    // من زرار الكيبورد (مفيش query_id): sendData - من زرار جوه رسالة: لينك للبوت
-    var fromKeyboard = tg && tg.platform && tg.platform !== "unknown" && !(tg.initDataUnsafe && tg.initDataUnsafe.query_id);
+    // من زرار الكيبورد القديم بس (تيليجرام ما بيبعتش initData هناك): sendData -
+    // من زرار «ادخل» جنب خانة الكتابة أو من تنبيه: لينك للبوت (بيشتغل من أي مكان)
+    var fromKeyboard = tg && tg.platform && tg.platform !== "unknown" && !tg.initData;
     try { if (fromKeyboard && tg.sendData) { tg.sendData(JSON.stringify(payload)); return; } } catch (e) {}
     if (DATA && DATA.bot) {                  // الصفحة مفتوحة من زرار جوه رسالة: نرجع للبوت بلينك
       var link = "https://t.me/" + DATA.bot + "?start=" + deepLink;

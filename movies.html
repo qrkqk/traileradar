@@ -940,7 +940,7 @@
     var pf = target || $("pf"); pf.textContent = "";
     if (!p) {
       pf.dataset.preset = "gold"; pf.dataset.effect = "none";
-      pf.appendChild(el("div", "pf-note", apiBase() ? "الحساب مش متاح دلوقتي.\nافتح الصفحة من زرار «ادخل» في البوت، أو جرّب كمان شوية."
+      pf.appendChild(el("div", "pf-note", apiBase() ? "الحساب مش متاح دلوقتي.\nافتح الصفحة من زرار «اضغط هنا» في البوت، أو جرّب كمان شوية."
                                                    : "الحسابات بتتجهز - هتبقى متاحة قريب."));
       return;
     }
@@ -1224,7 +1224,7 @@
     var m = FILM_MOVIE, w = FILM.watch || {}, pick = "today", stars = FILM.my_rating || 0, fav = !!FILM.lists.fav;
     openSheet("سجّل مشاهدة", function (sh) {
       var status = !w.watched ? m.title : (w.count ? "شاهدته " + (w.count > 1 ? w.count + " مرات" : "مرة") + (w.last ? " • آخر مرة " + fmtDate(w.last) : "")
-                                                      : "في «شاهدتها» من غير تاريخ");
+                                                      : "شاهدته • مش فاكر إمتى");
       sh.appendChild(el("div", "sub ltr", status));
       var f1 = el("div", "field"); f1.appendChild(el("label", "", "اتفرجت عليه إمتى؟"));
       var pills = el("div", "pills"), dateIn = el("input"); dateIn.type = "date"; dateIn.max = todayISO(); dateIn.value = todayISO();
@@ -2028,7 +2028,7 @@
   $("comm-btn").innerHTML = ICON.people;
   $("comm-btn").onclick = function () {
     haptic();
-    if (!apiReady()) { notify("افتح الصفحة من زرار «ادخل» في البوت"); return; }
+    if (!apiReady()) { notify("افتح الصفحة من زرار «اضغط هنا» في البوت"); return; }
     go("s-community"); renderCommunity("feed");
   };
   function renderCommunity(tab) {

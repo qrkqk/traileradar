@@ -60,8 +60,8 @@
     display: grid; place-items: center; background: var(--surface); color: var(--gold); font-weight: 800; }
   .avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
   .tabs { display: flex; gap: 8px; margin: 12px 0 0; }
-  .tab { flex: 1; padding: 10px 6px; border-radius: 12px; background: var(--surface); color: var(--muted);
-    font-weight: 700; font-size: 15px; border: 1px solid var(--line); }
+  .tab { flex: 1; padding: 10px 4px; border-radius: 12px; background: var(--surface); color: var(--muted);
+    font-weight: 700; font-size: 14px; border: 1px solid var(--line); white-space: nowrap; }
   .tab.active { background: var(--gold-grad); color: #1a1205; border-color: transparent; box-shadow: 0 4px 18px rgba(240,192,72,.25); }
   .tab small { font-weight: 600; opacity: .8; }
   .glasses-line { height: 3px; margin: 12px -14px 0; background: var(--glasses); opacity: .55; }
@@ -89,6 +89,8 @@
     transform: translateZ(40px); }
   .badge.rating { left: 8px; background: rgba(7,7,7,.75); color: var(--gold); border: 1px solid rgba(240,192,72,.55); }
   .badge.book { right: 8px; background: var(--gold-grad); color: #1a1205; }
+  .badge.where { left: 8px; top: 36px; padding: 3px 6px; background: rgba(7,7,7,.75); }   /* تحت التصنيف، على البوستر */
+  .btn.unwatch { color: #ff8a80; border: 1.5px solid rgba(216,0,0,.55); }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .card, .card.reset { transition: none !important; animation: none; } }
   .empty, .error { text-align: center; color: var(--muted); padding: 60px 24px; line-height: 1.8; white-space: pre-line; }
@@ -210,7 +212,6 @@
   <div class="login">
     <img class="logo" src="logo.png" alt="">
     <h2><b>CFT</b><span>Radar</span></h2>
-    <p>كل أفلام سينمات VOX في مكان واحد<br>التريلر والمواعيد والحجز من جوه تيليجرام</p>
     <div class="who" id="login-who"></div>
     <div class="choose">انت منين؟</div>
     <div class="country-list" id="login-countries"></div>
@@ -231,6 +232,7 @@
   <div class="tabs">
     <button class="tab" data-s="s">يعرض دلوقتي <small id="count-s"></small></button>
     <button class="tab" data-s="c">يعرض قريبًا <small id="count-c"></small></button>
+    <button class="tab" data-s="w">مراقباتي <small id="count-w"></small></button>
   </div>
   <div class="glasses-line"></div>
 </header>
@@ -289,14 +291,19 @@
   var tg = window.Telegram && window.Telegram.WebApp;
   var q = new URLSearchParams(location.search);
   var country = (q.get("c") || "eg").replace(/[^a-z]/g, "");
-  var section = q.get("s") === "c" ? "c" : "s";
+  var section = /^(c|w)$/.test(q.get("s") || "") ? q.get("s") : "s";
   var dataBase = (q.get("d") || "").replace(/\/$/, "");
   var DATA = null, CACHE = {}, current = null, stack = [];
   var user = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
+  // من زرار الكيبورد تيليجرام ما بيبعتش بيانات المستخدم -> البوت بيحط الاسم في اللينك
+  if (!user && (q.get("n") || q.get("u"))) user = { first_name: q.get("n") || "", username: q.get("u") || "" };
+  // مراقباتي: أرقام الأفلام من البوت (في اللينك) + اللي اتغير هنا لحد ما البوت يحدث اللينك
+  var urlWatch = (q.get("w") || "").split(",").filter(function (x) { return /^\d+$/.test(x); });
   var $ = function (id) { return document.getElementById(id); };
   var ICON = {
     ticket: '<svg class="i" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg>',
     eye: '<svg class="i" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    eyeOff: '<svg class="i" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/></svg>',
     bell: '<svg class="i" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>',
     plus: '<svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
     login: '<svg class="i" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5M15 12H3"/></svg>'
@@ -353,7 +360,9 @@
   function go(id) { stack.push(document.querySelector(".screen.on").id); show(id); }
   function back() {
     var f = $("hero").querySelector("iframe"); if (f) f.remove();
-    show(stack.pop() || "s-list");
+    var to = stack.pop() || "s-list";
+    show(to);
+    if (to === "s-list" && DATA) { renderHeader(); renderGrid(); }   // المراقبات/البلد ممكن يكونوا اتغيروا
   }
   if (tg && tg.BackButton) tg.BackButton.onClick(function () { haptic(); back(); });
 
@@ -361,13 +370,35 @@
   function sendToBot(payload, deepLink) {
     haptic("medium");
     // من زرار الكيبورد (مفيش query_id): sendData - من زرار جوه رسالة: لينك للبوت
-    var fromKeyboard = tg && tg.initData && !(tg.initDataUnsafe && tg.initDataUnsafe.query_id);
+    var fromKeyboard = tg && tg.platform && tg.platform !== "unknown" && !(tg.initDataUnsafe && tg.initDataUnsafe.query_id);
     try { if (fromKeyboard && tg.sendData) { tg.sendData(JSON.stringify(payload)); return; } } catch (e) {}
     if (DATA && DATA.bot) {                  // الصفحة مفتوحة من زرار جوه رسالة: نرجع للبوت بلينك
       var link = "https://t.me/" + DATA.bot + "?start=" + deepLink;
       if (tg && tg.openTelegramLink) { tg.openTelegramLink(link); setTimeout(function () { try { tg.close(); } catch (e) {} }, 400); }
       else location.href = link;
     }
+  }
+
+  // ---------- مراقباتي ----------
+  var LOCAL = { add: [], del: [] };
+  (function () {                                       // البوت حدّث اللينك؟ التغييرات المحلية القديمة ملهاش لازمة
+    try {
+      var seen = localStorage.getItem("cft_w_seen"), now = urlWatch.join(",");
+      if (seen !== now) { localStorage.setItem("cft_w_seen", now); localStorage.removeItem("cft_w_local"); }
+      LOCAL = JSON.parse(localStorage.getItem("cft_w_local") || '{"add":[],"del":[]}');
+    } catch (e) {}
+  })();
+  function watchedIds() {
+    var ids = urlWatch.concat(LOCAL.add).filter(function (x) { return LOCAL.del.indexOf(x) < 0; });
+    return ids.filter(function (x, i) { return ids.indexOf(x) === i; });
+  }
+  function isWatched(id) { return watchedIds().indexOf(String(id)) >= 0; }
+  function setWatched(id, on) {
+    id = String(id);
+    LOCAL.add = LOCAL.add.filter(function (x) { return x !== id; });
+    LOCAL.del = LOCAL.del.filter(function (x) { return x !== id; });
+    (on ? LOCAL.add : LOCAL.del).push(id);
+    try { localStorage.setItem("cft_w_local", JSON.stringify(LOCAL)); } catch (e) {}
   }
 
   // ---------- صورة الحساب ----------
@@ -438,6 +469,7 @@
     else a.textContent = ((user && user.first_name) || "؟").trim().charAt(0).toUpperCase();
     $("count-s").textContent = "(" + (DATA.whatson || []).length + ")";
     $("count-c").textContent = "(" + (DATA.comingsoon || []).length + ")";
+    $("count-w").textContent = "(" + watchedIds().length + ")";
   }
   $("country-btn").onclick = function () {              // تغيير البلد من جوه الصفحة على طول
     var list = (DATA && DATA.countries) || [];
@@ -480,13 +512,48 @@
     card.addEventListener("touchstart", function (e) { var t = e.touches[0]; move(t.clientX, t.clientY); }, { passive: true });
     card.addEventListener("touchend", leave); card.addEventListener("touchcancel", leave);
   }
+  function watchItems(done) {                           // الأفلام اللي بتراقبها في كل البلاد
+    var codes = ((DATA && DATA.countries) || [{ code: country }]).map(function (c) { return c.code; });
+    var pending = codes.filter(function (c) { return !CACHE[c]; });
+    var finish = function () {
+      var items = [];
+      watchedIds().forEach(function (id) {
+        codes.forEach(function (c) { var m = CACHE[c] && CACHE[c].movies[id]; if (m) items.push({ m: m, c: c }); });
+      });
+      done(items);
+    };
+    if (!pending.length) return finish();
+    var left = pending.length;
+    pending.forEach(function (c) {
+      fetch(dataBase + "/" + c + ".json?t=" + Date.now(), { cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : null; }).then(function (d) { if (d) CACHE[c] = d; })
+        .catch(function () {}).then(function () { if (--left === 0) finish(); });
+    });
+  }
   function renderGrid() {
     var grid = $("grid"); grid.textContent = "";
+    if (section === "w") {
+      watchItems(function (items) {
+        if (section !== "w") return;
+        grid.textContent = "";
+        if (!items.length) {
+          grid.appendChild(el("div", "empty", "مفيش أفلام بتراقبها لسه.\nافتح «يعرض قريبًا» ودوس «راقب» على أي فيلم."));
+          grid.style.display = "block"; return;
+        }
+        grid.style.display = "";
+        items.forEach(function (it, n) { grid.appendChild(cardFor(it.m, n, it.c)); });
+      });
+      return;
+    }
     var ids = DATA[section === "s" ? "whatson" : "comingsoon"] || [];
     if (!ids.length) { grid.appendChild(el("div", "empty", "مفيش أفلام هنا دلوقتي.")); grid.style.display = "block"; return; }
     grid.style.display = "";
     ids.forEach(function (id, n) {
       var m = DATA.movies[String(id)]; if (!m) return;
+      grid.appendChild(cardFor(m, n, country));
+    });
+  }
+  function cardFor(m, n, code) {
       var card = el("button", "card"); card.style.animationDelay = Math.min(n, 12) * 35 + "ms";
       var img = el("img"); img.loading = "lazy"; img.decoding = "async"; img.alt = ""; img.src = poster(m);
       img.onerror = function () { if (!img.dataset.f) { img.dataset.f = 1; img.src = "no_poster.jpg"; } };
@@ -497,10 +564,15 @@
       info.appendChild(el("div", "title ltr", m.title));
       info.appendChild(subLine(m));
       card.appendChild(info);
-      card.onclick = function () { haptic(); showDetail(m); };
+      if (code !== country) { var w = el("span", "badge where"); w.appendChild(flag(code)); card.appendChild(w); }
+      card.onclick = function () {
+        haptic();
+        if (code === country) return showDetail(m);
+        store.set("country", code);                    // فيلم من بلد تانية: نروح بلده
+        loadCountry(code, function () { renderHeader(); showDetail(m); });
+      };
       tilt(card);
-      grid.appendChild(card);
-    });
+      return card;
   }
 
   // ---------- صفحة الفيلم ----------
@@ -532,9 +604,12 @@
       var book = el("button", "btn primary"); book.innerHTML = ICON.ticket; book.appendChild(document.createTextNode(" احجز دلوقتي"));
       book.onclick = function () { haptic(); openTimes(m); }; actions.appendChild(book);
     }
-    if (m.section === "c") {
+    if (isWatched(m.id)) {
+      var un = el("button", "btn outline unwatch"); un.innerHTML = ICON.eyeOff; un.appendChild(document.createTextNode(" إلغاء المراقبة"));
+      un.onclick = function () { setWatched(m.id, false); sendToBot({ a: "unwatch", id: m.id }, "u_" + m.id); }; actions.appendChild(un);
+    } else if (m.section === "c") {
       var watch = el("button", "btn outline"); watch.innerHTML = ICON.eye; watch.appendChild(document.createTextNode(" راقب"));
-      watch.onclick = function () { sendToBot({ a: "watch", id: m.id }, "w_" + m.id); }; actions.appendChild(watch);
+      watch.onclick = function () { setWatched(m.id, true); sendToBot({ a: "watch", id: m.id }, "w_" + m.id); }; actions.appendChild(watch);
     }
     if (!m.bookable && m.section === "s") actions.appendChild(el("div", "btn note", "الحجز لسه ما فتحش"));
 

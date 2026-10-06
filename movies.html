@@ -67,32 +67,34 @@
   .glasses-line { height: 3px; margin: 12px -14px 0; background: var(--glasses); opacity: .55; }
 
   /* ---------- شبكة الأفلام + تحريك 3D ---------- */
-  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 14px; perspective: 1000px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 14px; }
   @media (min-width: 560px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-  .card { position: relative; border-radius: 14px; overflow: hidden; background: var(--surface);
-    border: 1px solid var(--line); text-align: right; padding: 0; transform-style: preserve-3d;
-    transition: transform .12s ease-out, box-shadow .35s ease; will-change: transform;
-    animation: rise .45s ease both; }
-  .card:hover { box-shadow: 0 18px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(240,192,72,.25); }
-  .card.reset { transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease; }
-  .card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 3;
-    background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255,233,170,.32), transparent 45%);
+  /* بوسترات 3D زي 3d-tilt.html: الكارت بيميل مع الماوس/الصباع + لمعة + عناصر بارزة بأعماق مختلفة */
+  .card { position: relative; border-radius: 14px; background: var(--surface); border: 1px solid var(--line);
+    text-align: right; padding: 0; cursor: pointer; transform-style: preserve-3d;
+    transition: transform .12s ease-out, box-shadow .4s ease; box-shadow: 0 14px 30px rgba(0,0,0,.45);
+    animation: rise .45s ease backwards; }       /* backwards: ما بتمسكش آخر حالة فما بتغطيش على الميلان */
+  .card:hover, .card.tilting { box-shadow: 0 25px 50px rgba(0,0,0,.6), 0 0 0 1px rgba(240,192,72,.3); }
+  .card.reset { transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
+  .card .glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 5;
+    background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255,240,205,.30), transparent 45%);
     opacity: 0; transition: opacity .3s ease; }
-  .card.tilting::after { opacity: 1; }
+  .card:hover .glare, .card.tilting .glare { opacity: 1; }
   .card img { display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; background: var(--surface-2);
-    transform: translateZ(0); }
-  .card .info { padding: 8px 10px 10px; transform: translateZ(30px); }
+    border-radius: 13px 13px 0 0; transform: translateZ(0); }
+  .card .info { padding: 8px 10px 10px; transform-style: preserve-3d; }
   .card .title { font-weight: 700; font-size: 14px; line-height: 1.35; display: -webkit-box;
-    -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 38px; }
-  .card .sub { color: var(--muted); font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 38px; transform: translateZ(40px); }
+  .card .sub { color: var(--muted); font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; transform: translateZ(25px); }
   .badge { position: absolute; top: 8px; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 99px; z-index: 2;
-    transform: translateZ(40px); }
+    transform: translateZ(60px); }
   .badge.rating { left: 8px; background: rgba(7,7,7,.75); color: var(--gold); border: 1px solid rgba(240,192,72,.55); }
   .badge.book { right: 8px; background: var(--gold-grad); color: #1a1205; }
   .badge.where { left: 8px; top: 36px; padding: 3px 6px; background: rgba(7,7,7,.75); }   /* تحت التصنيف، على البوستر */
   .btn.unwatch { color: #ff8a80; border: 1.5px solid rgba(216,0,0,.55); }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .card, .card.reset { transition: none !important; animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .card, .card.reset, .card .glare { transition: none !important; animation: none; } }
   .empty, .error { text-align: center; color: var(--muted); padding: 60px 24px; line-height: 1.8; white-space: pre-line; }
   .skeleton { border-radius: 14px; aspect-ratio: 2 / 3.45; background:
     linear-gradient(100deg, var(--surface) 30%, var(--surface-2) 50%, var(--surface) 70%);
@@ -325,7 +327,8 @@
     return { eg: "مصر", ae: "الإمارات" }[code] || code;
   }
   function poster(m) { return m.poster || "no_poster.jpg"; }
-  function isAdmin() {
+  function isAdmin() {                                  // البوت بيعلّم لينك الأدمن (والبوت بيتأكد تاني قبل ما يقبل أي تريلر)
+    if (q.get("adm") === "1") return true;
     return !!(user && user.username && DATA && DATA.admin && user.username.toLowerCase() === DATA.admin.toLowerCase());
   }
 
@@ -498,18 +501,22 @@
     if (!box.childNodes.length) box.textContent = " ";
     return box;
   }
-  function tilt(card) {                                 // تحريك 3D زي 3d-tilt.html (ماوس + لمس)
+  function tilt(card) {                                 // نفس 3d-tilt.html: ميلان لحد 10° + لمعة بتتبع الماوس/الصباع
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var glare = el("div", "glare"); card.appendChild(glare);
     function move(x, y) {
-      var r = card.getBoundingClientRect(), px = (x - r.left) / r.width, py = (y - r.top) / r.height;
+      var r = card.getBoundingClientRect();
+      var px = Math.min(1, Math.max(0, (x - r.left) / r.width)), py = Math.min(1, Math.max(0, (y - r.top) / r.height));
       card.classList.remove("reset"); card.classList.add("tilting");
-      card.style.transform = "rotateY(" + ((px - 0.5) * 18) + "deg) rotateX(" + ((0.5 - py) * 18) + "deg) translateZ(6px)";
+      // المنظور جوه الكارت نفسه: كل كارت بيتحسب من نصه هو (مش من نص الشاشة)
+      card.style.transform = "perspective(900px) rotateY(" + ((px - 0.5) * 20) + "deg) rotateX(" + ((0.5 - py) * 20) + "deg)";
       card.style.setProperty("--gx", (px * 100) + "%"); card.style.setProperty("--gy", (py * 100) + "%");
     }
-    function leave() { card.classList.add("reset"); card.classList.remove("tilting"); card.style.transform = ""; }
-    card.addEventListener("pointermove", function (e) { if (e.pointerType !== "touch") move(e.clientX, e.clientY); });
-    card.addEventListener("pointerleave", leave);
+    function leave() { card.classList.add("reset"); card.classList.remove("tilting"); card.style.transform = "perspective(900px) rotateY(0) rotateX(0)"; }
+    card.addEventListener("mousemove", function (e) { move(e.clientX, e.clientY); });
+    card.addEventListener("mouseleave", leave);
     card.addEventListener("touchstart", function (e) { var t = e.touches[0]; move(t.clientX, t.clientY); }, { passive: true });
+    card.addEventListener("touchmove", function (e) { var t = e.touches[0]; move(t.clientX, t.clientY); }, { passive: true });
     card.addEventListener("touchend", leave); card.addEventListener("touchcancel", leave);
   }
   function watchItems(done) {                           // الأفلام اللي بتراقبها في كل البلاد

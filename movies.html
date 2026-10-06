@@ -261,6 +261,56 @@
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .edit .msg { min-height: 20px; color: #ff8a80; font-size: 13px; margin: 6px 0; }
   .edit .btn.primary { width: 100%; }
+
+  /* ---------- التقييمات والمراجعات ---------- */
+  .score { margin-top: 16px; padding: 14px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
+  .score-top { display: flex; align-items: center; gap: 14px; }
+  .score-avg { font-size: 38px; font-weight: 800; color: var(--gold); line-height: 1; min-width: 64px; text-align: center; }
+  .score-avg small { display: block; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 6px; }
+  .bars { flex: 1; }
+  .bar { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); direction: ltr; }
+  .bar i { flex: 1; height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
+  .bar i b { display: block; height: 100%; background: var(--gold-grad); }
+  .stars { color: #4a4436; letter-spacing: 1px; direction: ltr; display: inline-block; }
+  .stars .on { color: var(--gold); }
+  .rate-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px;
+    padding-top: 12px; border-top: 1px solid var(--line); gap: 10px; flex-wrap: wrap; }
+  .rate-row .lbl { color: var(--cream); font-weight: 700; font-size: 14px; }
+  .rate-stars { direction: ltr; display: flex; gap: 2px; }
+  .rate-stars button { font-size: 30px; line-height: 1; color: #4a4436; padding: 0 2px; transition: transform .15s; }
+  .rate-stars button.on { color: var(--gold); text-shadow: 0 0 10px rgba(240,192,72,.45); }
+  .rate-stars button:active { transform: scale(1.25); }
+  .score .btn { margin-top: 12px; width: 100%; }
+  .linkish { color: var(--muted); font-size: 12px; text-decoration: underline; }
+  .score .note { color: var(--muted); font-size: 13px; text-align: center; margin-top: 10px; }
+  .review { padding: 13px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); margin-bottom: 10px; }
+  .review.mine { border-color: rgba(240,192,72,.45); }
+  .rv-head { display: flex; align-items: center; gap: 10px; }
+  .rv-head .av { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
+    background: var(--gold-grad); color: #1a1205; font-weight: 800; flex: none; }
+  .rv-head .av img { width: 100%; height: 100%; object-fit: cover; }
+  .rv-who { flex: 1; min-width: 0; text-align: right; }
+  .rv-who b { display: block; font-size: 14px; color: var(--cream); }
+  .rv-who span { font-size: 11.5px; color: var(--muted); }
+  .rv-movie { font-size: 12.5px; color: var(--gold); font-weight: 700; margin-bottom: 6px; }
+  .rv-text { margin-top: 9px; line-height: 1.85; font-size: 14.5px; white-space: pre-line; color: #e2dccf; }
+  .rv-text.spoil { filter: blur(6px); cursor: pointer; user-select: none; }
+  .spoil-tag { font-size: 11px; color: #ff8a80; margin-top: 8px; }
+  .rv-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 9px; }
+  .heart { display: inline-flex; gap: 5px; align-items: center; color: var(--muted); font-weight: 700; font-size: 13px; }
+  .heart.on { color: #ff5a6a; }
+  .seg { display: flex; gap: 8px; margin: 6px 0 12px; }
+  .raters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .raters .av { width: 34px; height: 34px; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
+    background: var(--gold-grad); color: #1a1205; font-weight: 800; font-size: 13px; position: relative; }
+  .raters .av img { width: 100%; height: 100%; object-fit: cover; }
+  .pf-tabs { display: flex; gap: 8px; margin: 4px 0 12px; }
+  .r-item { display: flex; gap: 12px; align-items: center; padding: 9px; border-radius: 12px; background: var(--surface);
+    border: 1px solid var(--line); margin-bottom: 8px; width: 100%; text-align: right; }
+  .r-item img { width: 44px; height: 64px; object-fit: cover; border-radius: 8px; background: var(--surface-2); flex: none; }
+  .r-item .t { flex: 1; font-weight: 700; font-size: 14px; }
+  .toggle { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+  .toggle input { width: 20px; height: 20px; accent-color: var(--gold); }
 </style>
 </head>
 <body>
@@ -314,11 +364,38 @@
     <div class="meta" id="d-meta"></div>
     <div class="chips" id="d-chips"></div>
     <div class="actions" id="d-actions"></div>
+    <div class="score" id="d-score" style="display:none"></div>
     <div class="desc ltr" id="d-desc"></div>
     <button class="more" id="d-more">عرض المزيد</button>
     <div class="section-title">التفاصيل</div>
     <div class="details" id="d-details"></div>
+    <div id="d-community" style="display:none">
+      <div class="section-title">المراجعات</div>
+      <div class="raters" id="d-raters"></div>
+      <div class="seg"><button class="pill small active" data-sort="top">الأفضل</button><button class="pill small" data-sort="new">الأحدث</button></div>
+      <div id="d-reviews"></div>
+    </div>
   </div>
+</section>
+
+<!-- ============ اكتب مراجعة ============ -->
+<section class="screen" id="s-review">
+  <div class="edit">
+    <h2>اكتب مراجعة</h2>
+    <div class="rv-movie ltr" id="w-movie"></div>
+    <div class="field"><label>تقييمك</label><div class="rate-stars" id="w-stars"></div></div>
+    <div class="field"><label>رأيك <span class="count" id="w-count"></span></label>
+      <textarea id="w-text" maxlength="1000" placeholder="إيه اللي عجبك وإيه اللي ما عجبكش؟"></textarea></div>
+    <label class="toggle field"><input type="checkbox" id="w-spoiler"> فيها حرق (هتتخبى لحد ما حد يدوس عليها)</label>
+    <div class="msg" id="w-msg"></div>
+    <button class="btn primary" id="w-save">نشر</button>
+    <button class="logout" id="w-delete" style="display:none">مسح المراجعة</button>
+  </div>
+</section>
+
+<!-- ============ حساب حد تاني ============ -->
+<section class="screen" id="s-user">
+  <div class="profile"><div class="pf" id="pf2"></div><div id="u-tabs"></div></div>
 </section>
 
 <!-- ============ المواعيد والحجز ============ -->
@@ -333,6 +410,7 @@
 <section class="screen" id="s-profile">
   <div class="profile">
     <div class="pf" id="pf"></div>
+    <div id="me-tabs"></div>
     <div class="p-card">
       <div class="p-label">أفلام أنهي بلد؟</div>
       <div class="country-list" id="p-countries" style="justify-content:flex-start"></div>
@@ -563,8 +641,8 @@
     else a.textContent = ((p && p.name) || fullName() || "؟").trim().charAt(0).toUpperCase();
     return a;
   }
-  function renderProfileCard(p) {
-    var pf = $("pf"); pf.textContent = "";
+  function renderProfileCard(p, target) {
+    var pf = target || $("pf"); pf.textContent = "";
     if (!p) {
       pf.dataset.preset = "gold"; pf.dataset.effect = "none";
       pf.appendChild(el("div", "pf-note", apiBase() ? "الحساب مش متاح دلوقتي.\nافتح الصفحة من زرار «ادخل» في البوت، أو جرّب كمان شوية."
@@ -665,9 +743,179 @@
       .catch(fail);
   };
 
+  // ---------- التقييمات والمراجعات ----------
+  var FILM = null, FILM_MOVIE = null, SORT = "top";
+  function notify(text) {
+    try { if (tg && tg.showAlert) { tg.showAlert(text); return; } } catch (e) {}
+    window.alert(text);
+  }
+  function starsText(n) {
+    var w = el("span", "stars");
+    for (var i = 1; i <= 5; i++) w.appendChild(el("span", i <= (n || 0) ? "on" : "", "★"));
+    return w;
+  }
+  function loadFilm(m) {
+    var box = $("d-score"), comm = $("d-community");
+    box.style.display = "none"; comm.style.display = "none"; FILM = null; FILM_MOVIE = m;
+    if (!apiReady()) return;
+    call("GET", "/api/films/" + m.id).then(function (f) {
+      if (FILM_MOVIE !== m) return;                  // المستخدم فتح فيلم تاني
+      FILM = f; renderScore(); renderReviews();
+    }).catch(function () {});
+  }
+  function renderScore() {
+    var box = $("d-score"); box.textContent = ""; box.style.display = "";
+    var top = el("div", "score-top");
+    var avg = el("div", "score-avg", FILM.average != null ? String(FILM.average) : "–");
+    avg.appendChild(el("small", "", FILM.count ? FILM.count + " تقييم" : "لسه محدش قيّم"));
+    top.appendChild(avg);
+    var bars = el("div", "bars");
+    for (var i = 5; i >= 1; i--) {
+      var n = FILM.distribution[String(i)] || 0, row = el("div", "bar");
+      row.appendChild(el("span", "", i + "★"));
+      var track = el("i"), fill = el("b"); fill.style.width = (FILM.count ? Math.round(n * 100 / FILM.count) : 0) + "%";
+      track.appendChild(fill); row.appendChild(track); row.appendChild(el("span", "", String(n))); bars.appendChild(row);
+    }
+    top.appendChild(bars); box.appendChild(top);
+    box.insertBefore(el("div", "section-title", "تقييم CFTRadar"), top);
+    if (!FILM.eligible) { box.appendChild(el("div", "note", "التقييم والمراجعات بيفتحوا لما الفيلم ينزل السينما")); return; }
+    var rr = el("div", "rate-row"); rr.appendChild(el("span", "lbl", "قيّم الفيلم"));
+    var st = el("div", "rate-stars");
+    for (var k = 1; k <= 5; k++) (function (k) {
+      var b = el("button", k <= (FILM.my_rating || 0) ? "on" : "", "★");
+      b.onclick = function () { haptic("medium"); rate(k); }; st.appendChild(b);
+    })(k);
+    rr.appendChild(st); box.appendChild(rr);
+    if (FILM.my_rating) { var rm = el("button", "linkish", "شيل تقييمي"); rm.onclick = function () { rate(0); }; box.appendChild(rm); }
+    var wb = el("button", "btn outline", FILM.my_review ? "عدّل مراجعتك" : "اكتب مراجعة");
+    wb.onclick = function () { haptic(); openWriter(); }; box.appendChild(wb);
+  }
+  function rate(n) {
+    var m = FILM_MOVIE;
+    (n ? call("PUT", "/api/films/" + m.id + "/rating", { stars: n }) : call("DELETE", "/api/films/" + m.id + "/rating"))
+      .then(function (st) { if (FILM_MOVIE !== m) return; Object.assign(FILM, st); renderScore(); loadFilm(m); if (ME) loadMe(); })
+      .catch(function (e) { haptic("heavy"); notify(e.message); });
+  }
+  function avatarSmall(a, cls) {
+    var d = el("div", cls || "av");
+    if (a.avatar) { var im = el("img"); im.src = media(a.avatar); im.alt = ""; d.appendChild(im); }
+    else d.textContent = (a.name || "؟").trim().charAt(0).toUpperCase();
+    return d;
+  }
+  function reviewCard(r, withMovie) {
+    var c = el("div", "review" + (r.mine ? " mine" : ""));
+    if (withMovie && r.movie) { var mt = el("div", "rv-movie ltr", r.movie.title); c.appendChild(mt); }
+    var h = el("div", "rv-head"); var who = el("div", "rv-who");
+    h.appendChild(avatarSmall(r.author)); who.appendChild(el("b", "ltr", r.author.name));
+    var sub = el("span"); if (r.stars) sub.appendChild(starsText(r.stars));
+    sub.appendChild(document.createTextNode(" " + r.date + (r.edited ? " • اتعدلت" : ""))); who.appendChild(sub);
+    h.appendChild(who); h.style.cursor = "pointer";
+    h.onclick = function () { haptic(); openUser(r.author.id); };
+    c.appendChild(h);
+    var t = el("div", "rv-text ltr" + (r.spoiler && !r.mine ? " spoil" : ""), r.text);
+    if (r.spoiler && !r.mine) { t.onclick = function () { t.classList.remove("spoil"); }; c.appendChild(t); c.appendChild(el("div", "spoil-tag", "فيها حرق - دوس عشان تشوفها")); }
+    else c.appendChild(t);
+    var f = el("div", "rv-foot"); var heart = el("button", "heart" + (r.liked ? " on" : ""));
+    var paint = function () { heart.className = "heart" + (r.liked ? " on" : ""); heart.textContent = (r.liked ? "♥ " : "♡ ") + r.likes; };
+    paint();
+    heart.onclick = function () {
+      if (r.mine) return; haptic();
+      call(r.liked ? "DELETE" : "POST", "/api/reviews/" + r.id + "/like").then(function (x) { r.likes = x.likes; r.liked = x.liked; paint(); }).catch(function () {});
+    };
+    f.appendChild(heart);
+    if (r.mine && FILM_MOVIE && !withMovie) { var ed = el("button", "linkish", "تعديل"); ed.onclick = function () { openWriter(); }; f.appendChild(ed); }
+    c.appendChild(f);
+    return c;
+  }
+  function renderReviews() {
+    var comm = $("d-community"); comm.style.display = "";
+    var raters = $("d-raters"); raters.textContent = "";
+    FILM.raters.forEach(function (u) { var a = avatarSmall(u); a.title = u.name; a.onclick = function () { openUser(u.id); }; raters.appendChild(a); });
+    raters.style.display = FILM.raters.length ? "" : "none";
+    document.querySelectorAll("#d-community .seg .pill").forEach(function (b) {
+      b.classList.toggle("active", b.dataset.sort === SORT);
+      b.onclick = function () { SORT = b.dataset.sort; haptic(); renderReviews(); };
+    });
+    var list = $("d-reviews"); list.textContent = "";
+    var items = SORT === "top" ? FILM.top : FILM.latest;
+    if (!items.length) list.appendChild(el("div", "empty", FILM.eligible ? "لسه مفيش مراجعات - اكتب أول واحدة!" : "المراجعات بتفتح لما الفيلم ينزل السينما"));
+    items.forEach(function (r) { list.appendChild(reviewCard(r)); });
+  }
+  // اكتب مراجعة
+  var W_STARS = 0;
+  function openWriter() {
+    var m = FILM_MOVIE; if (!m || !FILM) return;
+    $("w-movie").textContent = m.title;
+    W_STARS = FILM.my_rating || 0; paintWriterStars();
+    $("w-text").value = FILM.my_review ? FILM.my_review.text : "";
+    $("w-spoiler").checked = !!(FILM.my_review && FILM.my_review.spoiler);
+    $("w-delete").style.display = FILM.my_review ? "" : "none";
+    $("w-msg").textContent = ""; wCount();
+    go("s-review");
+  }
+  function paintWriterStars() {
+    var st = $("w-stars"); st.textContent = "";
+    for (var k = 1; k <= 5; k++) (function (k) {
+      var b = el("button", k <= W_STARS ? "on" : "", "★"); b.onclick = function () { haptic(); W_STARS = k; paintWriterStars(); }; st.appendChild(b);
+    })(k);
+  }
+  function wCount() { $("w-count").textContent = $("w-text").value.length + "/1000"; $("w-msg").textContent = ""; }
+  $("w-text").oninput = wCount;
+  $("w-save").onclick = function () {
+    var m = FILM_MOVIE; haptic("medium"); $("w-save").disabled = true;
+    var jobs = [];
+    if (W_STARS && W_STARS !== FILM.my_rating) jobs.push(call("PUT", "/api/films/" + m.id + "/rating", { stars: W_STARS }));
+    Promise.all(jobs).then(function () {
+      return call("PUT", "/api/films/" + m.id + "/review", { text: $("w-text").value, spoiler: $("w-spoiler").checked });
+    }).then(function () { $("w-save").disabled = false; back(); loadFilm(m); if (ME) loadMe(); })
+      .catch(function (e) { $("w-save").disabled = false; $("w-msg").textContent = e.message; haptic("heavy"); });
+  };
+  $("w-delete").onclick = function () {
+    var m = FILM_MOVIE; haptic("medium");
+    call("DELETE", "/api/films/" + m.id + "/review").then(function () { back(); loadFilm(m); if (ME) loadMe(); })
+      .catch(function (e) { $("w-msg").textContent = e.message; });
+  };
+  // تقييماتي / مراجعاتي (لأي حساب)
+  function profileTabs(box, uid, owner) {
+    box.textContent = "";
+    var seg = el("div", "pf-tabs"), list = el("div");
+    var tabs = [["ratings", owner ? "تقييماتي" : "تقييماته"], ["reviews", owner ? "مراجعاتي" : "مراجعاته"]];
+    var show = function (kind) {
+      seg.querySelectorAll(".pill").forEach(function (b) { b.classList.toggle("active", b.dataset.k === kind); });
+      list.textContent = ""; list.appendChild(el("div", "empty", "..."));
+      call("GET", "/api/users/" + uid + "/" + kind).then(function (d) {
+        list.textContent = "";
+        var items = d[kind] || [];
+        if (!items.length) list.appendChild(el("div", "empty", kind === "ratings" ? "مفيش تقييمات تتشاف هنا" : "مفيش مراجعات تتشاف هنا"));
+        items.forEach(function (x) {
+          if (kind === "reviews") { list.appendChild(reviewCard(x, true)); return; }
+          var it = el("button", "r-item"); var im = el("img"); im.src = x.movie.poster || "no_poster.jpg"; im.alt = "";
+          it.appendChild(im); it.appendChild(el("span", "t ltr", x.movie.title)); it.appendChild(starsText(x.stars));
+          it.onclick = function () { openMovie(x.movie); }; list.appendChild(it);
+        });
+      }).catch(function (e) { list.textContent = ""; list.appendChild(el("div", "empty", e.message)); });
+    };
+    tabs.forEach(function (t) { var b = el("button", "pill small", t[1]); b.dataset.k = t[0]; b.onclick = function () { haptic(); show(t[0]); }; seg.appendChild(b); });
+    box.appendChild(seg); box.appendChild(list); show("ratings");
+  }
+  function openMovie(mv) {                            // فيلم من قايمة حد (ممكن يكون من بلد تانية)
+    var open = function () { var m = DATA.movies[String(mv.id)]; if (m) showDetail(m); };
+    if (mv.country && mv.country !== country) { store.set("country", mv.country); loadCountry(mv.country, function () { renderHeader(); open(); }); }
+    else open();
+  }
+  function openUser(uid) {
+    if (ME && uid === ME.id) { renderProfile(); go("s-profile"); return; }
+    $("pf2").textContent = ""; $("u-tabs").textContent = ""; go("s-user");
+    call("GET", "/api/users/" + uid).then(function (p) {
+      renderProfileCard(p, $("pf2"));
+      if (!p.private) profileTabs($("u-tabs"), uid, false);
+    }).catch(function (e) { $("pf2").appendChild(el("div", "pf-note", e.message)); });
+  }
+
   // ---------- حسابي ----------
   function renderProfile() {
     renderProfileCard(ME);
+    if (ME) profileTabs($("me-tabs"), ME.id, true); else $("me-tabs").textContent = "";
     renderCountryOptions($("p-countries"), function (code) {
       store.set("country", code);
       loadCountry(code, function () { renderProfile(); renderHeader(); renderGrid(); });
@@ -845,6 +1093,7 @@
 
     var desc = $("d-desc"); desc.textContent = m.description || ""; desc.classList.remove("open");
     $("d-more").style.display = (m.description || "").length > 140 ? "" : "none";
+    loadFilm(m);                                       // تقييم CFTRadar والمراجعات (من سيرفر البوت)
     var details = $("d-details"); details.textContent = "";
     (m.details || []).forEach(function (p) {
       var row = el("div", "row"); row.appendChild(el("span", "k", p[0])); row.appendChild(el("span", "v ltr", p[1])); details.appendChild(row);

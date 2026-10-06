@@ -205,6 +205,62 @@
   .p-label { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
   .p-card .btn { width: 100%; margin-top: 12px; }
   .logout { display: block; margin: 6px auto 0; color: var(--muted); font-size: 14px; padding: 8px; }
+
+  /* ---------- الملف الشخصي (مستوحى من Discord بهوية CFTRadar) ---------- */
+  .pf { --pf-accent: #f0c048; --pf-bg: linear-gradient(135deg, #2a1d06, #0b0905); position: relative;
+    margin: 0 0 14px; border-radius: 20px; overflow: hidden; background: var(--surface); border: 1px solid var(--line); }
+  .pf[data-preset="crimson"]  { --pf-bg: linear-gradient(135deg, #2b0709, #0b0505); }
+  .pf[data-preset="ocean"]    { --pf-bg: linear-gradient(135deg, #061b2e, #05080c); }
+  .pf[data-preset="violet"]   { --pf-bg: linear-gradient(135deg, #1d1033, #08060c); }
+  .pf[data-preset="emerald"]  { --pf-bg: linear-gradient(135deg, #05261b, #050a08); }
+  .pf[data-preset="midnight"] { --pf-bg: linear-gradient(135deg, #11161f, #050608); }
+  .pf-cover { height: 132px; background: var(--pf-bg) center / cover no-repeat; position: relative; overflow: hidden; }
+  .pf[data-effect="sparkle"] .pf-cover::after { content: ""; position: absolute; inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.18) 45%, transparent 60%);
+    background-size: 250% 100%; animation: pf-shine 3.2s ease-in-out infinite; }
+  @keyframes pf-shine { from { background-position: 150% 0; } to { background-position: -50% 0; } }
+  .pf-head { display: flex; align-items: flex-end; justify-content: space-between; padding: 0 16px; margin-top: -46px; }
+  .pf-avatar { width: 92px; height: 92px; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
+    background: var(--gold-grad); color: #1a1205; font-weight: 800; font-size: 36px; position: relative;
+    border: 5px solid var(--surface); box-shadow: 0 0 0 2px var(--pf-accent); }
+  .pf-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .pf[data-effect="glow"] .pf-avatar { animation: pf-glow 2.6s ease-in-out infinite; }
+  @keyframes pf-glow { 0%, 100% { box-shadow: 0 0 0 2px var(--pf-accent), 0 0 10px var(--pf-accent); }
+                       50% { box-shadow: 0 0 0 2px var(--pf-accent), 0 0 26px var(--pf-accent); } }
+  .pf-head .btn { flex: none; padding: 8px 14px; font-size: 14px; margin-bottom: 6px; color: var(--pf-accent);
+    border-color: var(--pf-accent); }
+  .pf-body { padding: 10px 16px 16px; }
+  .pf-name { font-size: 22px; font-weight: 800; color: var(--cream); text-align: right; }
+  .pf-bio { text-align: right; }
+  .pf-user { color: var(--muted); font-size: 14px; direction: ltr; text-align: right; }
+  .pf-bio { margin-top: 10px; line-height: 1.8; white-space: pre-line; }
+  .pf-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 14px; padding: 12px 6px;
+    border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid var(--line); text-align: center; }
+  .pf-stats b { display: block; font-size: 18px; color: var(--pf-accent); }
+  .pf-stats span { font-size: 11.5px; color: var(--muted); }
+  .pf-badges { margin-top: 12px; color: var(--muted); font-size: 13px; }
+  .pf-note { padding: 18px 16px; color: var(--muted); line-height: 1.8; text-align: center; }
+  /* تعديل الملف */
+  .edit { padding: 18px 16px 30px; }
+  .edit h2 { margin: 0 0 14px; font-size: 22px; font-weight: 800; color: var(--cream); }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; color: var(--muted); font-size: 13px; margin-bottom: 7px; }
+  .field input[type=text], .field textarea, .field select { width: 100%; padding: 11px 12px; border-radius: 12px;
+    background: var(--surface); border: 1px solid var(--line); color: var(--text); font: inherit; }
+  .field textarea { min-height: 84px; resize: vertical; }
+  .field .count { float: left; font-size: 12px; color: var(--muted); }
+  .media-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .media-row .thumb { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; background: var(--surface-2); flex: none; }
+  .media-row .thumb.wide { width: 130px; height: 54px; border-radius: 10px; }
+  .media-row .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .mini { padding: 8px 12px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); font-size: 13px; font-weight: 700; }
+  .swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+  .swatch { width: 38px; height: 38px; border-radius: 50%; border: 2px solid transparent; }
+  .swatch.on { border-color: var(--cream); box-shadow: 0 0 0 3px rgba(240,192,72,.35); }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .edit .msg { min-height: 20px; color: #ff8a80; font-size: 13px; margin: 6px 0; }
+  .edit .btn.primary { width: 100%; }
 </style>
 </head>
 <body>
@@ -276,14 +332,35 @@
 <!-- ============ حسابي ============ -->
 <section class="screen" id="s-profile">
   <div class="profile">
-    <h2>حسابي</h2>
-    <div class="p-card"><div class="p-top" id="p-top"></div></div>
+    <div class="pf" id="pf"></div>
     <div class="p-card">
       <div class="p-label">أفلام أنهي بلد؟</div>
       <div class="country-list" id="p-countries" style="justify-content:flex-start"></div>
       <button class="btn outline" id="p-alerts"></button>
     </div>
     <button class="logout" id="p-logout">تسجيل خروج</button>
+  </div>
+</section>
+
+<!-- ============ تعديل الملف ============ -->
+<section class="screen" id="s-edit">
+  <div class="edit">
+    <h2>تعديل الملف</h2>
+    <div class="field"><label>الصورة الشخصية (صورة أو GIF متحركة)</label>
+      <div class="media-row"><div class="thumb" id="e-avatar"></div>
+        <button class="mini" id="e-avatar-pick">تغيير الصورة</button><button class="mini" id="e-avatar-tg">صورة تيليجرام</button></div></div>
+    <div class="field"><label>الغلاف (صورة أو GIF)</label>
+      <div class="media-row"><div class="thumb wide" id="e-cover"></div>
+        <button class="mini" id="e-cover-pick">تغيير الغلاف</button><button class="mini" id="e-cover-del">شيل الغلاف</button></div></div>
+    <input type="file" id="e-file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+    <div class="field"><label>الاسم <span class="count" id="e-name-count"></span></label><input type="text" id="e-name" maxlength="32"></div>
+    <div class="field"><label>البايو <span class="count" id="e-bio-count"></span></label><textarea id="e-bio" maxlength="160"></textarea></div>
+    <div class="field"><label>الشكل</label><div class="swatches" id="e-presets"></div></div>
+    <div class="field"><label>اللون</label><div class="media-row"><input type="color" id="e-accent">
+      <span class="pills" id="e-effects"></span></div></div>
+    <div class="field"><label>الخصوصية</label><div class="grid2" id="e-privacy"></div></div>
+    <div class="msg" id="e-msg"></div>
+    <button class="btn primary" id="e-save">حفظ</button>
   </div>
 </section>
 
@@ -459,14 +536,138 @@
     });
   }
 
+  // ---------- المجتمع: سيرفر البوت (الحساب بيتعمل لوحده بحساب تيليجرام) ----------
+  var ME = null;
+  function apiBase() { return (DATA && DATA.api) || ""; }
+  function apiReady() { return !!(apiBase() && tg && tg.initData); }
+  function call(method, path, body) {
+    var opts = { method: method, headers: { "X-Init-Data": tg.initData } };
+    if (body instanceof FormData) opts.body = body;
+    else if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+    return fetch(apiBase() + path, opts).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok) throw new Error(j.error || "حصلت مشكلة - جرّب تاني"); return j;
+      });
+    });
+  }
+  function media(path) { return path ? apiBase() + path : null; }
+  function loadMe(done) {
+    if (!apiReady()) return done && done(null);
+    call("GET", "/api/me").then(function (p) { ME = p; renderHeader(); done && done(p); })
+      .catch(function () { done && done(null); });
+  }
+  var PRESETS = { gold: "#f0c048", crimson: "#e5484d", ocean: "#3b9eff", violet: "#a78bfa", emerald: "#34d399", midnight: "#9aa4b2" };
+  function avatarEl(p, cls) {
+    var a = el("div", cls);
+    if (p && p.avatar) { var im = el("img"); im.src = media(p.avatar); im.alt = ""; a.appendChild(im); }
+    else a.textContent = ((p && p.name) || fullName() || "؟").trim().charAt(0).toUpperCase();
+    return a;
+  }
+  function renderProfileCard(p) {
+    var pf = $("pf"); pf.textContent = "";
+    if (!p) {
+      pf.dataset.preset = "gold"; pf.dataset.effect = "none";
+      pf.appendChild(el("div", "pf-note", apiBase() ? "الحساب مش متاح دلوقتي.\nافتح الصفحة من زرار «ادخل» في البوت، أو جرّب كمان شوية."
+                                                   : "الحسابات بتتجهز - هتبقى متاحة قريب."));
+      return;
+    }
+    pf.dataset.preset = p.theme.preset; pf.dataset.effect = p.theme.effect;
+    pf.style.setProperty("--pf-accent", p.theme.accent);
+    var cover = el("div", "pf-cover");
+    if (p.cover) cover.style.backgroundImage = "url('" + media(p.cover).replace(/'/g, "%27") + "')";
+    pf.appendChild(cover);
+    var head = el("div", "pf-head"); head.appendChild(avatarEl(p, "pf-avatar"));
+    if (p.owner) { var eb = el("button", "btn outline", "تعديل الملف"); eb.onclick = function () { haptic(); openEdit(); }; head.appendChild(eb); }
+    pf.appendChild(head);
+    var body = el("div", "pf-body");
+    body.appendChild(el("div", "pf-name ltr", p.name));
+    if (p.username) body.appendChild(el("div", "pf-user", "@" + p.username));
+    if (p.owner && isAdmin()) body.appendChild(el("span", "tag", "أدمن"));
+    if (p.private) { body.appendChild(el("div", "pf-note", "الحساب ده خاص.")); pf.appendChild(body); return; }
+    if (p.bio) body.appendChild(el("div", "pf-bio ltr", p.bio));
+    var stats = el("div", "pf-stats");
+    [["followers", "متابعين"], ["following", "بيتابعهم"], ["reviews", "مراجعات"], ["ratings", "تقييمات"]].forEach(function (x) {
+      var cell = el("div"); cell.appendChild(el("b", "", String((p.counts || {})[x[0]] || 0))); cell.appendChild(el("span", "", x[1])); stats.appendChild(cell);
+    });
+    body.appendChild(stats);
+    body.appendChild(el("div", "pf-badges", (p.badges || []).length ? "" : "لسه مفيش شارات - هتظهر هنا لما تبدأ تقيّم وتكتب مراجعات"));
+    pf.appendChild(body);
+  }
+
+  // ---------- تعديل الملف ----------
+  var EDIT = null, PICK = null;
+  function openEdit() {
+    if (!ME) return;
+    EDIT = { preset: ME.theme.preset, accent: ME.theme.accent, effect: ME.theme.effect, privacy: Object.assign({}, ME.privacy) };
+    $("e-name").value = ME.custom_name || ""; $("e-name").placeholder = ME.tg_name || "";
+    $("e-bio").value = ME.bio || ""; $("e-msg").textContent = "";
+    counts(); renderEditMedia(); renderThemeControls(); renderPrivacy();
+    go("s-edit");
+  }
+  function counts() {
+    $("e-name-count").textContent = $("e-name").value.length + "/32";
+    $("e-bio-count").textContent = $("e-bio").value.length + "/160";
+  }
+  $("e-name").oninput = counts; $("e-bio").oninput = counts;
+  function renderEditMedia() {
+    var a = $("e-avatar"); a.textContent = ""; if (ME.avatar) { var i = el("img"); i.src = media(ME.avatar); a.appendChild(i); }
+    var c = $("e-cover"); c.textContent = ""; c.style.background = "";
+    if (ME.cover) { var j = el("img"); j.src = media(ME.cover); c.appendChild(j); }
+    $("e-cover-del").style.display = ME.cover ? "" : "none";
+  }
+  function renderThemeControls() {
+    var box = $("e-presets"); box.textContent = "";
+    Object.keys(PRESETS).forEach(function (k) {
+      var b = el("button", "swatch" + (EDIT.preset === k ? " on" : "")); b.style.background = PRESETS[k]; b.title = k;
+      b.onclick = function () { haptic(); EDIT.preset = k; EDIT.accent = PRESETS[k]; $("e-accent").value = EDIT.accent; renderThemeControls(); };
+      box.appendChild(b);
+    });
+    $("e-accent").value = EDIT.accent;
+    var fx = $("e-effects"); fx.textContent = "";
+    [["none", "بدون"], ["glow", "توهج"], ["sparkle", "لمعة"]].forEach(function (x) {
+      var b = el("button", "pill small" + (EDIT.effect === x[0] ? " active" : ""), x[1]);
+      b.onclick = function () { haptic(); EDIT.effect = x[0]; renderThemeControls(); }; fx.appendChild(b);
+    });
+  }
+  $("e-accent").oninput = function () { EDIT.accent = this.value; };
+  function renderPrivacy() {
+    var box = $("e-privacy"); box.textContent = "";
+    [["profile", "الحساب"], ["ratings", "التقييمات"], ["reviews", "المراجعات"], ["lists", "القوايم"]].forEach(function (x) {
+      var f = el("div"); f.appendChild(el("label", "", x[1]));
+      var sel = el("select");
+      [["everyone", "الكل"], ["followers", "المتابعين بس"], ["me", "أنا بس"]].forEach(function (o) {
+        var opt = el("option", "", o[1]); opt.value = o[0]; if (EDIT.privacy[x[0]] === o[0]) opt.selected = true; sel.appendChild(opt);
+      });
+      sel.onchange = function () { EDIT.privacy[x[0]] = sel.value; };
+      f.appendChild(sel); box.appendChild(f);
+    });
+  }
+  function busy(on) { $("e-save").disabled = on; $("e-save").style.opacity = on ? ".6" : ""; }
+  function afterChange(p) { ME = p; renderEditMedia(); renderHeader(); $("e-msg").textContent = ""; }
+  function fail(e) { $("e-msg").textContent = e.message; haptic("heavy"); busy(false); }
+  $("e-avatar-pick").onclick = function () { PICK = "avatar"; $("e-file").click(); };
+  $("e-cover-pick").onclick = function () { PICK = "cover"; $("e-file").click(); };
+  $("e-file").onchange = function () {
+    var f = this.files && this.files[0]; this.value = "";
+    if (!f || !PICK) return;
+    if (f.size > 8 * 1024 * 1024) { $("e-msg").textContent = "الصورة كبيرة - أقصى حجم 8 ميجا"; return; }
+    var fd = new FormData(); fd.append("file", f, f.name);
+    $("e-msg").textContent = "بيترفع..."; busy(true);
+    call("POST", "/api/me/" + PICK, fd).then(function (p) { afterChange(p); busy(false); }).catch(fail);
+  };
+  $("e-avatar-tg").onclick = function () { busy(true); call("DELETE", "/api/me/avatar").then(function (p) { afterChange(p); busy(false); }).catch(fail); };
+  $("e-cover-del").onclick = function () { busy(true); call("DELETE", "/api/me/cover").then(function (p) { afterChange(p); busy(false); }).catch(fail); };
+  $("e-save").onclick = function () {
+    haptic("medium"); busy(true);
+    call("PATCH", "/api/me", { name: $("e-name").value, bio: $("e-bio").value,
+      theme: { preset: EDIT.preset, accent: EDIT.accent, effect: EDIT.effect }, privacy: EDIT.privacy })
+      .then(function (p) { ME = p; busy(false); renderProfileCard(p); renderHeader(); back(); })
+      .catch(fail);
+  };
+
   // ---------- حسابي ----------
   function renderProfile() {
-    var top = $("p-top"); top.textContent = "";
-    top.appendChild(pic("pic"));
-    var t = el("div"); t.appendChild(el("div", "n ltr", fullName()));
-    if (user && user.username) t.appendChild(el("div", "u", "@" + user.username));
-    if (isAdmin()) t.appendChild(el("span", "tag", "أدمن"));
-    top.appendChild(t);
+    renderProfileCard(ME);
     renderCountryOptions($("p-countries"), function (code) {
       store.set("country", code);
       loadCountry(code, function () { renderProfile(); renderHeader(); renderGrid(); });
@@ -474,7 +675,10 @@
     $("p-alerts").innerHTML = ICON.bell + " ";
     $("p-alerts").appendChild(document.createTextNode("خلّي تنبيهاتي من أفلام " + countryName(country)));
   }
-  $("avatar-btn").onclick = function () { haptic(); renderProfile(); go("s-profile"); };
+  $("avatar-btn").onclick = function () {
+    haptic(); renderProfile(); go("s-profile");
+    loadMe(function (p) { if (document.querySelector(".screen.on").id === "s-profile") renderProfile(); });
+  };
   $("p-alerts").onclick = function () { sendToBot({ a: "country", c: country }, "c_" + country); };
   $("p-logout").onclick = function () {
     haptic(); store.remove("login"); stack = []; renderLogin(); show("s-login");
@@ -486,7 +690,8 @@
     b.appendChild(flag(country)); b.appendChild(el("span", "", countryName(country)));
     if ((DATA.countries || []).length > 1) b.appendChild(el("span", "caret", "▼"));
     var a = $("avatar-btn"); a.textContent = "";
-    if (user && user.photo_url) { var im = el("img"); im.src = user.photo_url; im.alt = ""; a.appendChild(im); }
+    if (ME && ME.avatar) { var ia = el("img"); ia.src = media(ME.avatar); ia.alt = ""; a.appendChild(ia); }
+    else if (user && user.photo_url) { var im = el("img"); im.src = user.photo_url; im.alt = ""; a.appendChild(im); }
     else a.textContent = ((user && user.first_name) || "؟").trim().charAt(0).toUpperCase();
     $("count-s").textContent = "(" + listIds("whatson").length + ")";
     $("count-c").textContent = "(" + listIds("comingsoon").length + ")";
@@ -753,6 +958,7 @@
       // من تنبيه: بلد الفيلم (اللي في اللينك) هي اللي تمشي - غير كده آخر بلد كنت بتتفرج عليها
       if (!target && saved && /^[a-z]{2}$/.test(saved)) country = saved;
       loadCountry(country, function () {
+        loadMe();                                       // التسجيل التلقائي (أول مرة) + صورة الحساب
         store.get("login", function (login) {
           renderHeader();
           if (!login) { renderLogin(); show("s-login"); return; }       // أول مرة: الدخول

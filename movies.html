@@ -578,7 +578,7 @@
     <img class="logo" src="logo.png" alt="">
     <h2><b>CFT</b><span>Radar</span></h2>
     <p style="font-size:17px;color:var(--cream);font-weight:800;margin-top:6px">حاليًا في صيانة</p>
-    <p>بنظبط حاجات عشان نرجعلك أحسن - ارجع كمان شوية</p>
+    <p>بنظبط حاجات عشان نرجعلك أحسن - الصفحة هتكمل لوحدها أول ما نرجع</p>
     <button class="btn primary" id="maint-retry">جرّب تاني</button>
   </div>
 </section>
@@ -943,15 +943,24 @@
   var ME = null;
   function apiBase() { return (DATA && DATA.api) || ""; }
   function apiReady() { return !!(apiBase() && tg && tg.initData); }
-  function call(method, path, body) {
+  function call(method, path, body, retried) {
     var opts = { method: method, headers: { "X-Init-Data": tg.initData } };
     if (body instanceof FormData) opts.body = body;
     else if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
-    return fetch(apiBase() + path, opts).then(function (r) {
+    var base = apiBase();
+    return fetch(base + path, opts).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (j) {
         if (!r.ok) { var err = new Error(j.error || "حصلت مشكلة - جرّب تاني"); err.data = j; throw err; }
         if (j && j.new_badges && j.new_badges.length) celebrate(j.new_badges);
         return j;
+      });
+    }, function () {                                     // السيرفر ما ردّش خالص: عنوانه ممكن يكون اتغير
+      var down = new Error("مش قادر أوصل للبوت دلوقتي - جرّب كمان شوية");
+      if (retried) throw down;
+      if (apiBase() !== base) return call(method, path, body, true);     // طلب تاني جاب العنوان الجديد خلاص
+      return new Promise(function (res) { refreshApi(res); }).then(function (changed) {
+        if (changed) return call(method, path, body, true);
+        throw down;
       });
     });
   }
@@ -2505,24 +2514,84 @@
           $("grid").appendChild(el("div", "error", "مش قادر أجيب الأفلام دلوقتي.\nاقفل الصفحة وافتحها تاني كمان شوية.")); }
       });
   }
-  // البوت شغال؟ (سيرفر البوت بيرد) - محاولتين عشان نت ضعيف ما يتحسبش صيانة
-  function checkAlive(done, tries) {
-    var base = (DATA && DATA.api) || "";
-    if (!base) return done(true);                       // المجتمع مقفول: مفيش حاجة نسألها
-    tries = tries || 0;
+  // ---------- عنوان سيرفر البوت ----------
+  // البيانات (eg.json) بتيجي من raw.githubusercontent: متخزنة عندهم لحد 5 دقايق ومش بتتأثر بـ ?t=، وعنوان
+  // سيرفر البوت (العنوان المجاني) بيتغير مع كل إعادة تشغيل. فلو العنوان اللي معانا ما ردّش: بنجيب العنوان
+  // الحالي من GitHub API على طول (من غير التخزين ده) ونكمل بيه. GitHub API محدود (60 في الساعة لكل جهاز)
+  // فبيتنادى بس لما حاجة تفشل، ومرة في الدقيقة بالكتير.
+  var API_FRESH_AT = 0, API_FRESH_EVERY = 60000, API_WAITING = null;
+  function freshApiUrl() {
+    var m = dataBase.match(/^https:\/\/raw\.githubusercontent\.com\/([^\/]+)\/([^\/]+)\/([^\/?#]+)$/);
+    if (m) return "https://api.github.com/repos/" + m[1] + "/" + m[2] + "/contents/api.json?ref=" + encodeURIComponent(m[3]);
+    return dataBase + "/api.json";                    // البيانات من مكان تاني (التجربة على جهازك): من غير تخزين أصلًا
+  }
+  function setApi(url) {
+    Object.keys(CACHE).forEach(function (c) { if (CACHE[c]) CACHE[c].api = url; });
+    if (DATA) DATA.api = url;
+  }
+  // done(true) = العنوان دلوقتي غير اللي كان معانا. لو فيه سؤال شغال: كل اللي فشلوا بيستنوا نفس الرد
+  // (فتح الحساب بيبعت كذا طلب مع بعض - ما ينفعش التاني يتقاله «مش قادر أوصل» والعنوان الجديد جاي).
+  function refreshApi(done) {
+    var before = apiBase();
+    if (!before) return done(false);
+    var finish = function () { done(apiBase() !== before); };
+    if (API_WAITING) { API_WAITING.push(finish); return; }
+    if (Date.now() - API_FRESH_AT < API_FRESH_EVERY) return done(false);
+    API_FRESH_AT = Date.now(); API_WAITING = [finish];
+    var url = freshApiUrl();
+    fetch(url + (url.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now(),
+          { cache: "no-store", headers: { "Accept": "application/vnd.github.raw" } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        var next = j && typeof j.api === "string" ? j.api.replace(/\/+$/, "") : "";
+        if (next && /^https:\/\/|^http:\/\/(127\.0\.0\.1|localhost)[:\/]/.test(next)) setApi(next);
+      }).catch(function () {})
+      .then(function () { var waiting = API_WAITING; API_WAITING = null; waiting.forEach(function (f) { f(); }); });
+  }
+  function ping(base, done) {                          // سيرفر البوت بيرد؟
     var ctrl = window.AbortController ? new AbortController() : null;
-    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 6000);
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 7000);
     fetch(base + "/api/health?t=" + Date.now(), { cache: "no-store", signal: ctrl ? ctrl.signal : undefined })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) { clearTimeout(timer); if (j && j.ok) done(true); else throw new Error("down"); })
-      .catch(function () {
-        clearTimeout(timer);
-        if (tries < 1) setTimeout(function () { checkAlive(done, tries + 1); }, 1500); else done(false);
+      .then(function (j) { clearTimeout(timer); done(!!(j && j.ok)); })
+      .catch(function () { clearTimeout(timer); done(false); });
+  }
+  // البوت شغال؟ 3 محاولات (نت ضعيف ما يتحسبش صيانة)، وبعد أول فشل: العنوان الجديد لو اتغير
+  function checkAlive(done, tries) {
+    var base = apiBase();
+    if (!base) return done(true);                       // المجتمع مقفول: مفيش حاجة نسألها
+    tries = tries || 0;
+    ping(base, function (ok) {
+      if (ok) return done(true);
+      if (tries >= 2) return done(false);
+      if (tries === 0) return refreshApi(function (changed) {
+        if (changed) checkAlive(done, 1); else setTimeout(function () { checkAlive(done, 1); }, 1500);
       });
+      setTimeout(function () { checkAlive(done, tries + 1); }, 2500);
+    });
+  }
+  // الصيانة: الصفحة بتفضل تسأل لوحدها (كل 12 ثانية) وأول ما البوت يرجع بتكمل على طول - من غير ما حد يدوس حاجة
+  var MAINT_TIMER = null, AFTER_MAINT = null;
+  function enterMaint(next) {
+    AFTER_MAINT = next; show("s-maint");
+    clearTimeout(MAINT_TIMER);
+    var poll = function () {
+      MAINT_TIMER = setTimeout(function () {
+        if (document.hidden) return poll();
+        checkAlive(function (alive) { if (alive) leaveMaint(); else poll(); });
+      }, 12000);
+    };
+    poll();
+  }
+  function leaveMaint() {
+    clearTimeout(MAINT_TIMER); MAINT_TIMER = null;
+    var next = AFTER_MAINT; AFTER_MAINT = null;
+    if (next) next();
   }
   $("maint-retry").onclick = function () {
     haptic(); this.disabled = true; var btn = this;
-    checkAlive(function (alive) { btn.disabled = false; if (alive) location.reload(); else notify("لسه في صيانة - جرّب كمان شوية"); });
+    API_FRESH_AT = 0;                                   // الزرار: نسأل GitHub عن العنوان الجديد على طول
+    checkAlive(function (alive) { btn.disabled = false; if (alive) leaveMaint(); else notify("لسه في صيانة - جرّب كمان شوية"); });
   };
   (function start() {
     var grid = $("grid");
@@ -2536,15 +2605,15 @@
       // من تنبيه: بلد الفيلم (اللي في اللينك) هي اللي تمشي - غير كده آخر بلد كنت بتتفرج عليها
       if (!target && saved && /^[a-z]{2}$/.test(saved)) country = saved;
       loadCountry(country, function () {
-        checkAlive(function (alive) {
-        if (!alive) { show("s-maint"); return; }      // البوت مقفول (صيانة)
-        loadMe(function () { syncWant(); });            // التسجيل التلقائي (أول مرة) + صورة الحساب + أريد مشاهدتها
-        store.get("login", function (login) {
-          renderHeader();
-          if (!login) { renderLogin(); show("s-login"); return; }       // أول مرة: الدخول
-          setTab(section); show("s-list"); openTarget();
-        });
-        });
+        var go_on = function () {
+          loadMe(function () { syncWant(); });          // التسجيل التلقائي (أول مرة) + صورة الحساب + هشوفهم بعدين
+          store.get("login", function (login) {
+            renderHeader();
+            if (!login) { renderLogin(); show("s-login"); return; }     // أول مرة: الدخول
+            setTab(section); show("s-list"); openTarget();
+          });
+        };
+        checkAlive(function (alive) { if (alive) go_on(); else enterMaint(go_on); });   // البوت مقفول = صيانة
       });
     });
   })();

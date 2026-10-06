@@ -60,10 +60,11 @@
     display: grid; place-items: center; background: var(--surface); color: var(--gold); font-weight: 800; }
   .avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
   .tabs { display: flex; gap: 8px; margin: 12px 0 0; }
-  .tab { flex: 1; padding: 10px 4px; border-radius: 12px; background: var(--surface); color: var(--muted);
-    font-weight: 700; font-size: 14px; border: 1px solid var(--line); white-space: nowrap; }
+  .tab { flex: 1 1 0; min-width: 0; padding: 10px 4px; border-radius: 12px; background: var(--surface); color: var(--muted);
+    font-weight: 700; font-size: 14px; line-height: 1.35; border: 1px solid var(--line); white-space: nowrap; }
   .tab.active { background: var(--gold-grad); color: #1a1205; border-color: transparent; box-shadow: 0 4px 18px rgba(240,192,72,.25); }
   .tab small { font-weight: 600; opacity: .8; }
+  @media (max-width: 345px) { .tab { font-size: 12.5px; padding: 10px 2px; } .tabs { gap: 6px; } }
   .glasses-line { height: 3px; margin: 12px -14px 0; background: var(--glasses); opacity: .55; }
 
   /* ---------- شبكة الأفلام + تحريك 3D ---------- */
@@ -311,6 +312,99 @@
   .r-item .t { flex: 1; font-weight: 700; font-size: 14px; }
   .toggle { display: flex; align-items: center; gap: 10px; font-size: 14px; }
   .toggle input { width: 20px; height: 20px; accent-color: var(--gold); }
+  /* القوايم */
+  .lists-row { display: flex; gap: 8px; margin-top: 10px; }
+  .lchip { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 6px;
+    border-radius: 12px; background: var(--surface); border: 1.5px solid var(--line); color: var(--muted);
+    font-weight: 700; font-size: 13px; white-space: nowrap; transition: transform .12s; }
+  .lchip:active { transform: scale(.96); }
+  .lchip.on { color: #1a1205; background: var(--gold-grad); border-color: transparent; }
+  .lchip.on.fav { background: linear-gradient(135deg, #ff7a85, #d80000); color: #fff; }
+  .lchip svg.i { width: 1.05em; height: 1.05em; }
+  .lchip.on.fav svg.i { fill: currentColor; }
+  .pf-tabs { overflow-x: auto; scrollbar-width: none; }
+  .pf-tabs::-webkit-scrollbar { display: none; }
+  .pf-tabs .pill { flex: none; }
+  /* المرحلة 3: خانات الفيلم + النافذة اللي بتطلع من تحت + شاهدتها/السجل/القوائم */
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+  .tile { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 2px; border-radius: 14px;
+    background: var(--surface); border: 1.5px solid var(--line); color: var(--muted); font-size: 11.5px; font-weight: 700;
+    white-space: nowrap; min-width: 0; transition: transform .12s; }
+  .tile:active { transform: scale(.95); }
+  .tile svg.i { width: 22px; height: 22px; }
+  .tile.on { color: var(--gold); border-color: rgba(240,192,72,.6); background: rgba(240,192,72,.08); }
+  .tile.on.fav { color: #ff5a6a; border-color: rgba(255,90,106,.6); background: rgba(216,0,0,.08); }
+  .tile.on.fav svg.i { fill: currentColor; }
+  .sheet-bg { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 50; display: none; }
+  .sheet-bg.on { display: block; }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 51; background: var(--surface); border-radius: 20px 20px 0 0;
+    border-top: 1px solid var(--line); padding: 16px 16px calc(18px + env(safe-area-inset-bottom)); max-height: 85vh;
+    overflow-y: auto; transform: translateY(105%); transition: transform .25s ease; visibility: hidden; }
+  .sheet.on { transform: none; visibility: visible; }
+  .sheet h3 { margin: 0 0 6px; font-size: 18px; color: var(--cream); display: flex; justify-content: space-between; align-items: center; }
+  .sheet .x { color: var(--muted); font-size: 18px; padding: 2px 8px; }
+  .sheet .sub { color: var(--muted); font-size: 13px; margin: 6px 0 12px; }
+  .sheet .btn { width: 100%; margin-top: 10px; }
+  .sheet .msg { color: #ff8a80; font-size: 13px; min-height: 18px; margin-top: 6px; }
+  .sheet input[type=text], .sheet input[type=date], .sheet select, .edit input[type=date] { width: 100%; padding: 11px 12px;
+    border-radius: 12px; background: var(--bg); border: 1px solid var(--line); color: var(--text); font: inherit; color-scheme: dark; }
+  .check-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 4px;
+    border-bottom: 1px solid var(--line); width: 100%; text-align: right; font-weight: 700; }
+  .check-row .box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #4a4436; display: grid; place-items: center;
+    color: #1a1205; font-size: 13px; flex: none; }
+  .check-row .box.on { background: var(--gold-grad); border-color: transparent; }
+  .check-row .box.on.red { background: linear-gradient(135deg, #ff7a85, #d80000); color: #fff; }
+  .ptabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 4px -16px 12px; padding: 0 16px; }
+  .ptabs::-webkit-scrollbar { display: none; }
+  .ptabs .pill { flex: none; }
+  .poster-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .pg-item { text-align: center; min-width: 0; }
+  .pg-item img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 10px; background: var(--surface-2); display: block; }
+  .pg-item .stars { font-size: 11px; margin-top: 3px; }
+  .pg-item .times { font-size: 11px; color: var(--muted); }
+  .month { color: var(--gold); font-weight: 800; font-size: 13px; margin: 14px 2px 7px; }
+  .diary-row { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 12px; background: var(--surface);
+    border: 1px solid var(--line); margin-bottom: 7px; width: 100%; text-align: right; }
+  .diary-row .day { width: 30px; text-align: center; font-size: 18px; font-weight: 800; color: var(--cream); flex: none; }
+  .diary-row img { width: 36px; height: 54px; object-fit: cover; border-radius: 6px; flex: none; background: var(--surface-2); }
+  .diary-row .t { flex: 1; min-width: 0; font-weight: 700; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .diary-row .meta2 { display: block; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+  .tag-small { font-size: 10.5px; color: var(--gold); border: 1px solid rgba(240,192,72,.45); border-radius: 99px; padding: 0 7px; }
+  .sys-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+  .sys-tile { padding: 12px 4px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); text-align: center; }
+  .sys-tile svg.i { width: 24px; height: 24px; color: var(--gold); }
+  .sys-tile.fav svg.i { color: #ff5a6a; fill: currentColor; }
+  .sys-tile b { display: block; margin-top: 6px; font-size: 13.5px; color: var(--cream); }
+  .sys-tile span { font-size: 11.5px; color: var(--muted); }
+  .row-head { display: flex; justify-content: space-between; align-items: center; margin: 4px 0 10px; }
+  .row-head b { color: var(--cream); font-size: 15px; }
+  .row-head .mini { color: var(--gold); }
+  .list-row { display: flex; align-items: center; gap: 12px; padding: 9px; border-radius: 14px; background: var(--surface);
+    border: 1px solid var(--line); margin-bottom: 8px; width: 100%; text-align: right; }
+  .collage { width: 60px; height: 60px; border-radius: 10px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--surface-2); flex: none; }
+  .collage img { width: 100%; height: 100%; object-fit: cover; }
+  .list-row .t { flex: 1; min-width: 0; }
+  .list-row b { display: block; font-size: 14.5px; color: var(--cream); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .list-row span { font-size: 12px; color: var(--muted); }
+  .ov-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+  .ov-stat { padding: 12px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); text-align: right; }
+  .ov-stat b { font-size: 20px; color: var(--gold); display: block; }
+  .ov-stat span { font-size: 12px; color: var(--muted); }
+  .strip { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 14px; }
+  .strip::-webkit-scrollbar { display: none; }
+  .strip img { width: 74px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 9px; flex: none; background: var(--surface-2); cursor: pointer; }
+  .more-btn { width: 100%; padding: 10px; margin-top: 6px; border-radius: 12px; border: 1px solid var(--line); color: var(--muted); font-weight: 700; }
+  .lv-desc { color: #d8d2c4; line-height: 1.8; margin: 4px 0 8px; white-space: pre-line; }
+  .lv-meta { color: var(--muted); font-size: 12.5px; margin-bottom: 12px; }
+  .lv-item { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 12px; background: var(--surface);
+    border: 1px solid var(--line); margin-bottom: 7px; }
+  .lv-item .n { width: 22px; text-align: center; color: var(--muted); font-weight: 800; flex: none; }
+  .lv-item img { width: 40px; height: 60px; object-fit: cover; border-radius: 7px; flex: none; background: var(--surface-2); }
+  .lv-item .t { flex: 1; min-width: 0; font-weight: 700; font-size: 14px; }
+  .lv-item .ctl { display: flex; gap: 4px; flex: none; }
+  .lv-item .ctl button { width: 32px; height: 32px; border-radius: 9px; border: 1px solid var(--line); color: var(--cream); font-size: 15px; }
+  .lv-item .ctl button:disabled { opacity: .3; }
 </style>
 </head>
 <body>
@@ -393,6 +487,9 @@
   </div>
 </section>
 
+<!-- ============ قائمة (مخصصة أو المفضلة/شاهدتها/أريد مشاهدتها) ============ -->
+<section class="screen" id="s-listview"><div class="edit" id="lv"></div></section>
+
 <!-- ============ حساب حد تاني ============ -->
 <section class="screen" id="s-user">
   <div class="profile"><div class="pf" id="pf2"></div><div id="u-tabs"></div></div>
@@ -442,6 +539,9 @@
   </div>
 </section>
 
+<div class="sheet-bg" id="sheet-bg"></div>
+<div class="sheet" id="sheet"></div>
+
 <script>
 (function () {
   "use strict";
@@ -465,6 +565,11 @@
     eyeOff: '<svg class="i" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/></svg>',
     bell: '<svg class="i" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>',
     plus: '<svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+    heart: '<svg class="i" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+    seen: '<svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>',
+    clock: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    addlist: '<svg class="i" viewBox="0 0 24 24"><path d="M4 6h11M4 12h11M4 18h7M18 15v6M15 18h6"/></svg>',
+    lock: '<svg class="i" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
     login: '<svg class="i" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5M15 12H3"/></svg>'
   };
 
@@ -534,6 +639,7 @@
   }
   function go(id) { stack.push(document.querySelector(".screen.on").id); show(id); }
   function back() {
+    if ($("sheet").classList.contains("on")) { closeSheet(); return; }
     var f = $("hero").querySelector("iframe"); if (f) f.remove();
     var to = stack.pop() || "s-list";
     show(to);
@@ -624,7 +730,7 @@
     else if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
     return fetch(apiBase() + path, opts).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (j) {
-        if (!r.ok) throw new Error(j.error || "حصلت مشكلة - جرّب تاني"); return j;
+        if (!r.ok) { var err = new Error(j.error || "حصلت مشكلة - جرّب تاني"); err.data = j; throw err; } return j;
       });
     });
   }
@@ -760,7 +866,195 @@
     if (!apiReady()) return;
     call("GET", "/api/films/" + m.id).then(function (f) {
       if (FILM_MOVIE !== m) return;                  // المستخدم فتح فيلم تاني
-      FILM = f; renderScore(); renderReviews();
+      FILM = f; renderScore(); renderReviews(); renderLists();
+    }).catch(function () { if (FILM_MOVIE === m) legacyWatch(m); });
+  }
+  function legacyWatch(m) {                            // السيرفر مش متاح: «راقب» القديم (بيكلم البوت مباشرة)
+    if (m.section !== "c" && !isWatched(m.id)) return;
+    var actions = $("d-actions"), on = isWatched(m.id);
+    var b = el("button", "btn outline" + (on ? " unwatch" : "")); b.innerHTML = on ? ICON.eyeOff : ICON.eye;
+    b.appendChild(document.createTextNode(on ? " إلغاء المراقبة" : " راقب"));
+    b.onclick = function () { setWatched(m.id, !on); sendToBot({ a: on ? "unwatch" : "watch", id: m.id }, (on ? "u_" : "w_") + m.id); };
+    actions.appendChild(b);
+  }
+  // ---------- المرحلة 3: أدوات مشتركة ----------
+  var MONTHS = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+  function todayISO() { var d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); }
+  function fmtDate(iso) { if (!iso) return ""; var p = iso.split("-"); return +p[2] + " " + MONTHS[+p[1] - 1] + " " + p[0]; }
+  function openSheet(title, build) {
+    var sh = $("sheet"); sh.textContent = "";
+    var h = el("h3"); h.appendChild(el("span", "", title));
+    var x = el("button", "x", "✕"); x.onclick = closeSheet; h.appendChild(x);
+    sh.appendChild(h); build(sh);
+    $("sheet-bg").classList.add("on"); sh.classList.add("on");
+  }
+  function closeSheet() { $("sheet-bg").classList.remove("on"); $("sheet").classList.remove("on"); }
+  $("sheet-bg").onclick = closeSheet;
+  function confirmBox(text, yes) {
+    try { if (tg && tg.showConfirm && tg.isVersionAtLeast && tg.isVersionAtLeast("6.2")) { tg.showConfirm(text, function (k) { if (k) yes(); }); return; } } catch (e) {}
+    if (window.confirm(text)) yes();
+  }
+  function privacySelect(value) {
+    var sel = el("select");
+    [["everyone", "الجميع"], ["followers", "المتابعون فقط"], ["me", "أنا فقط"]].forEach(function (o) {
+      var opt = el("option", "", o[1]); opt.value = o[0]; if (o[0] === value) opt.selected = true; sel.appendChild(opt);
+    });
+    return sel;
+  }
+  function checkRow(label, on, red) {
+    var r = el("button", "check-row"); r.appendChild(el("span", "ltr", label));
+    r.appendChild(el("span", "box" + (on ? " on" : "") + (red ? " red" : ""), on ? "✓" : "")); return r;
+  }
+  function starPicker(value, onChange) {
+    var st = el("div", "rate-stars"), cur = value || 0;
+    var paint = function () {
+      st.textContent = "";
+      for (var k = 1; k <= 5; k++) (function (k) {
+        var b = el("button", k <= cur ? "on" : "", "★");
+        b.onclick = function () { haptic(); cur = (cur === k ? 0 : k); paint(); onChange(cur); }; st.appendChild(b);
+      })(k);
+    };
+    paint(); return st;
+  }
+  // صفحات: «عرض المزيد» (ما بنحملش آلاف الحاجات مرة واحدة)
+  function pager(list, holder, fetchPage, renderItem, emptyText) {
+    var cursor = null, first = true, more = el("button", "more-btn", "عرض المزيد");
+    var load = function () {
+      fetchPage(cursor).then(function (d) {
+        var items = d.items || [];
+        if (first && !items.length) holder.insertBefore(el("div", "empty", emptyText), list);
+        first = false; items.forEach(function (x) { renderItem(list, x); });
+        cursor = d.next;
+        if (cursor != null) holder.appendChild(more);
+      }).catch(function (e) { holder.appendChild(el("div", "empty", e.message)); });
+    };
+    more.onclick = function () { haptic(); more.remove(); load(); };
+    load();
+  }
+  function posterImg(mv) { var im = el("img"); im.src = mv.poster || "no_poster.jpg"; im.alt = ""; im.loading = "lazy";
+    im.onerror = function () { if (!im.dataset.f) { im.dataset.f = 1; im.src = "no_poster.jpg"; } }; return im; }
+
+  // ---------- صفحة الفيلم: أعجبني / شاهدته / أريد مشاهدته / أضف لقائمة ----------
+  function renderLists() {
+    var old = $("d-lists"); if (old) old.remove();
+    var row = el("div", "tiles"); row.id = "d-lists";
+    var w = FILM.watch || {}, L = FILM.lists || {};
+    var tiles = [];
+    if (FILM.eligible) {
+      tiles.push(["fav", "heart", "أعجبني", L.fav, function () { toggleList("fav"); }]);
+      tiles.push(["seen", "seen", w.count > 1 ? "شاهدته ×" + w.count : "شاهدته", w.watched, openWatchSheet]);
+    }
+    tiles.push(["want", "clock", "أريد مشاهدته", L.want, function () { toggleList("want"); }]);
+    tiles.push(["list", "addlist", "أضف لقائمة", (FILM.my_lists || []).some(function (l) { return l.has; }), openListsSheet]);
+    row.style.gridTemplateColumns = "repeat(" + tiles.length + ", 1fr)";
+    tiles.forEach(function (t) {
+      var b = el("button", "tile " + t[0] + (t[3] ? " on" : "")); b.innerHTML = ICON[t[1]];
+      b.appendChild(el("span", "", t[2])); b.onclick = function () { haptic("medium"); t[4](); };
+      row.appendChild(b);
+    });
+    $("d-actions").after(row);
+  }
+  function openWatchSheet() {
+    var m = FILM_MOVIE, w = FILM.watch || {}, pick = "today", stars = FILM.my_rating || 0, fav = !!FILM.lists.fav;
+    openSheet("سجّل مشاهدة", function (sh) {
+      var status = !w.watched ? m.title : (w.count ? "شاهدته " + (w.count > 1 ? w.count + " مرات" : "مرة") + (w.last ? " • آخر مرة " + fmtDate(w.last) : "")
+                                                      : "في «شاهدتها» من غير تاريخ");
+      sh.appendChild(el("div", "sub ltr", status));
+      var f1 = el("div", "field"); f1.appendChild(el("label", "", "اتفرجت عليه إمتى؟"));
+      var pills = el("div", "pills"), dateIn = el("input"); dateIn.type = "date"; dateIn.max = todayISO(); dateIn.value = todayISO();
+      dateIn.style.display = "none"; dateIn.style.marginTop = "8px";
+      [["today", "النهارده"], ["other", "يوم تاني"], ["none", "من غير تاريخ"]].forEach(function (o) {
+        var b = el("button", "pill small" + (o[0] === pick ? " active" : ""), o[1]); b.dataset.k = o[0];
+        b.onclick = function () { haptic(); pick = o[0]; dateIn.style.display = pick === "other" ? "" : "none";
+          pills.querySelectorAll(".pill").forEach(function (x) { x.classList.toggle("active", x.dataset.k === pick); }); };
+        pills.appendChild(b);
+      });
+      f1.appendChild(pills); f1.appendChild(dateIn); sh.appendChild(f1);
+      var f2 = el("div", "field"); f2.appendChild(el("label", "", "تقييمك (اختياري)"));
+      f2.appendChild(starPicker(stars, function (v) { stars = v; })); sh.appendChild(f2);
+      var favRow = checkRow("أعجبني ❤", fav, true);
+      favRow.onclick = function () { haptic(); fav = !fav; favRow.querySelector(".box").className = "box" + (fav ? " on red" : ""); favRow.querySelector(".box").textContent = fav ? "✓" : ""; };
+      sh.appendChild(favRow);
+      var msg = el("div", "msg");
+      var save = el("button", "btn primary", w.watched ? "سجّل مشاهدة تانية" : "سجّل");
+      if (w.watched && !w.count) save.textContent = "سجّل";
+      save.onclick = function () {
+        var body = { date: pick === "today" ? todayISO() : pick === "other" ? dateIn.value : null, fav: fav };
+        if (stars && stars !== FILM.my_rating) body.stars = stars;
+        save.disabled = true;
+        call("POST", "/api/films/" + m.id + "/watch", body).then(function (x) {
+          if (FILM_MOVIE !== m) return;
+          FILM.watch = x.watch; FILM.lists = x.lists; FILM.my_rating = x.my_rating;
+          ["average", "count", "distribution"].forEach(function (k) { FILM[k] = x[k]; });
+          closeSheet(); renderScore(); renderLists(); syncWant(); haptic("medium");
+        }).catch(function (e) { save.disabled = false; msg.textContent = e.message; });
+      };
+      sh.appendChild(save); sh.appendChild(msg);
+      var rv = el("button", "btn outline", FILM.my_review ? "عدّل مراجعتك" : "اكتب مراجعة (اختياري)");
+      rv.onclick = function () { closeSheet(); openWriter(); }; sh.appendChild(rv);
+      if (w.watched) { var rm = el("button", "logout", "شيل من «شاهدتها»"); rm.onclick = function () { removeWatched(false); }; sh.appendChild(rm); }
+    });
+  }
+  function removeWatched(confirmed) {
+    var m = FILM_MOVIE;
+    call("DELETE", "/api/films/" + m.id + "/watch" + (confirmed ? "?confirm=1" : "")).then(function (x) {
+      if (FILM_MOVIE !== m) return; FILM.watch = x.watch; FILM.lists = x.lists; closeSheet(); renderLists();
+    }).catch(function (e) {
+      if (e.data && e.data.confirm) confirmBox(e.message + " - متأكد؟", function () { removeWatched(true); });
+      else notify(e.message);
+    });
+  }
+  function openListsSheet() {
+    var m = FILM_MOVIE;
+    openSheet("أضف لقائمة", function (sh) {
+      var box = el("div"); sh.appendChild(box);
+      var draw = function () {
+        box.textContent = "";
+        if (!FILM.my_lists.length) box.appendChild(el("div", "sub", "لسه ما عملتش قوائم - اعمل أول واحدة تحت."));
+        FILM.my_lists.forEach(function (l) {
+          var r = checkRow(l.title, l.has);
+          r.onclick = function () {
+            haptic();
+            call(l.has ? "DELETE" : "PUT", "/api/lists/" + l.id + "/items/" + m.id)
+              .then(function (x) { FILM.my_lists = x.my_lists; draw(); renderLists(); }).catch(function (e) { notify(e.message); });
+          };
+          box.appendChild(r);
+        });
+      };
+      draw();
+      var f = el("div", "field"); f.style.marginTop = "14px"; f.appendChild(el("label", "", "قائمة جديدة"));
+      var t = el("input"); t.type = "text"; t.maxLength = 60; t.placeholder = "مثلًا: أفضل أفلام الرعب";
+      var pv = privacySelect("everyone"); pv.style.marginTop = "8px";
+      f.appendChild(t); f.appendChild(pv); sh.appendChild(f);
+      var msg = el("div", "msg"), mk = el("button", "btn primary", "إنشاء وإضافة الفيلم");
+      mk.onclick = function () {
+        mk.disabled = true;
+        call("POST", "/api/lists", { title: t.value, privacy: pv.value, movie_id: m.id }).then(function (L) {
+          mk.disabled = false; FILM.my_lists.unshift({ id: L.id, title: L.title, has: true }); t.value = ""; msg.textContent = "";
+          draw(); renderLists();
+        }).catch(function (e) { mk.disabled = false; msg.textContent = e.message; });
+      };
+      sh.appendChild(mk); sh.appendChild(msg);
+    });
+  }
+  function toggleList(kind) {
+    var m = FILM_MOVIE, on = !FILM.lists[kind];
+    call(on ? "PUT" : "DELETE", "/api/films/" + m.id + "/list/" + kind).then(function (x) {
+      if (FILM_MOVIE !== m) return;
+      FILM.lists = x.lists; renderLists();
+      if (kind === "want" || kind === "seen") { setWatched(m.id, x.lists.want); syncWant(); }
+      if (kind === "want" && on) notify("تمام - هيوصلك تنبيه أول ما حجز الفيلم ده يفتح");
+    }).catch(function (e) { notify(e.message); });
+  }
+  function syncWant() {                                // «أريد مشاهدتها» من السيرفر (أحدث من لينك البوت)
+    var uid = tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id;
+    if (!apiReady() || !uid) return;
+    call("GET", "/api/users/" + uid + "/lists/want").then(function (d) {
+      urlWatch = d.items.map(function (x) { return String(x.movie.id); });
+      LOCAL = { add: [], del: [] };
+      try { localStorage.setItem("cft_w_local", JSON.stringify(LOCAL)); } catch (e) {}
+      if (DATA) renderHeader();
+      if (section === "w" && document.querySelector(".screen.on").id === "s-list") renderGrid();
     }).catch(function () {});
   }
   function renderScore() {
@@ -876,27 +1170,230 @@
       .catch(function (e) { $("w-msg").textContent = e.message; });
   };
   // تقييماتي / مراجعاتي (لأي حساب)
-  function profileTabs(box, uid, owner) {
+  // ---------- الحساب: نظرة عامة | شاهدتها | تقييماتي | مراجعاتي | قوائمي ----------
+  function profileTabs(box, uid, owner, p) {
     box.textContent = "";
-    var seg = el("div", "pf-tabs"), list = el("div");
-    var tabs = [["ratings", owner ? "تقييماتي" : "تقييماته"], ["reviews", owner ? "مراجعاتي" : "مراجعاته"]];
-    var show = function (kind) {
-      seg.querySelectorAll(".pill").forEach(function (b) { b.classList.toggle("active", b.dataset.k === kind); });
-      list.textContent = ""; list.appendChild(el("div", "empty", "..."));
-      call("GET", "/api/users/" + uid + "/" + kind).then(function (d) {
-        list.textContent = "";
-        var items = d[kind] || [];
-        if (!items.length) list.appendChild(el("div", "empty", kind === "ratings" ? "مفيش تقييمات تتشاف هنا" : "مفيش مراجعات تتشاف هنا"));
-        items.forEach(function (x) {
-          if (kind === "reviews") { list.appendChild(reviewCard(x, true)); return; }
-          var it = el("button", "r-item"); var im = el("img"); im.src = x.movie.poster || "no_poster.jpg"; im.alt = "";
-          it.appendChild(im); it.appendChild(el("span", "t ltr", x.movie.title)); it.appendChild(starsText(x.stars));
-          it.onclick = function () { openMovie(x.movie); }; list.appendChild(it);
-        });
-      }).catch(function (e) { list.textContent = ""; list.appendChild(el("div", "empty", e.message)); });
+    var seg = el("div", "ptabs"), body = el("div");
+    var tabs = [["overview", "نظرة عامة"], ["watched", "شاهدتها"], ["ratings", owner ? "تقييماتي" : "تقييماته"],
+                ["reviews", owner ? "مراجعاتي" : "مراجعاته"], ["lists", owner ? "قوائمي" : "قوائمه"]];
+    var show = function (k) {
+      seg.querySelectorAll(".pill").forEach(function (b) { b.classList.toggle("active", b.dataset.k === k); });
+      body.textContent = ""; TAB[k](body, uid, owner, p);
     };
     tabs.forEach(function (t) { var b = el("button", "pill small", t[1]); b.dataset.k = t[0]; b.onclick = function () { haptic(); show(t[0]); }; seg.appendChild(b); });
-    box.appendChild(seg); box.appendChild(list); show("ratings");
+    box.appendChild(seg); box.appendChild(body); show("overview");
+  }
+  function hiddenNote(body) { body.appendChild(el("div", "empty", "صاحب الحساب مخلّي القسم ده ليه بس")); }
+  var TAB = {
+    overview: function (body, uid, owner, p) {
+      var lc = p.lists || {}, cn = p.counts || {}, stats = el("div", "ov-stats");
+      [[lc.seen, "شاهدتها"], [cn.ratings, "تقييمات"], [cn.reviews, "مراجعات"], [lc.custom, "قوائم"]].forEach(function (x) {
+        if (x[0] == null) return; var c = el("div", "ov-stat"); c.appendChild(el("b", "", String(x[0]))); c.appendChild(el("span", "", x[1])); stats.appendChild(c);
+      });
+      if (stats.childNodes.length) body.appendChild(stats);
+      var strip = function (title, path) {
+        var holder = el("div"), row = el("div", "strip");
+        call("GET", path).then(function (d) {
+          if (!d.items || !d.items.length) return;
+          holder.appendChild(el("div", "section-title", title));
+          d.items.slice(0, 12).forEach(function (x) { var im = posterImg(x.movie); im.title = x.movie.title; im.onclick = function () { openMovie(x.movie); }; row.appendChild(im); });
+          holder.appendChild(row);
+        }).catch(function () {});
+        body.appendChild(holder);
+      };
+      if (lc.seen != null) strip(owner ? "آخر ما شاهدت" : "آخر ما شاهد", "/api/users/" + uid + "/watched");
+      if (lc.fav != null) strip("المفضلة", "/api/users/" + uid + "/lists/fav");
+    },
+    watched: function (body, uid, owner, p) {
+      if ((p.lists || {}).seen == null && !owner) return hiddenNote(body);
+      var seg = el("div", "seg"), inner = el("div"); body.appendChild(seg); body.appendChild(inner);
+      var views = [["films", "الأفلام"], ["diary", "سجل المشاهدة"]];
+      var show = function (v) {
+        seg.querySelectorAll(".pill").forEach(function (b) { b.classList.toggle("active", b.dataset.v === v); });
+        inner.textContent = ""; (v === "films" ? watchedGrid : diaryList)(inner, uid, owner);
+      };
+      views.forEach(function (v) { var b = el("button", "pill small", v[1]); b.dataset.v = v[0]; b.onclick = function () { haptic(); show(v[0]); }; seg.appendChild(b); });
+      show("films");
+    },
+    ratings: function (body, uid, owner) {
+      var list = el("div"); body.appendChild(list);
+      pager(list, body, function (c) { return call("GET", "/api/users/" + uid + "/ratings?offset=" + (c || 0)).then(function (d) { return { items: d.ratings, next: d.next }; }); },
+        function (l, x) {
+          var it = el("button", "r-item"); it.appendChild(posterImg(x.movie)); it.appendChild(el("span", "t ltr", x.movie.title));
+          it.appendChild(starsText(x.stars)); it.onclick = function () { openMovie(x.movie); }; l.appendChild(it);
+        }, "مفيش تقييمات تتشاف هنا");
+    },
+    reviews: function (body, uid) {
+      var list = el("div"); body.appendChild(list);
+      pager(list, body, function (c) { return call("GET", "/api/users/" + uid + "/reviews?offset=" + (c || 0)).then(function (d) { return { items: d.reviews, next: d.next }; }); },
+        function (l, x) { l.appendChild(reviewCard(x, true)); }, "مفيش مراجعات تتشاف هنا");
+    },
+    lists: function (body, uid, owner, p) {
+      var lc = p.lists || {};
+      if (lc.fav == null && !owner) return hiddenNote(body);
+      var tiles = el("div", "sys-tiles");
+      [["fav", "heart", "المفضلة", lc.fav], ["seen", "seen", "شاهدتها", lc.seen], ["want", "clock", "أريد مشاهدتها", lc.want]].forEach(function (t) {
+        if (t[3] == null) return;
+        var b = el("button", "sys-tile " + t[0]); b.innerHTML = ICON[t[1]];
+        b.appendChild(el("b", "", t[2])); b.appendChild(el("span", "", t[3] + " فيلم"));
+        b.onclick = function () { haptic(); openSysList(uid, t[0], t[2]); }; tiles.appendChild(b);
+      });
+      tiles.style.gridTemplateColumns = "repeat(" + tiles.childNodes.length + ", 1fr)";
+      body.appendChild(tiles);
+      var head = el("div", "row-head"); head.appendChild(el("b", "", "القوائم المخصصة"));
+      if (owner) { var nb = el("button", "mini", "+ إنشاء قائمة"); nb.onclick = function () { haptic(); newListSheet(function () { TAB.lists(clear(body), uid, owner, p); }); }; head.appendChild(nb); }
+      body.appendChild(head);
+      var list = el("div"); body.appendChild(list);
+      pager(list, body, function (c) { return call("GET", "/api/users/" + uid + "/lists?offset=" + (c || 0)); },
+        function (l, x) { l.appendChild(listRow(x)); }, owner ? "لسه ما عملتش قوائم" : "مفيش قوائم تتشاف هنا");
+    }
+  };
+  function clear(node) { node.textContent = ""; return node; }
+  function watchedGrid(inner, uid) {
+    var grid = el("div", "poster-grid"); inner.appendChild(grid);
+    pager(grid, inner, function (c) { return call("GET", "/api/users/" + uid + "/watched?offset=" + (c || 0)); },
+      function (g, x) {
+        var it = el("button", "pg-item"); it.appendChild(posterImg(x.movie));
+        if (x.stars) it.appendChild(starsText(x.stars));
+        if (x.times > 1) it.appendChild(el("div", "times", "اتشاف " + (x.times === 2 ? "مرتين" : x.times + " مرات")));
+        it.onclick = function () { openMovie(x.movie); }; g.appendChild(it);
+      }, "لسه مفيش أفلام هنا");
+  }
+  function diaryList(inner, uid, owner) {
+    var list = el("div"), lastMonth = "";
+    inner.appendChild(list);
+    pager(list, inner, function (c) { return call("GET", "/api/users/" + uid + "/diary" + (c ? "?before=" + encodeURIComponent(c) : "")); },
+      function (l, x) {
+        var mk = x.date.slice(0, 7);
+        if (mk !== lastMonth) { lastMonth = mk; l.appendChild(el("div", "month", MONTHS[+mk.slice(5) - 1] + " " + mk.slice(0, 4))); }
+        var r = el("button", "diary-row"); r.appendChild(el("span", "day", String(+x.date.slice(8))));
+        r.appendChild(posterImg(x.movie));
+        var t = el("span", "t ltr", x.movie.title), meta = el("span", "meta2");
+        if (x.stars) meta.appendChild(starsText(x.stars));
+        if (x.rewatch) { meta.appendChild(document.createTextNode(" ")); meta.appendChild(el("span", "tag-small", "مشاهدة تانية")); }
+        if (x.fav) meta.appendChild(document.createTextNode(" ♥"));
+        t.appendChild(meta); r.appendChild(t);
+        r.onclick = function () { if (owner && x.id) diarySheet(x, function () { diaryList(clear(inner), uid, owner); }); else openMovie(x.movie); };
+        l.appendChild(r);
+      }, owner ? "سجل المشاهدة فاضي - سجّل مشاهدة من صفحة أي فيلم وحدد تاريخها" : "سجل المشاهدة فاضي");
+  }
+  function diarySheet(x, done) {
+    openSheet(x.movie.title, function (sh) {
+      sh.appendChild(el("div", "sub", "اتفرجت عليه يوم " + fmtDate(x.date)));
+      var d = el("input"); d.type = "date"; d.max = todayISO(); d.value = x.date; sh.appendChild(d);
+      var msg = el("div", "msg"), save = el("button", "btn primary", "حفظ التاريخ");
+      save.onclick = function () { call("PATCH", "/api/diary/" + x.id, { date: d.value }).then(function () { closeSheet(); done(); }).catch(function (e) { msg.textContent = e.message; }); };
+      var open = el("button", "btn outline", "افتح الفيلم"); open.onclick = function () { closeSheet(); openMovie(x.movie); };
+      var del = el("button", "logout", "امسح التسجيل ده");
+      del.onclick = function () { confirmBox("تمسح التسجيل ده من سجل المشاهدة؟", function () {
+        call("DELETE", "/api/diary/" + x.id).then(function () { closeSheet(); done(); }).catch(function (e) { msg.textContent = e.message; }); }); };
+      sh.appendChild(save); sh.appendChild(msg); sh.appendChild(open); sh.appendChild(del);
+    });
+  }
+  function listRow(x) {
+    var r = el("button", "list-row"), col = el("div", "collage");
+    for (var i = 0; i < 4; i++) {
+      if (i < x.count) col.appendChild(posterImg({ poster: x.posters[i] }));
+      else { var gap = el("img"); gap.alt = ""; gap.style.visibility = "hidden"; col.appendChild(gap); }
+    }
+    r.appendChild(col);
+    var t = el("div", "t"); t.appendChild(el("b", "ltr", x.title));
+    var meta = el("span", "", x.count + " فيلم" + (x.mine && x.privacy !== "everyone" ? (x.privacy === "me" ? " • أنا فقط" : " • المتابعون فقط") : ""));
+    t.appendChild(meta); r.appendChild(t);
+    r.onclick = function () { haptic(); openListView(x.id); };
+    return r;
+  }
+  function newListSheet(done) {
+    openSheet("قائمة جديدة", function (sh) {
+      var t = el("input"); t.type = "text"; t.maxLength = 60; t.placeholder = "اسم القائمة";
+      var dsc = el("textarea"); dsc.maxLength = 300; dsc.placeholder = "وصف (اختياري)";
+      dsc.style.cssText = "width:100%;margin-top:8px;min-height:70px;padding:11px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--line);color:var(--text);font:inherit";
+      var pv = privacySelect("everyone"); pv.style.marginTop = "8px";
+      var msg = el("div", "msg"), mk = el("button", "btn primary", "إنشاء");
+      mk.onclick = function () {
+        mk.disabled = true;
+        call("POST", "/api/lists", { title: t.value, description: dsc.value, privacy: pv.value })
+          .then(function () { closeSheet(); if (ME) loadMe(); done(); }).catch(function (e) { mk.disabled = false; msg.textContent = e.message; });
+      };
+      [t, dsc, pv, mk, msg].forEach(function (n) { sh.appendChild(n); });
+    });
+  }
+  // ---------- صفحة قائمة ----------
+  function openListView(id) { go("s-listview"); listView(id); }
+  function listView(id) {
+    var lv = clear($("lv")); lv.appendChild(el("div", "empty", "..."));
+    call("GET", "/api/lists/" + id).then(function (L) {
+      clear(lv);
+      var h = el("h2", "ltr", L.title); lv.appendChild(h);
+      if (L.description) lv.appendChild(el("div", "lv-desc ltr", L.description));
+      var meta = L.count + " فيلم • " + (L.mine ? "قائمتك" : "قائمة " + L.owner.name);
+      if (L.mine) meta += " • " + { everyone: "الجميع", followers: "المتابعون فقط", me: "أنا فقط" }[L.privacy];
+      lv.appendChild(el("div", "lv-meta", meta));
+      if (L.mine) { var eb = el("button", "btn outline", "تعديل القائمة"); eb.style.width = "100%"; eb.style.marginBottom = "12px"; eb.onclick = function () { haptic(); editList(id); }; lv.appendChild(eb); }
+      var list = el("div"); lv.appendChild(list);
+      var n = 0, firstPage = true;
+      pager(list, lv, function (c) {
+        if (firstPage) { firstPage = false; return Promise.resolve({ items: L.items, next: L.next }); }
+        return call("GET", "/api/lists/" + id + "?offset=" + c);
+      }, function (l, x) { n++; l.appendChild(lvItem(x.movie, n)); }, "القائمة فاضية - ضيف أفلام من صفحة أي فيلم («أضف لقائمة»)");
+    }).catch(function (e) { clear(lv).appendChild(el("div", "empty", e.message)); });
+  }
+  function lvItem(mv, n) {
+    var r = el("div", "lv-item"); r.appendChild(el("span", "n", String(n))); r.appendChild(posterImg(mv));
+    r.appendChild(el("span", "t ltr", mv.title)); r.style.cursor = "pointer"; r.onclick = function () { openMovie(mv); }; return r;
+  }
+  function openSysList(uid, kind, title) {
+    go("s-listview");
+    var lv = clear($("lv")); lv.appendChild(el("h2", "", title));
+    var list = el("div"), n = 0; lv.appendChild(list);
+    var path = kind === "seen" ? "/api/users/" + uid + "/watched" : "/api/users/" + uid + "/lists/" + kind;
+    pager(list, lv, function (c) { return call("GET", path + "?offset=" + (c || 0)); },
+      function (l, x) { n++; l.appendChild(lvItem(x.movie, n)); }, "مفيش أفلام هنا");
+  }
+  function editList(id) {
+    var lv = clear($("lv")); lv.appendChild(el("div", "empty", "..."));
+    var all = [], L = null;
+    var fetchAll = function (offset) {
+      return call("GET", "/api/lists/" + id + "?offset=" + offset).then(function (d) {
+        L = L || d; all = all.concat(d.items); return d.next != null ? fetchAll(d.next) : null;
+      });
+    };
+    fetchAll(0).then(function () {
+      clear(lv); lv.appendChild(el("h2", "", "تعديل القائمة"));
+      var t = el("input"); t.type = "text"; t.maxLength = 60; t.value = L.title;
+      var dsc = el("textarea"); dsc.maxLength = 300; dsc.value = L.description || ""; dsc.placeholder = "وصف (اختياري)";
+      var pv = privacySelect(L.privacy);
+      [["الاسم", t], ["الوصف", dsc], ["مين يشوفها", pv]].forEach(function (f) { var w = el("div", "field"); w.appendChild(el("label", "", f[0])); w.appendChild(f[1]); lv.appendChild(w); });
+      var items = all.map(function (x) { return x.movie; }), removed = [];
+      var box = el("div"); lv.appendChild(el("div", "section-title", "الأفلام (رتّبها بالأسهم)")); lv.appendChild(box);
+      var draw = function () {
+        clear(box);
+        if (!items.length) box.appendChild(el("div", "empty", "القائمة فاضية"));
+        items.forEach(function (mv, i) {
+          var r = el("div", "lv-item"); r.appendChild(el("span", "n", String(i + 1))); r.appendChild(posterImg(mv)); r.appendChild(el("span", "t ltr", mv.title));
+          var ctl = el("div", "ctl"), up = el("button", "", "↑"), dn = el("button", "", "↓"), rm = el("button", "", "✕");
+          up.disabled = i === 0; dn.disabled = i === items.length - 1;
+          up.onclick = function () { haptic(); items.splice(i - 1, 0, items.splice(i, 1)[0]); draw(); };
+          dn.onclick = function () { haptic(); items.splice(i + 1, 0, items.splice(i, 1)[0]); draw(); };
+          rm.onclick = function () { haptic(); removed.push(items.splice(i, 1)[0]); draw(); };
+          [up, dn, rm].forEach(function (b) { ctl.appendChild(b); }); r.appendChild(ctl); box.appendChild(r);
+        });
+      };
+      draw();
+      var msg = el("div", "msg"), save = el("button", "btn primary", "حفظ");
+      save.onclick = function () {
+        save.disabled = true; haptic("medium");
+        call("PATCH", "/api/lists/" + id, { title: t.value, description: dsc.value, privacy: pv.value })
+          .then(function () { return Promise.all(removed.map(function (mv) { return call("DELETE", "/api/lists/" + id + "/items/" + mv.id); })); })
+          .then(function () { return items.length ? call("PUT", "/api/lists/" + id + "/order", { order: items.map(function (mv) { return mv.id; }) }) : null; })
+          .then(function () { listView(id); })
+          .catch(function (e) { save.disabled = false; msg.textContent = e.message; });
+      };
+      var del = el("button", "logout", "مسح القائمة");
+      del.onclick = function () { confirmBox("تمسح «" + L.title + "» نهائيًا؟", function () {
+        call("DELETE", "/api/lists/" + id).then(function () { if (ME) loadMe(); back(); }).catch(function (e) { msg.textContent = e.message; }); }); };
+      [save, msg, del].forEach(function (n) { lv.appendChild(n); });
+    }).catch(function (e) { clear(lv).appendChild(el("div", "empty", e.message)); });
   }
   function openMovie(mv) {                            // فيلم من قايمة حد (ممكن يكون من بلد تانية)
     var open = function () { var m = DATA.movies[String(mv.id)]; if (m) showDetail(m); };
@@ -908,14 +1405,14 @@
     $("pf2").textContent = ""; $("u-tabs").textContent = ""; go("s-user");
     call("GET", "/api/users/" + uid).then(function (p) {
       renderProfileCard(p, $("pf2"));
-      if (!p.private) profileTabs($("u-tabs"), uid, false);
+      if (!p.private) profileTabs($("u-tabs"), uid, false, p);
     }).catch(function (e) { $("pf2").appendChild(el("div", "pf-note", e.message)); });
   }
 
   // ---------- حسابي ----------
   function renderProfile() {
     renderProfileCard(ME);
-    if (ME) profileTabs($("me-tabs"), ME.id, true); else $("me-tabs").textContent = "";
+    if (ME) profileTabs($("me-tabs"), ME.id, true, ME); else $("me-tabs").textContent = "";
     renderCountryOptions($("p-countries"), function (code) {
       store.set("country", code);
       loadCountry(code, function () { renderProfile(); renderHeader(); renderGrid(); });
@@ -1015,7 +1512,7 @@
         if (section !== "w") return;
         grid.textContent = "";
         if (!items.length) {
-          grid.appendChild(el("div", "empty", "مفيش أفلام بتراقبها لسه.\nافتح «يعرض قريبًا» ودوس «راقب» على أي فيلم."));
+          grid.appendChild(el("div", "empty", "لسه مفيش أفلام هنا.\nافتح أي فيلم ودوس «أريد مشاهدته» - وهيوصلك تنبيه أول ما حجزه يفتح."));
           grid.style.display = "block"; return;
         }
         grid.style.display = "";
@@ -1082,7 +1579,9 @@
       var book = el("button", "btn primary"); book.innerHTML = ICON.ticket; book.appendChild(document.createTextNode(" احجز دلوقتي"));
       book.onclick = function () { haptic(); openTimes(m); }; actions.appendChild(book);
     }
-    if (isWatched(m.id)) {
+    var lr = $("d-lists"); if (lr) lr.remove();
+    if (apiReady()) { /* «أريد مشاهدته» والمفضلة وشاهدته بتيجي من السيرفر (loadFilm) */ }
+    else if (isWatched(m.id)) {
       var un = el("button", "btn outline unwatch"); un.innerHTML = ICON.eyeOff; un.appendChild(document.createTextNode(" إلغاء المراقبة"));
       un.onclick = function () { setWatched(m.id, false); sendToBot({ a: "unwatch", id: m.id }, "u_" + m.id); }; actions.appendChild(un);
     } else if (m.section === "c") {
@@ -1207,7 +1706,7 @@
       // من تنبيه: بلد الفيلم (اللي في اللينك) هي اللي تمشي - غير كده آخر بلد كنت بتتفرج عليها
       if (!target && saved && /^[a-z]{2}$/.test(saved)) country = saved;
       loadCountry(country, function () {
-        loadMe();                                       // التسجيل التلقائي (أول مرة) + صورة الحساب
+        loadMe(function () { syncWant(); });            // التسجيل التلقائي (أول مرة) + صورة الحساب + أريد مشاهدتها
         store.get("login", function (login) {
           renderHeader();
           if (!login) { renderLogin(); show("s-login"); return; }       // أول مرة: الدخول

@@ -294,6 +294,8 @@
   var q = new URLSearchParams(location.search);
   var country = (q.get("c") || "eg").replace(/[^a-z]/g, "");
   var section = /^(c|w)$/.test(q.get("s") || "") ? q.get("s") : "s";
+  // من التنبيه: الصفحة بتفتح على الفيلم على طول (v=t مواعيده، v=d صفحته)
+  var target = /^\d+$/.test(q.get("m") || "") ? { m: q.get("m"), v: q.get("v") === "t" ? "t" : "d" } : null;
   var dataBase = (q.get("d") || "").replace(/\/$/, "");
   var DATA = null, CACHE = {}, current = null, stack = [];
   var user = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
@@ -327,6 +329,21 @@
     return { eg: "مصر", ae: "الإمارات" }[code] || code;
   }
   function poster(m) { return m.poster || "no_poster.jpg"; }
+  function isConcert(m) {                              // البوت للأفلام بس (حتى لو البيانات قديمة)
+    return /concert|حفل|كونسير/i.test(m.genre || "") ||
+      (m.details || []).some(function (p) { return /concert/i.test(String(p[1] || "")); }) ||
+      /world tour|in concert|live viewing|\(live\)|: live\s*$/i.test(m.title || "");
+  }
+  function listIds(name) {
+    return (DATA[name] || []).filter(function (id) { var m = DATA.movies[String(id)]; return m && !isConcert(m); });
+  }
+  function openTarget() {
+    if (!target) return;
+    var m = DATA.movies[target.m], view = target.v; target = null;
+    if (!m || isConcert(m)) return;
+    showDetail(m);
+    if (view === "t" && m.bookable) openTimes(m);
+  }
   function isAdmin() {                                  // البوت بيعلّم لينك الأدمن (والبوت بيتأكد تاني قبل ما يقبل أي تريلر)
     if (q.get("adm") === "1") return true;
     return !!(user && user.username && DATA && DATA.admin && user.username.toLowerCase() === DATA.admin.toLowerCase());
@@ -428,7 +445,7 @@
     haptic("medium");
     store.set("login", JSON.stringify({ v: 1, at: Date.now() }));
     store.set("country", country);
-    loadCountry(country, function () { renderHeader(); setTab(section); show("s-list"); });
+    loadCountry(country, function () { renderHeader(); setTab(section); show("s-list"); openTarget(); });
   };
   function renderCountryOptions(box, onPick) {
     box.textContent = "";
@@ -470,8 +487,8 @@
     var a = $("avatar-btn"); a.textContent = "";
     if (user && user.photo_url) { var im = el("img"); im.src = user.photo_url; im.alt = ""; a.appendChild(im); }
     else a.textContent = ((user && user.first_name) || "؟").trim().charAt(0).toUpperCase();
-    $("count-s").textContent = "(" + (DATA.whatson || []).length + ")";
-    $("count-c").textContent = "(" + (DATA.comingsoon || []).length + ")";
+    $("count-s").textContent = "(" + listIds("whatson").length + ")";
+    $("count-c").textContent = "(" + listIds("comingsoon").length + ")";
     $("count-w").textContent = "(" + watchedIds().length + ")";
   }
   $("country-btn").onclick = function () {              // تغيير البلد من جوه الصفحة على طول
@@ -525,7 +542,7 @@
     var finish = function () {
       var items = [];
       watchedIds().forEach(function (id) {
-        codes.forEach(function (c) { var m = CACHE[c] && CACHE[c].movies[id]; if (m) items.push({ m: m, c: c }); });
+        codes.forEach(function (c) { var m = CACHE[c] && CACHE[c].movies[id]; if (m && !isConcert(m)) items.push({ m: m, c: c }); });
       });
       done(items);
     };
@@ -552,7 +569,7 @@
       });
       return;
     }
-    var ids = DATA[section === "s" ? "whatson" : "comingsoon"] || [];
+    var ids = listIds(section === "s" ? "whatson" : "comingsoon");
     if (!ids.length) { grid.appendChild(el("div", "empty", "مفيش أفلام هنا دلوقتي.")); grid.style.display = "block"; return; }
     grid.style.display = "";
     ids.forEach(function (id, n) {
@@ -732,12 +749,13 @@
       grid.textContent = ""; grid.appendChild(el("div", "error", "افتح الصفحة من البوت.")); return;
     }
     store.get("country", function (saved) {
-      if (saved && /^[a-z]{2}$/.test(saved)) country = saved;
+      // من تنبيه: بلد الفيلم (اللي في اللينك) هي اللي تمشي - غير كده آخر بلد كنت بتتفرج عليها
+      if (!target && saved && /^[a-z]{2}$/.test(saved)) country = saved;
       loadCountry(country, function () {
         store.get("login", function (login) {
           renderHeader();
           if (!login) { renderLogin(); show("s-login"); return; }       // أول مرة: الدخول
-          setTab(section); show("s-list");
+          setTab(section); show("s-list"); openTarget();
         });
       });
     });

@@ -412,6 +412,8 @@
   .pf-tabs { overflow-x: auto; scrollbar-width: none; }
   .pf-tabs::-webkit-scrollbar { display: none; }
   .pf-tabs .pill { flex: none; }
+  .center-act { display: flex; justify-content: center; margin: 4px 0 14px; }
+  .center-act .btn { flex: none; padding: 11px 26px; }
   /* المرحلة 3: خانات الفيلم + النافذة اللي بتطلع من تحت + شاهدتها/السجل/القوائم */
   .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
   .tile { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 2px; border-radius: 14px;
@@ -419,6 +421,8 @@
     white-space: nowrap; min-width: 0; transition: transform .12s; }
   .tile:active { transform: scale(.95); }
   .tile svg.i { width: 22px; height: 22px; }
+  .tile span { white-space: normal; text-align: center; line-height: 1.3; }     /* الاسم الطويل ينزل سطرين جوه الخانة */
+  @media (max-width: 380px) { .tile { font-size: 11px; padding: 9px 2px; } }
   .tile.on { color: var(--gold); border-color: rgba(240,192,72,.6); background: rgba(240,192,72,.08); }
   .tile.on.fav { color: #ff5a6a; border-color: rgba(255,90,106,.6); background: rgba(216,0,0,.08); }
   .tile.on.fav svg.i { fill: currentColor; }
@@ -554,6 +558,17 @@
   </div>
 </section>
 
+<!-- ============ صيانة (البوت مقفول) ============ -->
+<section class="screen" id="s-maint">
+  <div class="login">
+    <img class="logo" src="logo.png" alt="">
+    <h2><b>CFT</b><span>Radar</span></h2>
+    <p style="font-size:17px;color:var(--cream);font-weight:800;margin-top:6px">حاليًا في صيانة</p>
+    <p>بنظبط حاجات عشان نرجعلك أحسن - ارجع كمان شوية</p>
+    <button class="btn primary" id="maint-retry">جرّب تاني</button>
+  </div>
+</section>
+
 <!-- ============ القايمة ============ -->
 <header id="top">
   <div class="brand">
@@ -667,11 +682,6 @@
   <div class="profile">
     <div class="pf" id="pf"></div>
     <div id="me-tabs"></div>
-    <div class="p-card">
-      <div class="p-label">أفلام أنهي بلد؟</div>
-      <div class="country-list" id="p-countries" style="justify-content:flex-start"></div>
-      <button class="btn outline" id="p-alerts"></button>
-    </div>
     <button class="logout" id="p-logout">تسجيل خروج</button>
   </div>
 </section>
@@ -884,7 +894,7 @@
     haptic("medium");
     store.set("login", JSON.stringify({ v: 1, at: Date.now() }));
     store.set("country", country);
-    loadCountry(country, function () { renderHeader(); setTab(section); show("s-list"); openTarget(); });
+    loadCountry(country, function () { renderHeader(); setTab(section); show("s-list"); openTarget(); syncCountry(country); });
   };
   function renderCountryOptions(box, onPick) {
     box.textContent = "";
@@ -1197,8 +1207,11 @@
       tiles.push(["fav", "heart", "أعجبني", L.fav, function () { toggleList("fav"); }]);
       tiles.push(["seen", "seen", w.count > 1 ? "شاهدته ×" + w.count : "شاهدته", w.watched, openWatchSheet]);
     }
-    tiles.push(["want", "clock", "أريد مشاهدته", L.want, function () { toggleList("want"); }]);
-    tiles.push(["list", "addlist", "أضف لقائمة", (FILM.my_lists || []).some(function (l) { return l.has; }), openListsSheet]);
+    // نفس القايمة («أريد مشاهدتها» = «مراقباتي») باسم مناسب للفيلم: بيتعرض = هشوفه بعدين، لسه جاي = راقب
+    var showing = FILM_MOVIE && FILM_MOVIE.section === "s";
+    tiles.push(["want", "clock", showing ? "هشوفه بعدين" : "راقب", L.want, function () { toggleList("want"); }]);
+    if (FILM.eligible)                                    // القوائم للأفلام اللي نزلت بس
+      tiles.push(["list", "addlist", "أضف لقائمة", (FILM.my_lists || []).some(function (l) { return l.has; }), openListsSheet]);
     row.style.gridTemplateColumns = "repeat(" + tiles.length + ", 1fr)";
     tiles.forEach(function (t) {
       var b = el("button", "tile " + t[0] + (t[3] ? " on" : "")); b.innerHTML = ICON[t[1]];
@@ -1216,7 +1229,7 @@
       var f1 = el("div", "field"); f1.appendChild(el("label", "", "اتفرجت عليه إمتى؟"));
       var pills = el("div", "pills"), dateIn = el("input"); dateIn.type = "date"; dateIn.max = todayISO(); dateIn.value = todayISO();
       dateIn.style.display = "none"; dateIn.style.marginTop = "8px";
-      [["today", "النهارده"], ["other", "يوم تاني"], ["none", "من غير تاريخ"]].forEach(function (o) {
+      [["today", "النهارده"], ["other", "يوم تاني"], ["none", "مش فاكر"]].forEach(function (o) {
         var b = el("button", "pill small" + (o[0] === pick ? " active" : ""), o[1]); b.dataset.k = o[0];
         b.onclick = function () { haptic(); pick = o[0]; dateIn.style.display = pick === "other" ? "" : "none";
           pills.querySelectorAll(".pill").forEach(function (x) { x.classList.toggle("active", x.dataset.k === pick); }); };
@@ -1296,7 +1309,8 @@
       if (FILM_MOVIE !== m) return;
       FILM.lists = x.lists; renderLists();
       if (kind === "want" || kind === "seen") { setWatched(m.id, x.lists.want); syncWant(); }
-      if (kind === "want" && on) notify("تمام - هيوصلك تنبيه أول ما حجز الفيلم ده يفتح");
+      if (kind === "want" && on)                        // الحجز مفتوح = مفيش تنبيه يستناه
+        notify(m.bookable ? "تمام - اتضاف لقائمة «أريد مشاهدتها»" : "تمام - هيوصلك تنبيه أول ما حجز الفيلم ده يفتح");
     }).catch(function (e) { notify(e.message); });
   }
   function syncWant() {                                // «أريد مشاهدتها» من السيرفر (أحدث من لينك البوت)
@@ -1471,9 +1485,9 @@
   function profileTabs(box, uid, owner, p) {
     box.textContent = "";
     var seg = el("div", "ptabs"), body = el("div");
-    var tabs = [["overview", "نظرة عامة"], ["watched", "شاهدتها"], ["ratings", owner ? "تقييماتي" : "تقييماته"],
-                ["reviews", owner ? "مراجعاتي" : "مراجعاته"], ["lists", owner ? "قوائمي" : "قوائمه"],
-                ["activity", owner ? "نشاطي" : "نشاطه"]];
+    // حسابي: شاهدتها / تقييماتي ... - حساب حد تاني: شاهدها / تقييماته ...
+    var tabs = [["overview", "نظرة عامة"], ["watched", owner ? "شاهدتها" : "شاهدها"], ["ratings", owner ? "تقييماتي" : "تقييماته"],
+                ["reviews", owner ? "مراجعاتي" : "مراجعاته"], ["lists", owner ? "قوائمي" : "قوائمه"]];
     var show = function (k) {
       seg.querySelectorAll(".pill").forEach(function (b) { b.classList.toggle("active", b.dataset.k === k); });
       body.textContent = ""; TAB[k](body, uid, owner, p);
@@ -1483,14 +1497,9 @@
   }
   function hiddenNote(body) { body.appendChild(el("div", "empty", "صاحب الحساب مخلّي القسم ده ليه بس")); }
   var TAB = {
-    activity: function (body, uid, owner) {
-      var list = el("div"); body.appendChild(list);
-      pager(list, body, function (c) { return call("GET", "/api/users/" + uid + "/activity" + (c ? "?before=" + c : "")); },
-        function (l, x) { l.appendChild(activityRow(x)); }, owner ? "لسه مفيش نشاط - قيّم أو سجّل مشاهدة أو اعمل قائمة" : "مفيش نشاط يتشاف هنا");
-    },
     overview: function (body, uid, owner, p) {
       var lc = p.lists || {}, cn = p.counts || {}, stats = el("div", "ov-stats");
-      [[lc.seen, "شاهدتها"], [cn.ratings, "تقييمات"], [cn.reviews, "مراجعات"], [lc.custom, "قوائم"]].forEach(function (x) {
+      [[lc.seen, owner ? "شاهدتها" : "شاهدها"], [cn.ratings, "تقييمات"], [cn.reviews, "مراجعات"], [lc.custom, "قوائم"]].forEach(function (x) {
         if (x[0] == null) return; var c = el("div", "ov-stat"); c.appendChild(el("b", "", String(x[0]))); c.appendChild(el("span", "", x[1])); stats.appendChild(c);
       });
       if (stats.childNodes.length) body.appendChild(stats);
@@ -1533,22 +1542,16 @@
     },
     lists: function (body, uid, owner, p) {
       var lc = p.lists || {};
-      if (lc.fav == null && !owner) return hiddenNote(body);
-      var tiles = el("div", "sys-tiles");
-      [["fav", "heart", "المفضلة", lc.fav], ["seen", "seen", "شاهدتها", lc.seen], ["want", "clock", "أريد مشاهدتها", lc.want]].forEach(function (t) {
-        if (t[3] == null) return;
-        var b = el("button", "sys-tile " + t[0]); b.innerHTML = ICON[t[1]];
-        b.appendChild(el("b", "", t[2])); b.appendChild(el("span", "", t[3] + " فيلم"));
-        b.onclick = function () { haptic(); openSysList(uid, t[0], t[2]); }; tiles.appendChild(b);
-      });
-      tiles.style.gridTemplateColumns = "repeat(" + tiles.childNodes.length + ", 1fr)";
-      body.appendChild(tiles);
-      var head = el("div", "row-head"); head.appendChild(el("b", "", "القوائم المخصصة"));
-      if (owner) { var nb = el("button", "mini", "+ إنشاء قائمة"); nb.onclick = function () { haptic(); newListSheet(function () { TAB.lists(clear(body), uid, owner, p); }); }; head.appendChild(nb); }
-      body.appendChild(head);
+      if (lc.custom == null && !owner) return hiddenNote(body);
+      if (owner) {
+        var wrap = el("div", "center-act"), nb = el("button", "btn outline", "+ إنشاء قائمة");
+        nb.onclick = function () { haptic(); newListSheet(function () { TAB.lists(clear(body), uid, owner, p); }); };
+        wrap.appendChild(nb); body.appendChild(wrap);
+      }
       var list = el("div"); body.appendChild(list);
       pager(list, body, function (c) { return call("GET", "/api/users/" + uid + "/lists?offset=" + (c || 0)); },
-        function (l, x) { l.appendChild(listRow(x)); }, owner ? "لسه ما عملتش قوائم" : "مفيش قوائم تتشاف هنا");
+        function (l, x) { l.appendChild(listRow(x)); },
+        owner ? "لسه ما عملتش قوائم - اعمل قائمة لأفلامك المفضلة في أي نوع" : "مفيش قوائم تتشاف هنا");
     }
   };
   function clear(node) { node.textContent = ""; return node; }
@@ -2123,18 +2126,11 @@
   function renderProfile() {
     renderProfileCard(ME);
     if (ME) profileTabs($("me-tabs"), ME.id, true, ME); else $("me-tabs").textContent = "";
-    renderCountryOptions($("p-countries"), function (code) {
-      store.set("country", code);
-      loadCountry(code, function () { renderProfile(); renderHeader(); renderGrid(); });
-    });
-    $("p-alerts").innerHTML = ICON.bell + " ";
-    $("p-alerts").appendChild(document.createTextNode("خلّي تنبيهاتي من أفلام " + countryName(country)));
   }
   $("avatar-btn").onclick = function () {
     haptic(); renderProfile(); go("s-profile");
     loadMe(function (p) { if (document.querySelector(".screen.on").id === "s-profile") renderProfile(); });
   };
-  $("p-alerts").onclick = function () { sendToBot({ a: "country", c: country }, "c_" + country); };
   $("p-logout").onclick = function () {
     haptic(); store.remove("login"); stack = []; renderLogin(); show("s-login");
   };
@@ -2158,8 +2154,11 @@
     var idx = 0; for (var i = 0; i < list.length; i++) if (list[i].code === country) idx = i;
     var next = list[(idx + 1) % list.length].code;
     haptic(); store.set("country", next);
-    loadCountry(next, function () { renderHeader(); renderGrid(); });
+    loadCountry(next, function () { renderHeader(); renderGrid(); syncCountry(next); });
   };
+  function syncCountry(code) {                          // البلد = بلد تنبيهاتك في البوت كمان
+    if (apiReady()) call("PUT", "/api/me/country", { c: code }).catch(function () {});
+  }
 
   // ---------- القايمة ----------
   function setTab(s) {
@@ -2287,7 +2286,8 @@
 
     var actions = $("d-actions"); actions.textContent = "";
     if (m.bookable) {
-      var book = el("button", "btn primary"); book.innerHTML = ICON.ticket; book.appendChild(document.createTextNode(" احجز دلوقتي"));
+      var book = el("button", "btn primary"); book.appendChild(document.createTextNode("احجز دلوقتي "));
+      book.insertAdjacentHTML("beforeend", ICON.ticket);  // الأيقونة على الشمال
       book.onclick = function () { haptic(); openTimes(m); }; actions.appendChild(book);
     }
     var lr = $("d-lists"); if (lr) lr.remove();
@@ -2409,6 +2409,25 @@
           $("grid").appendChild(el("div", "error", "مش قادر أجيب الأفلام دلوقتي.\nاقفل الصفحة وافتحها تاني كمان شوية.")); }
       });
   }
+  // البوت شغال؟ (سيرفر البوت بيرد) - محاولتين عشان نت ضعيف ما يتحسبش صيانة
+  function checkAlive(done, tries) {
+    var base = (DATA && DATA.api) || "";
+    if (!base) return done(true);                       // المجتمع مقفول: مفيش حاجة نسألها
+    tries = tries || 0;
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 6000);
+    fetch(base + "/api/health?t=" + Date.now(), { cache: "no-store", signal: ctrl ? ctrl.signal : undefined })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { clearTimeout(timer); if (j && j.ok) done(true); else throw new Error("down"); })
+      .catch(function () {
+        clearTimeout(timer);
+        if (tries < 1) setTimeout(function () { checkAlive(done, tries + 1); }, 1500); else done(false);
+      });
+  }
+  $("maint-retry").onclick = function () {
+    haptic(); this.disabled = true; var btn = this;
+    checkAlive(function (alive) { btn.disabled = false; if (alive) location.reload(); else notify("لسه في صيانة - جرّب كمان شوية"); });
+  };
   (function start() {
     var grid = $("grid");
     for (var i = 0; i < 6; i++) grid.appendChild(el("div", "skeleton"));
@@ -2421,11 +2440,14 @@
       // من تنبيه: بلد الفيلم (اللي في اللينك) هي اللي تمشي - غير كده آخر بلد كنت بتتفرج عليها
       if (!target && saved && /^[a-z]{2}$/.test(saved)) country = saved;
       loadCountry(country, function () {
+        checkAlive(function (alive) {
+        if (!alive) { show("s-maint"); return; }      // البوت مقفول (صيانة)
         loadMe(function () { syncWant(); });            // التسجيل التلقائي (أول مرة) + صورة الحساب + أريد مشاهدتها
         store.get("login", function (login) {
           renderHeader();
           if (!login) { renderLogin(); show("s-login"); return; }       // أول مرة: الدخول
           setTab(section); show("s-list"); openTarget();
+        });
         });
       });
     });

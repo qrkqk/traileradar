@@ -127,8 +127,8 @@
   .body { padding: 4px 16px 28px; margin-top: -18px; position: relative; z-index: 4; }
   h1 { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.3; color: var(--cream); }
   .meta { color: var(--muted); font-size: 14px; margin-top: 4px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-  .chip { font-size: 13px; padding: 4px 11px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .chip { font-size: 12.5px; padding: 3px 10px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); }
   .chip.gold { color: var(--gold); border-color: rgba(240,192,72,.5); }
   .actions { display: flex; gap: 10px; margin-top: 16px; }
   .btn { flex: 1; padding: 13px 10px; border-radius: 14px; font-weight: 800; font-size: 16px;
@@ -143,7 +143,7 @@
   .section-title { margin: 22px 0 10px; font-size: 17px; font-weight: 800; color: var(--cream); display: flex; align-items: center; gap: 8px; }
   .section-title::before { content: ""; width: 4px; height: 18px; border-radius: 2px; background: var(--gold-grad); }
   .details { border-top: 1px solid var(--line); }
-  .row { display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .row { display: flex; justify-content: space-between; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
   .row .k { color: var(--muted); white-space: nowrap; }
   .row .v { text-align: left; font-weight: 600; }
 
@@ -216,6 +216,83 @@
   .pf[data-preset="emerald"]  { --pf-bg: linear-gradient(135deg, #05261b, #050a08); }
   .pf[data-preset="midnight"] { --pf-bg: linear-gradient(135deg, #11161f, #050608); }
   .pf-cover { height: 132px; background: var(--pf-bg) center / cover no-repeat; position: relative; overflow: hidden; }
+  /* الغلاف: مكانه (فوق/تحت) وحجمه بيتحكم فيهم صاحب الحساب */
+  .pf-cover img, .cover-prev img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    pointer-events: none; user-select: none; }
+  .cover-prev { position: relative; height: 132px; border-radius: 12px; overflow: hidden; background: var(--surface-2);
+    touch-action: none; cursor: ns-resize; border: 1px solid var(--line); }
+  .cover-prev .hint { position: absolute; bottom: 6px; left: 0; right: 0; text-align: center; font-size: 11.5px;
+    color: #fff; text-shadow: 0 1px 4px #000; pointer-events: none; }
+  .range-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+  .range-row span { width: 70px; flex: none; }
+  .range-row input[type=range] { flex: 1; accent-color: var(--gold); }
+  .user-row { display: flex; align-items: center; justify-content: flex-start; gap: 8px; }   /* تحت الاسم على اليمين */
+  .user-row .pf-user.off { opacity: .45; text-decoration: line-through; }
+  .eye-btn { color: var(--muted); padding: 2px; }
+  .eye-btn svg.i { width: 18px; height: 18px; }
+  /* المرحلة 5: الشارات - ميداليات ذهبية بهوية CFTRadar */
+  .medal { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto; color: #1a1205;
+    background: radial-gradient(circle at 32% 26%, #fff1c4 0%, #ffd970 22%, #f0c048 48%, #a8700f 100%);
+    box-shadow: 0 0 0 3px #1a1205, 0 0 0 5px rgba(240,192,72,.6), 0 6px 18px rgba(240,192,72,.28); position: relative; }
+  .medal svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+  .medal.locked { background: radial-gradient(circle at 32% 26%, #3a352c, #1d1a16); color: #6e675a;
+    box-shadow: 0 0 0 3px #111, 0 0 0 5px #35302a; }
+  .medal .lk { position: absolute; bottom: -4px; left: -4px; width: 22px; height: 22px; border-radius: 50%; background: #111;
+    border: 1.5px solid #35302a; display: grid; place-items: center; color: #8a826f; }
+  .medal .lk svg { width: 12px; height: 12px; stroke-width: 2.4; }
+  .medal.sm { width: 38px; height: 38px; box-shadow: 0 0 0 2px #1a1205, 0 0 0 3.5px rgba(240,192,72,.6); }
+  .medal.sm svg { width: 18px; height: 18px; }
+  .pf-badge-row { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+  .pf-badge-row .medals { display: flex; gap: 10px; flex: 1; min-width: 0; overflow: hidden; }
+  .pf-badge-row .all { color: var(--pf-accent); font-size: 13px; font-weight: 700; flex: none; }
+  .badge-sum { color: var(--muted); font-size: 13px; margin: -6px 0 14px; }
+  .badge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 8px; }
+  .badge-card { text-align: center; min-width: 0; }
+  .badge-card b { display: block; margin-top: 10px; font-size: 13px; color: var(--cream); }
+  .badge-card.locked b { color: var(--muted); }
+  .badge-card small { display: block; font-size: 11px; color: var(--muted); line-height: 1.5; margin-top: 2px; }
+  .badge-card .pbar { height: 5px; border-radius: 3px; background: var(--surface-2); margin: 6px 8px 0; overflow: hidden; }
+  .badge-card .pbar i { display: block; height: 100%; background: var(--gold-grad); }
+  .badge-card .pnum { font-size: 10.5px; color: var(--muted); direction: ltr; }
+  .toast { position: fixed; left: 0; right: 0; margin: 0 auto; width: max-content; bottom: calc(18px + env(safe-area-inset-bottom));
+    z-index: 60; display: flex; align-items: center;
+    gap: 12px; padding: 10px 16px 10px 12px; border-radius: 16px; background: var(--surface); max-width: calc(100% - 32px);
+    border: 1px solid rgba(240,192,72,.6); box-shadow: 0 10px 30px rgba(0,0,0,.6), 0 0 24px rgba(240,192,72,.18);
+    transform: translateY(160%); cursor: pointer; visibility: hidden;
+    transition: transform .35s cubic-bezier(.2,.9,.3,1.2), visibility 0s linear .35s; }   /* مستخبية = مش باينة خالص */
+  .toast.on { transform: none; visibility: visible; transition: transform .35s cubic-bezier(.2,.9,.3,1.2), visibility 0s; }
+  .toast b, .toast span { white-space: nowrap; }
+  /* المرحلة 6: البلاغات + لوحة الإدارة */
+  .flag-btn { color: var(--muted); }
+  .flag-btn svg.i { width: 15px; height: 15px; }
+  .warn { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: rgba(216,0,0,.1); border: 1px solid rgba(216,0,0,.45);
+    color: #ff9a92; font-size: 13px; font-weight: 700; text-align: center; }
+  .admin-btn { display: block; width: 100%; margin-top: 10px; padding: 10px; border-radius: 12px; font-weight: 800;
+    background: rgba(30,111,255,.12); border: 1px solid rgba(30,111,255,.5); color: #8cb4ff; }
+  .mod-card { padding: 12px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); margin-bottom: 10px; }
+  .mod-card .hd { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+  .mod-card .hd b { color: var(--cream); font-size: 14px; }
+  .mod-card .cnt { color: #ff9a92; font-weight: 800; }
+  .mod-card .who { font-size: 13px; margin-top: 6px; cursor: pointer; }
+  .mod-card .who b { color: var(--gold); }
+  .mod-card .body { margin-top: 6px; padding: 8px 10px; border-radius: 10px; background: var(--bg); white-space: pre-line;
+    line-height: 1.7; font-size: 13.5px; max-height: 160px; overflow: auto; }
+  .mod-card .chips { margin-top: 8px; }
+  .mod-card input { width: 100%; margin-top: 8px; padding: 9px 10px; border-radius: 10px; background: var(--bg);
+    border: 1px solid var(--line); color: var(--text); font: inherit; font-size: 13px; }
+  .mod-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .mod-acts .mini { flex: 1 1 auto; text-align: center; }
+  .mini.red { color: #ff9a92; border-color: rgba(216,0,0,.5); }
+  .mini.blue { color: #8cb4ff; border-color: rgba(30,111,255,.5); }
+  .state { display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 8px; border-radius: 99px; }
+  .state.active { background: rgba(52,211,153,.15); color: #6ee7b7; }
+  .state.suspended { background: rgba(240,192,72,.15); color: var(--gold); }
+  .state.banned { background: rgba(216,0,0,.15); color: #ff9a92; }
+  .log-row { padding: 9px 4px; border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.7; }
+  .log-row .t { color: var(--muted); font-size: 11.5px; }
+  .log-row .snap { color: var(--muted); font-size: 12px; white-space: pre-line; }
+  .toast b { color: var(--gold); display: block; font-size: 13px; }
+  .toast span { color: var(--cream); font-size: 14px; font-weight: 700; }
   .pf[data-effect="sparkle"] .pf-cover::after { content: ""; position: absolute; inset: 0;
     background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.18) 45%, transparent 60%);
     background-size: 250% 100%; animation: pf-shine 3.2s ease-in-out infinite; }
@@ -228,7 +305,7 @@
   .pf[data-effect="glow"] .pf-avatar { animation: pf-glow 2.6s ease-in-out infinite; }
   @keyframes pf-glow { 0%, 100% { box-shadow: 0 0 0 2px var(--pf-accent), 0 0 10px var(--pf-accent); }
                        50% { box-shadow: 0 0 0 2px var(--pf-accent), 0 0 26px var(--pf-accent); } }
-  .pf-head .btn { flex: none; padding: 8px 14px; font-size: 14px; margin-bottom: 6px; color: var(--pf-accent);
+  .pf-head .btn { flex: none; padding: 8px 14px; font-size: 14px; margin-bottom: 0; color: var(--pf-accent);
     border-color: var(--pf-accent); }
   .pf-body { padding: 10px 16px 16px; }
   .pf-name { font-size: 22px; font-weight: 800; color: var(--cream); text-align: right; }
@@ -264,24 +341,28 @@
   .edit .btn.primary { width: 100%; }
 
   /* ---------- التقييمات والمراجعات ---------- */
-  .score { margin-top: 16px; padding: 14px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
+  .score { margin-top: 14px; padding: 12px 14px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
+  .score-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .score-head .section-title { margin: 0; }
+  .score .btn.small { flex: none; width: auto; margin: 0; padding: 7px 12px; font-size: 13px; border-radius: 10px; }
+  .score .note.lead { margin: 0; text-align: right; font-size: 13.5px; color: var(--muted); }
   .score-top { display: flex; align-items: center; gap: 14px; }
-  .score-avg { font-size: 38px; font-weight: 800; color: var(--gold); line-height: 1; min-width: 64px; text-align: center; }
+  .score-avg { font-size: 34px; font-weight: 800; color: var(--gold); line-height: 1; min-width: 60px; text-align: center; }
   .score-avg small { display: block; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 6px; }
   .bars { flex: 1; }
   .bar { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); direction: ltr; }
-  .bar i { flex: 1; height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
+  .bar i { flex: 1; height: 5px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
   .bar i b { display: block; height: 100%; background: var(--gold-grad); }
   .stars { color: #4a4436; letter-spacing: 1px; direction: ltr; display: inline-block; }
   .stars .on { color: var(--gold); }
-  .rate-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px;
+  .rate-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px;
     padding-top: 12px; border-top: 1px solid var(--line); gap: 10px; flex-wrap: wrap; }
   .rate-row .lbl { color: var(--cream); font-weight: 700; font-size: 14px; }
   .rate-stars { direction: ltr; display: flex; gap: 2px; }
-  .rate-stars button { font-size: 30px; line-height: 1; color: #4a4436; padding: 0 2px; transition: transform .15s; }
+  .rate-stars button { font-size: 28px; line-height: 1; color: #4a4436; padding: 0 2px; transition: transform .15s; }
   .rate-stars button.on { color: var(--gold); text-shadow: 0 0 10px rgba(240,192,72,.45); }
   .rate-stars button:active { transform: scale(1.25); }
-  .score .btn { margin-top: 12px; width: 100%; }
+
   .linkish { color: var(--muted); font-size: 12px; text-decoration: underline; }
   .score .note { color: var(--muted); font-size: 13px; text-align: center; margin-top: 10px; }
   .review { padding: 13px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); margin-bottom: 10px; }
@@ -300,7 +381,9 @@
   .rv-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 9px; }
   .heart { display: inline-flex; gap: 5px; align-items: center; color: var(--muted); font-weight: 700; font-size: 13px; }
   .heart.on { color: #ff5a6a; }
-  .seg { display: flex; gap: 8px; margin: 6px 0 12px; }
+  .seg { display: flex; gap: 8px; margin: 6px 0 12px; overflow-x: auto; scrollbar-width: none; }   /* بيتقلب جواه على الشاشات الصغيرة */
+  .seg::-webkit-scrollbar { display: none; }
+  .seg .pill { flex: none; }
   .raters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
   .raters .av { width: 34px; height: 34px; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
     background: var(--gold-grad); color: #1a1205; font-weight: 800; font-size: 13px; position: relative; }
@@ -312,6 +395,10 @@
   .r-item .t { flex: 1; font-weight: 700; font-size: 14px; }
   .toggle { display: flex; align-items: center; gap: 10px; font-size: 14px; }
   .toggle input { width: 20px; height: 20px; accent-color: var(--gold); }
+  .edits-note { font-size: 12.5px; color: var(--muted); margin: -4px 0 10px; }
+  .edits-note.locked { color: #ff9a92; padding: 9px 11px; border-radius: 10px; background: rgba(216,0,0,.08);
+    border: 1px solid rgba(216,0,0,.35); line-height: 1.7; margin: 0 0 12px; }
+  #w-text[readonly] { opacity: .75; }
   /* القوايم */
   .lists-row { display: flex; gap: 8px; margin-top: 10px; }
   .lchip { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 6px;
@@ -405,6 +492,52 @@
   .lv-item .ctl { display: flex; gap: 4px; flex: none; }
   .lv-item .ctl button { width: 32px; height: 32px; border-radius: 9px; border: 1px solid var(--line); color: var(--cream); font-size: 15px; }
   .lv-item .ctl button:disabled { opacity: .3; }
+  /* المرحلة 4: المجتمع + المتابعة + النشاط + التعليقات */
+  .icon-btn { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--surface);
+    border: 1px solid var(--line); color: var(--gold); }
+  .icon-btn svg.i { width: 19px; height: 19px; }
+  .icon-btn .dot { position: absolute; }
+  .pf-head .acts { display: flex; gap: 6px; align-items: center; margin-bottom: -10px; }   /* تحت الغلاف بشوية (مش على حرفه) */
+  .pf-head .acts .btn { margin-bottom: 0; }
+  .btn.follow { background: var(--pf-accent); color: #1a1205; border: 0; }
+  .pf-stats .tap { cursor: pointer; }
+  .req-banner { display: block; width: 100%; margin: 10px 0 0; padding: 10px; border-radius: 12px; text-align: center;
+    background: rgba(240,192,72,.1); border: 1px solid rgba(240,192,72,.45); color: var(--gold); font-weight: 700; }
+  .act { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 14px; background: var(--surface);
+    border: 1px solid var(--line); margin-bottom: 8px; width: 100%; text-align: right; }
+  .act .av { width: 34px; height: 34px; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
+    background: var(--gold-grad); color: #1a1205; font-weight: 800; flex: none; font-size: 13px; }
+  .act .av img { width: 100%; height: 100%; object-fit: cover; }
+  .act .txt { flex: 1; min-width: 0; font-size: 13.5px; line-height: 1.6; }
+  .act .txt b { color: var(--cream); }
+  .act .txt .when { display: block; font-size: 11px; color: var(--muted); }
+  .act > img { width: 34px; height: 50px; object-fit: cover; border-radius: 6px; flex: none; background: var(--surface-2); }
+  .person { display: flex; align-items: center; gap: 10px; padding: 9px; border-radius: 14px; background: var(--surface);
+    border: 1px solid var(--line); margin-bottom: 8px; }
+  .person .av { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; display: grid; place-items: center;
+    background: var(--gold-grad); color: #1a1205; font-weight: 800; flex: none; }
+  .person .av img { width: 100%; height: 100%; object-fit: cover; }
+  .person .who { flex: 1; min-width: 0; cursor: pointer; }
+  .person .who b { display: block; color: var(--cream); font-size: 14px; }
+  .person .who span { font-size: 12px; color: var(--muted); direction: ltr; display: block; text-align: right; }
+  .person .mini { flex: none; }
+  .mini.gold { background: var(--gold-grad); color: #1a1205; border-color: transparent; }
+  .trend { flex: none; width: 92px; text-align: center; cursor: pointer; }
+  .trend img { width: 92px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 10px; background: var(--surface-2); display: block; }
+  .trend span { display: block; font-size: 11.5px; color: var(--gold); margin-top: 4px; font-weight: 700; }
+  .cmt { padding: 10px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); margin-bottom: 8px; }
+  .cmt .hd { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .cmt .hd b { color: var(--cream); cursor: pointer; }
+  .cmt .hd span { color: var(--muted); font-size: 11px; }
+  .cmt .bd { margin-top: 6px; white-space: pre-line; line-height: 1.7; font-size: 14px; }
+  .cmt .ft { display: flex; gap: 12px; margin-top: 6px; }
+  .compose { display: flex; gap: 8px; margin-top: 10px; align-items: flex-end; }
+  .compose textarea { flex: 1; min-height: 44px; max-height: 140px; padding: 10px 12px; border-radius: 12px; background: var(--surface);
+    border: 1px solid var(--line); color: var(--text); font: inherit; resize: vertical; }
+  .compose .btn, .edit .compose .btn.primary { flex: none; width: auto; padding: 11px 16px; }
+  .compose textarea { min-width: 0; }
+  .beta { font-size: 11.5px; color: var(--muted); margin: 6px 0; }
+  .share-chip { cursor: pointer; color: var(--gold); border-color: rgba(240,192,72,.5); }
 </style>
 </head>
 <body>
@@ -428,6 +561,7 @@
     <div class="name"><b>CFT</b><span>Radar</span></div>
     <div class="head-actions">
       <button class="country-btn" id="country-btn"></button>
+      <button class="icon-btn" id="comm-btn" title="المجتمع" aria-label="المجتمع"></button>
       <button class="avatar-btn" id="avatar-btn"></button>
     </div>
   </div>
@@ -461,12 +595,12 @@
     <div class="score" id="d-score" style="display:none"></div>
     <div class="desc ltr" id="d-desc"></div>
     <button class="more" id="d-more">عرض المزيد</button>
-    <div class="section-title">التفاصيل</div>
+    <div class="section-title" id="d-details-title">التفاصيل</div>
     <div class="details" id="d-details"></div>
     <div id="d-community" style="display:none">
       <div class="section-title">المراجعات</div>
       <div class="raters" id="d-raters"></div>
-      <div class="seg"><button class="pill small active" data-sort="top">الأفضل</button><button class="pill small" data-sort="new">الأحدث</button></div>
+      <div class="seg" id="d-rv-seg"><button class="pill small active" data-sort="top">الأفضل</button><button class="pill small" data-sort="new">الأحدث</button></div>
       <div id="d-reviews"></div>
     </div>
   </div>
@@ -475,9 +609,10 @@
 <!-- ============ اكتب مراجعة ============ -->
 <section class="screen" id="s-review">
   <div class="edit">
-    <h2>اكتب مراجعة</h2>
+    <h2 id="w-title">اكتب مراجعة</h2>
     <div class="rv-movie ltr" id="w-movie"></div>
-    <div class="field"><label>تقييمك</label><div class="rate-stars" id="w-stars"></div></div>
+    <div class="edits-note" id="w-edits"></div>
+    <div class="field" id="w-stars-field"><label>تقييمك</label><div class="rate-stars" id="w-stars"></div></div>
     <div class="field"><label>رأيك <span class="count" id="w-count"></span></label>
       <textarea id="w-text" maxlength="1000" placeholder="إيه اللي عجبك وإيه اللي ما عجبكش؟"></textarea></div>
     <label class="toggle field"><input type="checkbox" id="w-spoiler"> فيها حرق (هتتخبى لحد ما حد يدوس عليها)</label>
@@ -489,6 +624,30 @@
 
 <!-- ============ قائمة (مخصصة أو المفضلة/شاهدتها/أريد مشاهدتها) ============ -->
 <section class="screen" id="s-listview"><div class="edit" id="lv"></div></section>
+
+<!-- ============ المجتمع ============ -->
+<section class="screen" id="s-community"><div class="edit">
+  <h2>المجتمع</h2>
+  <div class="seg" id="c-seg"></div>
+  <div id="c-body"></div>
+</div></section>
+
+<!-- ============ ناس (متابعون / أتابع / طلبات) ============ -->
+<section class="screen" id="s-people"><div class="edit"><h2 id="pp-title"></h2><div id="pp-body"></div></div></section>
+
+<!-- ============ لوحة الإدارة (الأدمن بس - السيرفر بيتأكد) ============ -->
+<section class="screen" id="s-admin"><div class="edit">
+  <h2>لوحة الإدارة</h2>
+  <div class="seg" id="a-seg"></div>
+  <div id="a-body"></div>
+</div></section>
+
+<!-- ============ الشارات ============ -->
+<section class="screen" id="s-badges"><div class="edit" id="bdg"></div></section>
+<div class="toast" id="toast"></div>
+
+<!-- ============ مراجعة + تعليقات ============ -->
+<section class="screen" id="s-reviewview"><div class="edit" id="rvv"></div></section>
 
 <!-- ============ حساب حد تاني ============ -->
 <section class="screen" id="s-user">
@@ -525,8 +684,12 @@
       <div class="media-row"><div class="thumb" id="e-avatar"></div>
         <button class="mini" id="e-avatar-pick">تغيير الصورة</button><button class="mini" id="e-avatar-tg">صورة تيليجرام</button></div></div>
     <div class="field"><label>الغلاف (صورة أو GIF)</label>
-      <div class="media-row"><div class="thumb wide" id="e-cover"></div>
-        <button class="mini" id="e-cover-pick">تغيير الغلاف</button><button class="mini" id="e-cover-del">شيل الغلاف</button></div></div>
+      <div class="cover-prev" id="e-cover"></div>
+      <div id="e-cover-ctl">
+        <div class="range-row"><span>فوق / تحت</span><input type="range" id="e-cover-y" min="0" max="100" step="1"></div>
+        <div class="range-row"><span>الحجم</span><input type="range" id="e-cover-zoom" min="100" max="250" step="1"></div>
+      </div>
+      <div class="media-row" style="margin-top:10px"><button class="mini" id="e-cover-pick">تغيير الغلاف</button><button class="mini" id="e-cover-del">شيل الغلاف</button></div></div>
     <input type="file" id="e-file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
     <div class="field"><label>الاسم <span class="count" id="e-name-count"></span></label><input type="text" id="e-name" maxlength="32"></div>
     <div class="field"><label>البايو <span class="count" id="e-bio-count"></span></label><textarea id="e-bio" maxlength="160"></textarea></div>
@@ -551,6 +714,9 @@
   var section = /^(c|w)$/.test(q.get("s") || "") ? q.get("s") : "s";
   // من التنبيه: الصفحة بتفتح على الفيلم على طول (v=t مواعيده، v=d صفحته)
   var target = /^\d+$/.test(q.get("m") || "") ? { m: q.get("m"), v: q.get("v") === "t" ? "t" : "d" } : null;
+  // لينك متشارك: مراجعة / قائمة / حساب (السيرفر بيتأكد من الخصوصية)
+  var shared = null, adminLink = q.get("admin") === "1";
+  ["review", "list", "user"].forEach(function (k) { if (/^\d+$/.test(q.get(k) || "")) shared = { kind: k, id: +q.get(k) }; });
   var dataBase = (q.get("d") || "").replace(/\/$/, "");
   var DATA = null, CACHE = {}, current = null, stack = [];
   var user = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
@@ -570,6 +736,10 @@
     clock: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
     addlist: '<svg class="i" viewBox="0 0 24 24"><path d="M4 6h11M4 12h11M4 18h7M18 15v6M15 18h6"/></svg>',
     lock: '<svg class="i" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+    people: '<svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2A5 5 0 0 1 21.5 19"/></svg>',
+    share: '<svg class="i" viewBox="0 0 24 24"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v12M7.5 7.5L12 3l4.5 4.5"/></svg>',
+    chat: '<svg class="i" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/></svg>',
+    flag: '<svg class="i" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
     login: '<svg class="i" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5M15 12H3"/></svg>'
   };
 
@@ -598,6 +768,13 @@
     return (DATA[name] || []).filter(function (id) { var m = DATA.movies[String(id)]; return m && !isConcert(m); });
   }
   function openTarget() {
+    if (adminLink) { adminLink = false; if (apiReady()) openAdmin("reports"); return; }
+    if (shared) {
+      var sh = shared; shared = null;
+      if (!apiReady()) return;
+      if (sh.kind === "review") openReview(sh.id); else if (sh.kind === "list") openListView(sh.id); else openUser(sh.id);
+      return;
+    }
     if (!target) return;
     var m = DATA.movies[target.m], view = target.v; target = null;
     if (!m || isConcert(m)) return;
@@ -730,7 +907,9 @@
     else if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
     return fetch(apiBase() + path, opts).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (j) {
-        if (!r.ok) { var err = new Error(j.error || "حصلت مشكلة - جرّب تاني"); err.data = j; throw err; } return j;
+        if (!r.ok) { var err = new Error(j.error || "حصلت مشكلة - جرّب تاني"); err.data = j; throw err; }
+        if (j && j.new_badges && j.new_badges.length) celebrate(j.new_badges);
+        return j;
       });
     });
   }
@@ -758,23 +937,61 @@
     pf.dataset.preset = p.theme.preset; pf.dataset.effect = p.theme.effect;
     pf.style.setProperty("--pf-accent", p.theme.accent);
     var cover = el("div", "pf-cover");
-    if (p.cover) cover.style.backgroundImage = "url('" + media(p.cover).replace(/'/g, "%27") + "')";
+    if (p.cover) cover.appendChild(coverImg(p.cover, p.theme));
     pf.appendChild(cover);
     var head = el("div", "pf-head"); head.appendChild(avatarEl(p, "pf-avatar"));
-    if (p.owner) { var eb = el("button", "btn outline", "تعديل الملف"); eb.onclick = function () { haptic(); openEdit(); }; head.appendChild(eb); }
+    var acts = el("div", "acts");
+    if (p.owner) { var eb = el("button", "btn outline", "تعديل الملف"); eb.onclick = function () { haptic(); openEdit(); }; acts.appendChild(eb); }
+    else if (p.follow !== undefined) acts.appendChild(followButton(p));
+    if (!p.owner && apiReady()) { var rb2 = el("button", "icon-btn"); rb2.innerHTML = ICON.flag; rb2.title = "إبلاغ عن الحساب";
+      rb2.onclick = function () { reportSheet("user", p.id); }; acts.appendChild(rb2); }
+    if (p.public) { var sb = el("button", "icon-btn"); sb.innerHTML = ICON.share; sb.title = "شارك";
+      sb.onclick = function () { shareItem("pf_" + p.id, "حساب " + p.name + " على CFTRadar"); }; acts.appendChild(sb); }
+    head.appendChild(acts);
     pf.appendChild(head);
     var body = el("div", "pf-body");
     body.appendChild(el("div", "pf-name ltr", p.name));
-    if (p.username) body.appendChild(el("div", "pf-user", "@" + p.username));
+    if (p.username) {
+      var ur = el("div", "user-row"), un = el("div", "pf-user" + (p.username_hidden ? " off" : ""), "@" + p.username);
+      if (p.owner) {                                   // زرار العين: يخفي اليوزر عن الكل (في كل حتة)
+        var eye = el("button", "eye-btn"); eye.innerHTML = p.username_hidden ? ICON.eyeOff : ICON.eye;
+        eye.title = p.username_hidden ? "اليوزر مخفي - اضغط عشان يظهر" : "اضغط عشان تخفي اليوزر";
+        eye.onclick = function () {
+          haptic("medium"); eye.disabled = true;
+          call("PATCH", "/api/me", { privacy: { username: p.username_hidden ? "everyone" : "me" } })
+            .then(function (np) { ME = np; renderProfile(); notify(np.username_hidden ? "اليوزر بقى مخفي عن الكل" : "اليوزر ظاهر للكل"); })
+            .catch(function (e) { eye.disabled = false; notify(e.message); });
+        };
+        ur.appendChild(un); ur.appendChild(eye);
+      } else ur.appendChild(un);
+      body.appendChild(ur);
+    }
     if (p.owner && isAdmin()) body.appendChild(el("span", "tag", "أدمن"));
     if (p.private) { body.appendChild(el("div", "pf-note", "الحساب ده خاص.")); pf.appendChild(body); return; }
     if (p.bio) body.appendChild(el("div", "pf-bio ltr", p.bio));
     var stats = el("div", "pf-stats");
-    [["followers", "متابعين"], ["following", "بيتابعهم"], ["reviews", "مراجعات"], ["ratings", "تقييمات"]].forEach(function (x) {
-      var cell = el("div"); cell.appendChild(el("b", "", String((p.counts || {})[x[0]] || 0))); cell.appendChild(el("span", "", x[1])); stats.appendChild(cell);
+    [["followers", "المتابعون"], ["following", p.owner ? "أتابع" : "بيتابع"], ["reviews", "مراجعات"], ["ratings", "تقييمات"]].forEach(function (x) {
+      var v = (p.counts || {})[x[0]], cell = el("div" + "");
+      cell.appendChild(el("b", "", v == null ? "–" : String(v))); cell.appendChild(el("span", "", x[1]));
+      if (x[0] === "followers" || x[0] === "following") { cell.className = "tap"; cell.onclick = function () { haptic(); openPeople(p, x[0]); }; }
+      stats.appendChild(cell);
     });
     body.appendChild(stats);
-    body.appendChild(el("div", "pf-badges", (p.badges || []).length ? "" : "لسه مفيش شارات - هتظهر هنا لما تبدأ تقيّم وتكتب مراجعات"));
+    if (p.owner && p.status && p.status.state === "suspended")
+      body.appendChild(el("div", "warn", "حسابك موقوف" + (p.status.until ? " لحد " + fmtDate(p.status.until) : "") + " - تقدر تتفرج بس"));
+    if (p.owner && p.admin) { var ab = el("button", "admin-btn", "لوحة الإدارة" + (p.open_reports ? " • " + p.open_reports + " بلاغ" : ""));
+      ab.onclick = function () { haptic(); openAdmin("reports"); }; body.appendChild(ab); }
+    if (p.owner && p.requests) { var rb = el("button", "req-banner", "عندك " + p.requests + " طلب متابعة"); rb.onclick = function () { haptic(); openRequests(); }; body.appendChild(rb); }
+    var badges = p.badges || [];
+    if (badges.length || p.owner) {
+      var br = el("div", "pf-badge-row"), md = el("div", "medals");
+      badges.forEach(function (b) { md.appendChild(medal(b, true)); });
+      if (!badges.length) md.appendChild(el("span", "pf-badges", "لسه مفيش شارات"));
+      br.appendChild(md);
+      var all = el("button", "all", badges.length ? "عرض الكل" : "إزاي أكسبها؟");
+      all.onclick = function () { haptic(); openBadges(p.id, p.owner, p.name); };
+      br.appendChild(all); body.appendChild(br);
+    }
     pf.appendChild(body);
   }
 
@@ -782,7 +999,8 @@
   var EDIT = null, PICK = null;
   function openEdit() {
     if (!ME) return;
-    EDIT = { preset: ME.theme.preset, accent: ME.theme.accent, effect: ME.theme.effect, privacy: Object.assign({}, ME.privacy) };
+    EDIT = { preset: ME.theme.preset, accent: ME.theme.accent, effect: ME.theme.effect, privacy: Object.assign({}, ME.privacy),
+             cover_y: ME.theme.cover_y != null ? ME.theme.cover_y : 50, cover_zoom: ME.theme.cover_zoom || 100 };
     $("e-name").value = ME.custom_name || ""; $("e-name").placeholder = ME.tg_name || "";
     $("e-bio").value = ME.bio || ""; $("e-msg").textContent = "";
     counts(); renderEditMedia(); renderThemeControls(); renderPrivacy();
@@ -793,10 +1011,43 @@
     $("e-bio-count").textContent = $("e-bio").value.length + "/160";
   }
   $("e-name").oninput = counts; $("e-bio").oninput = counts;
+  // الغلاف: المسطرتين + السحب بالصباع/الماوس جوه المعاينة (بنفس مقاس البروفايل)
+  function previewCover() { var im = $("e-cover").querySelector("img"); if (im) placeCover(im, EDIT); }
+  $("e-cover-y").oninput = function () { EDIT.cover_y = +this.value; previewCover(); };
+  $("e-cover-zoom").oninput = function () { EDIT.cover_zoom = +this.value; previewCover(); };
+  (function () {
+    var box = $("e-cover"), dragging = false, startY = 0, startPos = 50;
+    box.addEventListener("pointerdown", function (e) {
+      if (!box.querySelector("img")) return;
+      dragging = true; startY = e.clientY; startPos = EDIT.cover_y; box.setPointerCapture(e.pointerId);
+    });
+    box.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      // سحب لتحت = الصورة تنزل (يبان الجزء اللي فوق) - والمسافة بتتحسب بالنسبة لطول المعاينة
+      var delta = (e.clientY - startY) / box.clientHeight * 100 / Math.max(1, EDIT.cover_zoom / 100);
+      EDIT.cover_y = Math.round(Math.min(100, Math.max(0, startPos - delta)));
+      $("e-cover-y").value = EDIT.cover_y; previewCover();
+    });
+    ["pointerup", "pointercancel"].forEach(function (ev) { box.addEventListener(ev, function () { dragging = false; }); });
+  })();
+  function coverImg(path, theme) {
+    var im = el("img"); im.alt = ""; im.src = media(path); placeCover(im, theme); return im;
+  }
+  function placeCover(im, theme) {
+    var y = theme && theme.cover_y != null ? theme.cover_y : 50, z = (theme && theme.cover_zoom || 100) / 100;
+    im.style.objectPosition = "50% " + y + "%";
+    im.style.transformOrigin = "50% " + y + "%";
+    im.style.transform = "scale(" + z + ")";
+  }
   function renderEditMedia() {
     var a = $("e-avatar"); a.textContent = ""; if (ME.avatar) { var i = el("img"); i.src = media(ME.avatar); a.appendChild(i); }
     var c = $("e-cover"); c.textContent = ""; c.style.background = "";
-    if (ME.cover) { var j = el("img"); j.src = media(ME.cover); c.appendChild(j); }
+    if (ME.cover) {
+      c.appendChild(coverImg(ME.cover, EDIT));
+      c.appendChild(el("div", "hint", "اسحب الغلاف لفوق أو لتحت"));
+    } else c.appendChild(el("div", "hint", "مفيش غلاف"));
+    $("e-cover-ctl").style.display = ME.cover ? "" : "none";
+    $("e-cover-y").value = EDIT.cover_y; $("e-cover-zoom").value = EDIT.cover_zoom;
     $("e-cover-del").style.display = ME.cover ? "" : "none";
   }
   function renderThemeControls() {
@@ -816,10 +1067,11 @@
   $("e-accent").oninput = function () { EDIT.accent = this.value; };
   function renderPrivacy() {
     var box = $("e-privacy"); box.textContent = "";
-    [["profile", "الحساب"], ["ratings", "التقييمات"], ["reviews", "المراجعات"], ["lists", "القوايم"]].forEach(function (x) {
+    [["profile", "الحساب"], ["ratings", "التقييمات"], ["reviews", "المراجعات"], ["lists", "القوائم"],
+     ["watched", "شاهدتها وسجل المشاهدة"], ["activity", "نشاطي"]].forEach(function (x) {
       var f = el("div"); f.appendChild(el("label", "", x[1]));
       var sel = el("select");
-      [["everyone", "الكل"], ["followers", "المتابعين بس"], ["me", "أنا بس"]].forEach(function (o) {
+      [["everyone", "الجميع"], ["followers", "المتابعون فقط"], ["me", "أنا فقط"]].forEach(function (o) {
         var opt = el("option", "", o[1]); opt.value = o[0]; if (EDIT.privacy[x[0]] === o[0]) opt.selected = true; sel.appendChild(opt);
       });
       sel.onchange = function () { EDIT.privacy[x[0]] = sel.value; };
@@ -844,7 +1096,8 @@
   $("e-save").onclick = function () {
     haptic("medium"); busy(true);
     call("PATCH", "/api/me", { name: $("e-name").value, bio: $("e-bio").value,
-      theme: { preset: EDIT.preset, accent: EDIT.accent, effect: EDIT.effect }, privacy: EDIT.privacy })
+      theme: { preset: EDIT.preset, accent: EDIT.accent, effect: EDIT.effect, cover_y: EDIT.cover_y, cover_zoom: EDIT.cover_zoom },
+      privacy: EDIT.privacy })
       .then(function (p) { ME = p; busy(false); renderProfileCard(p); renderHeader(); back(); })
       .catch(fail);
   };
@@ -990,7 +1243,7 @@
         }).catch(function (e) { save.disabled = false; msg.textContent = e.message; });
       };
       sh.appendChild(save); sh.appendChild(msg);
-      var rv = el("button", "btn outline", FILM.my_review ? "عدّل مراجعتك" : "اكتب مراجعة (اختياري)");
+      var rv = el("button", "btn outline", !FILM.my_review ? "اكتب مراجعة (اختياري)" : FILM.my_review.locked ? "مراجعتك" : "عدّل مراجعتك");
       rv.onclick = function () { closeSheet(); openWriter(); }; sh.appendChild(rv);
       if (w.watched) { var rm = el("button", "logout", "شيل من «شاهدتها»"); rm.onclick = function () { removeWatched(false); }; sh.appendChild(rm); }
     });
@@ -1058,7 +1311,17 @@
     }).catch(function () {});
   }
   function renderScore() {
-    var box = $("d-score"); box.textContent = ""; box.style.display = "";
+    var box = $("d-score"); box.textContent = "";
+    // فيلم لسه ما نزلش (ومفيش تقييمات): مفيش حاجة تتقيّم - الكارت ما يظهرش خالص
+    if (!FILM.eligible && !FILM.count) { box.style.display = "none"; return; }
+    box.style.display = "";
+    var head = el("div", "score-head"); head.appendChild(el("div", "section-title", "تقييم CFTRadar"));
+    if (FILM.eligible) {
+      var wb = el("button", "btn outline small", !FILM.my_review ? "اكتب مراجعة" : FILM.my_review.locked ? "مراجعتك" : "عدّل مراجعتك");
+      wb.onclick = function () { haptic(); openWriter(); }; head.appendChild(wb);
+    }
+    box.appendChild(head);
+    if (!FILM.count) box.appendChild(el("div", "note lead", "لسه محدش قيّم - كن أول واحد"));
     var top = el("div", "score-top");
     var avg = el("div", "score-avg", FILM.average != null ? String(FILM.average) : "–");
     avg.appendChild(el("small", "", FILM.count ? FILM.count + " تقييم" : "لسه محدش قيّم"));
@@ -1070,19 +1333,19 @@
       var track = el("i"), fill = el("b"); fill.style.width = (FILM.count ? Math.round(n * 100 / FILM.count) : 0) + "%";
       track.appendChild(fill); row.appendChild(track); row.appendChild(el("span", "", String(n))); bars.appendChild(row);
     }
-    top.appendChild(bars); box.appendChild(top);
-    box.insertBefore(el("div", "section-title", "تقييم CFTRadar"), top);
-    if (!FILM.eligible) { box.appendChild(el("div", "note", "التقييم والمراجعات بيفتحوا لما الفيلم ينزل السينما")); return; }
-    var rr = el("div", "rate-row"); rr.appendChild(el("span", "lbl", "قيّم الفيلم"));
+    top.appendChild(bars);
+    if (FILM.count) box.appendChild(top);            // الأشرطة بس لما يبقى فيه تقييمات
+    if (!FILM.eligible) return;
+    var rr = el("div", "rate-row"), lbl = el("span", "lbl", FILM.my_rating ? "تقييمك" : "قيّم الفيلم");
+    if (FILM.my_rating) { var rm = el("button", "linkish", "شيل"); rm.style.marginInlineStart = "8px"; rm.onclick = function () { rate(0); }; lbl.appendChild(rm); }
+    rr.appendChild(lbl);
     var st = el("div", "rate-stars");
     for (var k = 1; k <= 5; k++) (function (k) {
       var b = el("button", k <= (FILM.my_rating || 0) ? "on" : "", "★");
       b.onclick = function () { haptic("medium"); rate(k); }; st.appendChild(b);
     })(k);
     rr.appendChild(st); box.appendChild(rr);
-    if (FILM.my_rating) { var rm = el("button", "linkish", "شيل تقييمي"); rm.onclick = function () { rate(0); }; box.appendChild(rm); }
-    var wb = el("button", "btn outline", FILM.my_review ? "عدّل مراجعتك" : "اكتب مراجعة");
-    wb.onclick = function () { haptic(); openWriter(); }; box.appendChild(wb);
+    if (FILM.my_review && FILM.my_review.hidden) box.appendChild(el("div", "warn", "مراجعتك مخفية من الإدارة"));
   }
   function rate(n) {
     var m = FILM_MOVIE;
@@ -1117,12 +1380,31 @@
       call(r.liked ? "DELETE" : "POST", "/api/reviews/" + r.id + "/like").then(function (x) { r.likes = x.likes; r.liked = x.liked; paint(); }).catch(function () {});
     };
     f.appendChild(heart);
-    if (r.mine && FILM_MOVIE && !withMovie) { var ed = el("button", "linkish", "تعديل"); ed.onclick = function () { openWriter(); }; f.appendChild(ed); }
+    var tools = el("span");
+    if (ME && ME.comments_enabled) {
+      var cb = el("button", "heart"); cb.innerHTML = ICON.chat; cb.appendChild(document.createTextNode(" " + (r.comments || 0)));
+      cb.onclick = function () { haptic(); openReview(r.id); }; tools.appendChild(cb);
+    }
+    if (r.public) {
+      var sh = el("button", "heart"); sh.innerHTML = ICON.share; sh.style.marginInlineStart = "10px";
+      sh.onclick = function () { shareItem("rv_" + r.id, "مراجعة " + r.author.name + (r.movie ? " عن «" + r.movie.title + "»" : "") + " على CFTRadar"); };
+      tools.appendChild(sh);
+    }
+    if (!r.mine && apiReady()) {
+      var fl = el("button", "heart flag-btn"); fl.innerHTML = ICON.flag; fl.style.marginInlineStart = "10px"; fl.title = "إبلاغ";
+      fl.onclick = function () { reportSheet("review", r.id); }; tools.appendChild(fl);
+    }
+    f.appendChild(tools);
+    if (r.mine && FILM_MOVIE && !withMovie) { var ed = el("button", "linkish", r.locked ? "مقفولة" : "تعديل"); ed.onclick = function () { openWriter(); }; f.appendChild(ed); }
     c.appendChild(f);
     return c;
   }
   function renderReviews() {
-    var comm = $("d-community"); comm.style.display = "";
+    var comm = $("d-community");
+    var none = !FILM.top.length && !FILM.latest.length;
+    if (!FILM.eligible && none) { comm.style.display = "none"; return; }     // لسه ما نزلش: مفيش مراجعات
+    comm.style.display = "";
+    $("d-rv-seg").style.display = none ? "none" : "";
     var raters = $("d-raters"); raters.textContent = "";
     FILM.raters.forEach(function (u) { var a = avatarSmall(u); a.title = u.name; a.onclick = function () { openUser(u.id); }; raters.appendChild(a); });
     raters.style.display = FILM.raters.length ? "" : "none";
@@ -1132,7 +1414,12 @@
     });
     var list = $("d-reviews"); list.textContent = "";
     var items = SORT === "top" ? FILM.top : FILM.latest;
-    if (!items.length) list.appendChild(el("div", "empty", FILM.eligible ? "لسه مفيش مراجعات - اكتب أول واحدة!" : "المراجعات بتفتح لما الفيلم ينزل السينما"));
+    if (!items.length) {
+      var e0 = el("div", "note lead"); e0.style.margin = "0 0 6px";
+      e0.appendChild(document.createTextNode("لسه مفيش مراجعات. "));
+      var wl = el("button", "linkish", "اكتب أول واحدة"); wl.style.color = "var(--gold)"; wl.onclick = function () { haptic(); openWriter(); };
+      e0.appendChild(wl); list.appendChild(e0);
+    }
     items.forEach(function (r) { list.appendChild(reviewCard(r)); });
   }
   // اكتب مراجعة
@@ -1141,9 +1428,19 @@
     var m = FILM_MOVIE; if (!m || !FILM) return;
     $("w-movie").textContent = m.title;
     W_STARS = FILM.my_rating || 0; paintWriterStars();
-    $("w-text").value = FILM.my_review ? FILM.my_review.text : "";
-    $("w-spoiler").checked = !!(FILM.my_review && FILM.my_review.spoiler);
-    $("w-delete").style.display = FILM.my_review ? "" : "none";
+    var r = FILM.my_review, locked = !!(r && r.locked);
+    $("w-text").value = r ? r.text : "";
+    $("w-spoiler").checked = !!(r && r.spoiler);
+    $("w-delete").style.display = r ? "" : "none";
+    // التعديل مرتين بس (السيرفر هو اللي بيعد) - بعدها للقراية بس، والمسح مسموح
+    var note = $("w-edits"); note.className = "edits-note" + (locked ? " locked" : "");
+    note.textContent = !r ? "" : locked ? "مراجعتك اتعدلت مرتين - مش هينفع تتعدل تاني. تقدر تمسحها وتكتب واحدة جديدة."
+      : r.edits_left === 1 ? "فاضلك تعديل واحد - بعده المراجعة هتتقفل" : "فاضلك تعديلين";
+    $("w-text").readOnly = locked; $("w-spoiler").disabled = locked;
+    $("w-save").style.display = locked ? "none" : "";
+    $("w-save").textContent = r ? "حفظ التعديل" : "نشر";
+    $("w-title").textContent = r ? "مراجعتك" : "اكتب مراجعة";
+    $("w-stars-field").style.display = locked ? "none" : "";   // التقييم بيتغير من كارت التقييم (مفيش حفظ هنا وهي مقفولة)
     $("w-msg").textContent = ""; wCount();
     go("s-review");
   }
@@ -1175,7 +1472,8 @@
     box.textContent = "";
     var seg = el("div", "ptabs"), body = el("div");
     var tabs = [["overview", "نظرة عامة"], ["watched", "شاهدتها"], ["ratings", owner ? "تقييماتي" : "تقييماته"],
-                ["reviews", owner ? "مراجعاتي" : "مراجعاته"], ["lists", owner ? "قوائمي" : "قوائمه"]];
+                ["reviews", owner ? "مراجعاتي" : "مراجعاته"], ["lists", owner ? "قوائمي" : "قوائمه"],
+                ["activity", owner ? "نشاطي" : "نشاطه"]];
     var show = function (k) {
       seg.querySelectorAll(".pill").forEach(function (b) { b.classList.toggle("active", b.dataset.k === k); });
       body.textContent = ""; TAB[k](body, uid, owner, p);
@@ -1185,6 +1483,11 @@
   }
   function hiddenNote(body) { body.appendChild(el("div", "empty", "صاحب الحساب مخلّي القسم ده ليه بس")); }
   var TAB = {
+    activity: function (body, uid, owner) {
+      var list = el("div"); body.appendChild(list);
+      pager(list, body, function (c) { return call("GET", "/api/users/" + uid + "/activity" + (c ? "?before=" + c : "")); },
+        function (l, x) { l.appendChild(activityRow(x)); }, owner ? "لسه مفيش نشاط - قيّم أو سجّل مشاهدة أو اعمل قائمة" : "مفيش نشاط يتشاف هنا");
+    },
     overview: function (body, uid, owner, p) {
       var lc = p.lists || {}, cn = p.counts || {}, stats = el("div", "ov-stats");
       [[lc.seen, "شاهدتها"], [cn.ratings, "تقييمات"], [cn.reviews, "مراجعات"], [lc.custom, "قوائم"]].forEach(function (x) {
@@ -1329,6 +1632,11 @@
       var meta = L.count + " فيلم • " + (L.mine ? "قائمتك" : "قائمة " + L.owner.name);
       if (L.mine) meta += " • " + { everyone: "الجميع", followers: "المتابعون فقط", me: "أنا فقط" }[L.privacy];
       lv.appendChild(el("div", "lv-meta", meta));
+      if (L.public) { var shl = el("button", "btn outline", "شارك القائمة"); shl.style.width = "100%"; shl.style.marginBottom = "8px";
+        shl.onclick = function () { shareItem("ls_" + L.id, "قائمة «" + L.title + "» على CFTRadar"); }; lv.appendChild(shl); }
+      if (L.mine && L.hidden) lv.appendChild(el("div", "warn", "القائمة دي مخفية من الإدارة - محدش غيرك شايفها"));
+      if (!L.mine) { var rpl = el("button", "linkish", "إبلاغ عن القائمة"); rpl.style.marginBottom = "10px";
+        rpl.onclick = function () { reportSheet("list", L.id); }; lv.appendChild(rpl); }
       if (L.mine) { var eb = el("button", "btn outline", "تعديل القائمة"); eb.style.width = "100%"; eb.style.marginBottom = "12px"; eb.onclick = function () { haptic(); editList(id); }; lv.appendChild(eb); }
       var list = el("div"); lv.appendChild(list);
       var n = 0, firstPage = true;
@@ -1407,6 +1715,408 @@
       renderProfileCard(p, $("pf2"));
       if (!p.private) profileTabs($("u-tabs"), uid, false, p);
     }).catch(function (e) { $("pf2").appendChild(el("div", "pf-note", e.message)); });
+  }
+
+  // ---------- المرحلة 6: الإبلاغ ----------
+  var REASONS = [["spam", "سبام"], ["abuse", "إساءة"], ["inappropriate", "محتوى غير مناسب"], ["impersonation", "انتحال"], ["annoying", "محتوى مزعج"]];
+  function reportSheet(kind, id) {
+    haptic();
+    openSheet("إبلاغ", function (sh) {
+      sh.appendChild(el("div", "sub", "إيه المشكلة؟ البلاغ بيوصل للإدارة بس، ومحدش بيعرف إنك بلّغت."));
+      var pick = null, rows = [];
+      REASONS.forEach(function (r) {
+        var row = checkRow(r[1], false); rows.push(row);
+        row.onclick = function () { haptic(); pick = r[0];
+          rows.forEach(function (x) { var bx = x.querySelector(".box"); bx.className = "box"; bx.textContent = ""; });
+          var b = row.querySelector(".box"); b.className = "box on"; b.textContent = "✓"; };
+        sh.appendChild(row);
+      });
+      var note = el("textarea"); note.maxLength = 300; note.placeholder = "تفاصيل (اختياري)";
+      note.style.cssText = "width:100%;margin-top:12px;min-height:64px;padding:10px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--line);color:var(--text);font:inherit";
+      var msg = el("div", "msg"), send = el("button", "btn primary", "إرسال البلاغ");
+      send.onclick = function () {
+        if (!pick) { msg.textContent = "اختار سبب"; return; }
+        send.disabled = true;
+        call("POST", "/api/reports", { kind: kind, id: id, reason: pick, note: note.value })
+          .then(function () { closeSheet(); notify("تمام - البلاغ وصل للإدارة"); })
+          .catch(function (e) { send.disabled = false; msg.textContent = e.message; });
+      };
+      sh.appendChild(note); sh.appendChild(send); sh.appendChild(msg);
+    });
+  }
+
+  // ---------- المرحلة 6: لوحة الإدارة ----------
+  var ACTIONS = { hide: "إخفاء", restore: "استرجاع", "delete": "مسح نهائي", dismiss: "تجاهل البلاغ", auto_hide: "إخفاء تلقائي (3 بلاغات)",
+                  suspend: "إيقاف", unsuspend: "فك الإيقاف", ban: "حظر", unban: "فك الحظر", reset_profile: "تصفير الملف" };
+  var KIND_AR = { review: "مراجعة", comment: "تعليق", user: "حساب", list: "قائمة" };
+  function stateTag(st) {
+    var t = st.state === "banned" ? "محظور" : st.state === "suspended" ? "موقوف" + (st.until ? " لحد " + fmtDate(st.until) : " دايم") : "نشط";
+    return el("span", "state " + st.state, t);
+  }
+  function openAdmin(tab) { go("s-admin"); renderAdmin(tab); }
+  function renderAdmin(tab) {
+    var seg = clear($("a-seg")), body = clear($("a-body"));
+    [["reports", "البلاغات"], ["users", "المستخدمين"], ["hidden", "المخفي"], ["logs", "السجل"]].forEach(function (t) {
+      var b = el("button", "pill small" + (t[0] === tab ? " active" : ""), t[1]); b.onclick = function () { haptic(); renderAdmin(t[0]); }; seg.appendChild(b);
+    });
+    ADMIN_TAB[tab](body);
+  }
+  function modTarget(card, t) {
+    if (t.gone) { card.appendChild(el("div", "body", "المحتوى ده اتمسح")); return; }
+    if (t.author) {
+      var who = el("div", "who"); who.appendChild(el("b", "ltr", t.author.name)); who.appendChild(document.createTextNode(" "));
+      if (t.author.username) who.appendChild(el("span", "ltr", "@" + t.author.username + " "));
+      who.appendChild(stateTag(t.author.status)); who.onclick = function () { userAdminSheet(t.author.id); }; card.appendChild(who);
+    }
+    if (t.movie) card.appendChild(el("div", "rv-movie ltr", t.movie.title));
+    if (t.text) card.appendChild(el("div", "body ltr", t.text));
+  }
+  function modAct(label, cls, fn) { var b = el("button", "mini " + (cls || ""), label); b.onclick = function () { haptic("medium"); fn(b); }; return b; }
+  var ADMIN_TAB = {
+    reports: function (body) {
+      var list = el("div"); body.appendChild(list);
+      pager(list, body, function (c) { return call("GET", "/api/admin/reports?offset=" + (c || 0)); }, function (l, g) {
+        var card = el("div", "mod-card"), hd = el("div", "hd");
+        hd.appendChild(el("b", "", g.kind_name)); hd.appendChild(el("span", "cnt", g.count + " بلاغ")); card.appendChild(hd);
+        var chips = el("div", "chips");
+        Object.keys(g.reasons).forEach(function (k) { chips.appendChild(el("span", "chip", k + " ×" + g.reasons[k])); });
+        card.appendChild(chips);
+        g.notes.forEach(function (n) { card.appendChild(el("div", "linkish", "«" + n + "»")); });
+        modTarget(card, g.target);
+        var reason = el("input"); reason.placeholder = "السبب (بيتسجل في السجل)"; card.appendChild(reason);
+        var acts = el("div", "mod-acts"), done = function (txt) { card.innerHTML = ""; card.appendChild(el("div", "linkish", txt)); loadMe(); };
+        var content = function (action) { return function () {
+          var go2 = function () { call("POST", "/api/admin/content", { kind: g.kind, id: g.target_id, action: action, reason: reason.value })
+            .then(function () { done(ACTIONS[action] + " ✓"); }).catch(function (e) { notify(e.message); }); };
+          if (action === "delete") confirmBox("مسح نهائي؟ (نسخة منه هتتحفظ في السجل)", go2); else go2(); }; };
+        if (g.kind !== "user") {
+          if (!g.target.hidden) acts.appendChild(modAct("إخفاء", "", content("hide")));
+          else acts.appendChild(modAct("استرجاع", "blue", content("restore")));
+          acts.appendChild(modAct("مسح نهائي", "red", content("delete")));
+        } else acts.appendChild(modAct("إجراء على الحساب", "red", function () { userAdminSheet(g.target_id); }));
+        acts.appendChild(modAct("تجاهل", "", function () {
+          call("POST", "/api/admin/reports/dismiss", { kind: g.kind, id: g.target_id, reason: reason.value }).then(function () { done("اتجاهل ✓"); });
+        }));
+        card.appendChild(acts); l.appendChild(card);
+      }, "مفيش بلاغات مفتوحة 🎉");
+    },
+    users: function (body) {
+      var inp = el("input"); inp.type = "text"; inp.placeholder = "دوّر بالاسم أو اليوزر أو الرقم";
+      inp.style.cssText = "width:100%;padding:11px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);color:var(--text);font:inherit";
+      var list = el("div"); list.style.marginTop = "10px"; body.appendChild(inp); body.appendChild(list);
+      var t = null;
+      inp.oninput = function () { clearTimeout(t); t = setTimeout(function () {
+        if (!inp.value.trim()) { clear(list); return; }
+        call("GET", "/api/admin/users?q=" + encodeURIComponent(inp.value.trim())).then(function (d) {
+          clear(list); if (!d.items.length) list.appendChild(el("div", "empty", "مفيش حد بالاسم ده"));
+          d.items.forEach(function (u) {
+            var row = el("div", "person"); var who = el("div", "who"); who.appendChild(el("b", "ltr", u.name));
+            var sub = el("span"); sub.textContent = (u.username ? "@" + u.username + " • " : "") + "بلاغات عليه " + u.reports_against; who.appendChild(sub);
+            row.appendChild(who); row.appendChild(stateTag(u.status)); row.onclick = function () { userAdminSheet(u.id); }; list.appendChild(row);
+          });
+        });
+      }, 350); };
+    },
+    hidden: function (body) {
+      var list = el("div"); body.appendChild(list);
+      pager(list, body, function (c) { return call("GET", "/api/admin/hidden?offset=" + (c || 0)); }, function (l, x) {
+        var card = el("div", "mod-card"), hd = el("div", "hd"); hd.appendChild(el("b", "", x.kind_name)); card.appendChild(hd);
+        modTarget(card, x.target);
+        var acts = el("div", "mod-acts");
+        var act = function (action) { return function () {
+          var go2 = function () { call("POST", "/api/admin/content", { kind: x.kind, id: x.target_id, action: action })
+            .then(function () { card.innerHTML = ""; card.appendChild(el("div", "linkish", ACTIONS[action] + " ✓")); }).catch(function (e) { notify(e.message); }); };
+          if (action === "delete") confirmBox("مسح نهائي؟", go2); else go2(); }; };
+        acts.appendChild(modAct("استرجاع", "blue", act("restore"))); acts.appendChild(modAct("مسح نهائي", "red", act("delete")));
+        card.appendChild(acts); l.appendChild(card);
+      }, "مفيش محتوى مخفي");
+    },
+    logs: function (body) {
+      var list = el("div"); body.appendChild(list);
+      pager(list, body, function (c) { return call("GET", "/api/admin/logs" + (c ? "?before=" + c : "")); }, function (l, x) {
+        var r = el("div", "log-row");
+        var line = el("div"); line.appendChild(el("b", "", x.admin)); line.appendChild(document.createTextNode(" • " + (ACTIONS[x.action] || x.action) + " • " + (KIND_AR[x.kind] || x.kind) + " #" + x.target_id));
+        r.appendChild(line);
+        if (x.reason) r.appendChild(el("div", "", "السبب: " + x.reason));
+        if (x.details && (x.details.text || x.details.title)) r.appendChild(el("div", "snap ltr", "اللي اتمسح: " + (x.details.text || x.details.title)));
+        r.appendChild(el("div", "t", ago(x.at))); l.appendChild(r);
+      }, "السجل فاضي");
+    }
+  };
+  function userAdminSheet(uid) {
+    call("GET", "/api/admin/users/" + uid).then(function (u) {
+      openSheet(u.name || "حساب", function (sh) {
+        var sub = el("div", "sub"); sub.appendChild(stateTag(u.status));
+        sub.appendChild(document.createTextNode("  " + (u.username ? "@" + u.username + " • " : "") + "من " + fmtDate(u.joined) +
+          " • بلاغات عليه " + u.reports_against + " • بلّغ " + u.reports_made));
+        sh.appendChild(sub);
+        if (u.admin) { sh.appendChild(el("div", "warn", "ده حساب أدمن")); return; }
+        var reason = el("input"); reason.type = "text"; reason.placeholder = "السبب (بيتسجل في السجل)"; sh.appendChild(reason);
+        var acts = el("div", "mod-acts"), msg = el("div", "msg");
+        var run = function (action, days) { return function () {
+          call("POST", "/api/admin/users/" + uid, { action: action, days: days === undefined ? null : days, reason: reason.value })
+            .then(function () { closeSheet(); notify(ACTIONS[action] + " ✓"); }).catch(function (e) { msg.textContent = e.message; });
+        }; };
+        if (u.status.state === "suspended") acts.appendChild(modAct("فك الإيقاف", "blue", run("unsuspend")));
+        else if (u.status.state === "active") {
+          acts.appendChild(modAct("إيقاف يوم", "", run("suspend", 1))); acts.appendChild(modAct("إيقاف أسبوع", "", run("suspend", 7)));
+          acts.appendChild(modAct("إيقاف دايم", "", run("suspend", null)));
+        }
+        if (u.status.state === "banned") acts.appendChild(modAct("فك الحظر", "blue", run("unban")));
+        else acts.appendChild(modAct("حظر", "red", function () { confirmBox("تحظر الحساب ده؟ (كل محتواه هيتخفى)", run("ban")); }));
+        acts.appendChild(modAct("تصفير الملف", "red", function () { confirmBox("تمسح اسمه المخصص وبايو وصوره؟", run("reset_profile")); }));
+        sh.appendChild(acts); sh.appendChild(msg);
+        var op = el("button", "btn outline", "افتح الحساب"); op.onclick = function () { closeSheet(); openUser(uid); }; sh.appendChild(op);
+      });
+    }).catch(function (e) { notify(e.message); });
+  }
+
+  // ---------- المرحلة 5: الشارات ----------
+  var GLYPH = {
+    star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+    stars: '<path d="M8 3.5l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 11.7l-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z"/><path d="M16.5 10l1.3 2.6 2.9.4-2.1 2 .5 2.9-2.6-1.4-2.6 1.4.5-2.9-2.1-2 2.9-.4z"/>',
+    pen: '<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>',
+    film: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 8h4M3 12h4M3 16h4M17 8h4M17 12h4M17 16h4"/>',
+    eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    fire: '<path d="M12 21c4 0 7-2.7 7-6.5 0-3.4-2.3-5.2-3.6-7.6-.5 2-1.7 3.2-3 3.6.4-2.9-.6-5.6-3.4-7.5.2 3.3-1.5 5-3 6.8C4.8 11.3 5 12.6 5 14.5 5 18.3 8 21 12 21z"/>',
+    heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>',
+    skull: '<path d="M12 3a8 8 0 0 0-8 8c0 2.6 1.3 4.4 3 5.6V20h10v-3.4c1.7-1.2 3-3 3-5.6a8 8 0 0 0-8-8z"/><circle cx="9" cy="11" r="1.6"/><circle cx="15" cy="11" r="1.6"/><path d="M10 20v-2M14 20v-2"/>',
+    list: '<path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
+    crown: '<path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/>',
+    people: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2A5 5 0 0 1 21.5 19"/>',
+    mega: '<path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/>',
+    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'
+  };
+  function medal(b, small) {
+    var m = el("div", "medal" + (small ? " sm" : "") + (b.earned ? "" : " locked"));
+    m.innerHTML = '<svg viewBox="0 0 24 24">' + (GLYPH[b.icon] || GLYPH.star) + "</svg>";
+    if (!b.earned && !small) { var lk = el("span", "lk"); lk.innerHTML = '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'; m.appendChild(lk); }
+    m.title = b.name; return m;
+  }
+  var toastTimer = null;
+  function celebrate(list) {                          // شارة جديدة اتفتحت: احتفال صغير من تحت
+    if (!list || !list.length) return;
+    var t = $("toast"); t.textContent = "";
+    t.appendChild(medal(list[0], true));
+    var txt = el("div"); txt.appendChild(el("b", "", list.length > 1 ? "اتفتحلك " + list.length + " شارات جديدة" : "شارة جديدة!"));
+    txt.appendChild(el("span", "", list.map(function (b) { return b.name; }).join(" • "))); t.appendChild(txt);
+    try { tg.HapticFeedback.notificationOccurred("success"); } catch (e) {}
+    t.classList.add("on"); clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("on"); }, 4200);
+    t.onclick = function () { t.classList.remove("on"); if (ME) openBadges(ME.id, true, ME.name); };
+  }
+  function openBadges(uid, owner, name) {
+    go("s-badges");
+    var box = clear($("bdg")); box.appendChild(el("h2", "", owner ? "شاراتي" : "شارات " + name));
+    var sum = el("div", "badge-sum"); box.appendChild(sum);
+    var grid = el("div", "badge-grid"); box.appendChild(grid);
+    call("GET", "/api/users/" + uid + "/badges").then(function (d) {
+      sum.textContent = owner ? "فتحت " + d.earned + " من " + d.total + " - الشارات بتتفتح لوحدها من نشاطك" : d.earned + " شارة";
+      if (!d.items.length) grid.appendChild(el("div", "empty", "مفيش شارات تتشاف هنا"));
+      d.items.forEach(function (b) {
+        var c = el("div", "badge-card" + (b.earned ? "" : " locked")); c.appendChild(medal(b));
+        c.appendChild(el("b", "", b.name)); c.appendChild(el("small", "", b.desc));
+        if (b.earned && b.earned_at) c.appendChild(el("small", "", fmtDate(b.earned_at)));
+        else if (b.progress) {
+          var bar = el("div", "pbar"), fill = el("i"); fill.style.width = Math.round(b.progress.current * 100 / b.progress.target) + "%";
+          bar.appendChild(fill); c.appendChild(bar); c.appendChild(el("div", "pnum", b.progress.current + " / " + b.progress.target));
+        }
+        grid.appendChild(c);
+      });
+    }).catch(function (e) { grid.appendChild(el("div", "empty", e.message)); });
+  }
+
+  // ---------- المرحلة 4: مشاركة / متابعة / نشاط / مجتمع / تعليقات ----------
+  function shareItem(payload, text) {
+    if (!DATA || !DATA.bot) return;
+    haptic();
+    var link = "https://t.me/" + DATA.bot + "?start=" + payload;
+    var url = "https://t.me/share/url?url=" + encodeURIComponent(link) + "&text=" + encodeURIComponent(text);
+    try { if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); return; } } catch (e) {}
+    window.open(url, "_blank");
+  }
+  function ago(iso) {
+    var sec = (Date.now() - Date.parse(iso)) / 1000;
+    if (!(sec >= 0)) return "";
+    if (sec < 60) return "دلوقتي";
+    var m = Math.floor(sec / 60); if (m < 60) return "من " + m + " دقيقة";
+    var h = Math.floor(m / 60); if (h < 24) return "من " + h + " ساعة";
+    var d = Math.floor(h / 24); if (d < 7) return "من " + d + " يوم";
+    return fmtDate(iso.slice(0, 10));
+  }
+  function followButton(p) {
+    var b = el("button", "btn");
+    var paint = function () {
+      b.className = "btn " + (p.follow ? "outline" : "follow");
+      b.textContent = p.follow === "accepted" ? "متابَع ✓" : p.follow === "pending" ? "مستني الموافقة" : (p.public ? "تابع" : "اطلب متابعة");
+    };
+    paint();
+    b.onclick = function () {
+      haptic("medium"); b.disabled = true;
+      call(p.follow ? "DELETE" : "PUT", "/api/users/" + p.id + "/follow").then(function (x) {
+        b.disabled = false; var was = p.follow; p.follow = x.follow; paint();
+        if (x.follow === "accepted" || was === "accepted") openUser(p.id);          // اتفتح/اتقفل اللي يتشاف
+      }).catch(function (e) { b.disabled = false; notify(e.message); });
+    };
+    return b;
+  }
+  function personRow(u, extra) {
+    var r = el("div", "person"); r.appendChild(avatarSmall(u, "av"));
+    var who = el("div", "who"); who.appendChild(el("b", "ltr", u.name)); if (u.username) who.appendChild(el("span", "", "@" + u.username));
+    who.onclick = function () { haptic(); openUser(u.id); }; r.appendChild(who);
+    (extra || []).forEach(function (b) { r.appendChild(b); });
+    return r;
+  }
+  function openPeople(p, which) {
+    if (p.private) return;
+    $("pp-title").textContent = which === "followers" ? "المتابعون" : (p.owner ? "أتابع" : "بيتابع");
+    var body = clear($("pp-body")), list = el("div"); body.appendChild(list); go("s-people");
+    pager(list, body, function (c) { return call("GET", "/api/users/" + p.id + "/" + which + "?offset=" + (c || 0)); }, function (l, u) {
+      var extra = [];
+      if (p.owner && which === "followers") {
+        var rm = el("button", "mini", "شيل");
+        rm.onclick = function () { confirmBox("تشيل " + u.name + " من المتابعين؟", function () {
+          call("DELETE", "/api/me/followers/" + u.id).then(function () { row.remove(); loadMe(); }); }); };
+        extra.push(rm);
+      }
+      var row = personRow(u, extra); l.appendChild(row);
+    }, which === "followers" ? "لسه مفيش متابعين" : "لسه مش متابع حد");
+  }
+  function openRequests() {
+    $("pp-title").textContent = "طلبات المتابعة";
+    var body = clear($("pp-body")), list = el("div"); body.appendChild(list); go("s-people");
+    pager(list, body, function (c) { return call("GET", "/api/me/requests?offset=" + (c || 0)); }, function (l, u) {
+      var row, ok = el("button", "mini gold", "قبول"), no = el("button", "mini", "رفض");
+      var answer = function (method) { call(method, "/api/me/requests/" + u.id).then(function () { row.remove(); loadMe(); }); };
+      ok.onclick = function () { haptic(); answer("PUT"); }; no.onclick = function () { haptic(); answer("DELETE"); };
+      row = personRow(u, [ok, no]); l.appendChild(row);
+    }, "مفيش طلبات");
+  }
+  function activityText(x) {
+    var t = x.movie ? "«" + x.movie.title + "»" : "";
+    switch (x.kind) {
+      case "watched": return "شاهد " + t + (x.date ? " • " + fmtDate(x.date) : "");
+      case "rated": return "قيّم " + t;
+      case "reviewed": return "كتب مراجعة عن " + t;
+      case "liked_review": return "أعجبته مراجعة " + (x.target ? x.target.name : "") + " عن " + t;
+      case "fav": return "ضاف " + t + " للمفضلة";
+      case "want": return "عايز يشوف " + t;
+      case "listed": return "ضاف " + t + " لقائمة «" + (x.list ? x.list.title : "") + "»";
+      case "followed": return "بدأ يتابع " + (x.target ? x.target.name : "");
+    }
+    return "";
+  }
+  function activityRow(x) {
+    var r = el("button", "act"); r.appendChild(avatarSmall(x.actor, "av"));
+    var txt = el("div", "txt"); txt.appendChild(el("b", "ltr", x.actor.name)); txt.appendChild(document.createTextNode(" " + activityText(x)));
+    if (x.stars) { txt.appendChild(document.createTextNode(" ")); txt.appendChild(starsText(x.stars)); }
+    txt.appendChild(el("span", "when", ago(x.at))); r.appendChild(txt);
+    if (x.movie) r.appendChild(posterImg(x.movie));
+    r.onclick = function () {
+      haptic();
+      if ((x.kind === "reviewed" || x.kind === "liked_review") && x.review_id) openReview(x.review_id);
+      else if (x.kind === "listed" && x.list) openListView(x.list.id);
+      else if (x.kind === "followed" && x.target) openUser(x.target.id);
+      else if (x.movie) openMovie(x.movie);
+    };
+    return r;
+  }
+  // ---------- المجتمع ----------
+  $("comm-btn").innerHTML = ICON.people;
+  $("comm-btn").onclick = function () {
+    haptic();
+    if (!apiReady()) { notify("افتح الصفحة من زرار «ادخل» في البوت"); return; }
+    go("s-community"); renderCommunity("feed");
+  };
+  function renderCommunity(tab) {
+    var seg = clear($("c-seg")), body = clear($("c-body"));
+    [["feed", "أتابعهم"], ["reviews", "مراجعات جديدة"], ["discover", "اكتشف"]].forEach(function (t) {
+      var b = el("button", "pill small" + (t[0] === tab ? " active" : ""), t[1]); b.onclick = function () { haptic(); renderCommunity(t[0]); }; seg.appendChild(b);
+    });
+    if (tab === "feed") {
+      var list = el("div"); body.appendChild(list);
+      pager(list, body, function (c) { return call("GET", "/api/feed" + (c ? "?before=" + c : "")); },
+        function (l, x) { l.appendChild(activityRow(x)); }, "لسه مفيش نشاط من الناس اللي بتتابعهم - شوف «اكتشف» وتابع ناس ذوقهم قريب منك");
+    } else if (tab === "reviews") {
+      var rl = el("div"); body.appendChild(rl);
+      pager(rl, body, function (c) { return call("GET", "/api/community/reviews?offset=" + (c || 0)); },
+        function (l, x) { l.appendChild(reviewCard(x, true)); }, "لسه مفيش مراجعات");
+    } else {
+      body.appendChild(el("div", "empty", "..."));
+      call("GET", "/api/community").then(function (d) {
+        clear(body);
+        if (d.films.length) {
+          body.appendChild(el("div", "section-title", "أفلام عليها تفاعل"));
+          var strip = el("div", "strip");
+          d.films.forEach(function (f) {
+            var t = el("div", "trend"); t.appendChild(posterImg(f.movie));
+            t.appendChild(el("span", "", f.average != null ? "★ " + f.average + " (" + f.count + ")" : f.movie.title));
+            t.onclick = function () { openMovie(f.movie); }; strip.appendChild(t);
+          });
+          body.appendChild(strip);
+        }
+        if (d.lists.length) { body.appendChild(el("div", "section-title", "قوائم مميزة")); d.lists.forEach(function (x) { body.appendChild(listRow(x)); }); }
+        body.appendChild(el("div", "section-title", "مستخدمون مقترحون"));
+        if (!d.users.length) body.appendChild(el("div", "empty", "لسه مفيش اقتراحات"));
+        d.users.forEach(function (u) {
+          var fb = el("button", "mini gold", "تابع");
+          fb.onclick = function () { haptic(); fb.disabled = true;
+            call("PUT", "/api/users/" + u.id + "/follow").then(function (x) { fb.textContent = x.follow === "accepted" ? "متابَع ✓" : "مستني الموافقة"; fb.className = "mini"; })
+              .catch(function (e) { fb.disabled = false; notify(e.message); }); };
+          body.appendChild(personRow(u, [fb]));
+        });
+      }).catch(function (e) { clear(body).appendChild(el("div", "empty", e.message)); });
+    }
+  }
+  // ---------- مراجعة + تعليقات ----------
+  function openReview(id) {
+    go("s-reviewview");
+    var box = clear($("rvv")); box.appendChild(el("div", "empty", "..."));
+    call("GET", "/api/reviews/" + id).then(function (r) {
+      clear(box); box.appendChild(el("h2", "", "مراجعة"));
+      box.appendChild(reviewCard(r, true));
+      if (r.movie) { var om = el("button", "btn outline", "افتح الفيلم"); om.style.width = "100%"; om.onclick = function () { openMovie(r.movie); }; box.appendChild(om); }
+      if (!(ME && ME.comments_enabled)) return;
+      box.appendChild(el("div", "section-title", "التعليقات"));
+      if (!ME.comments_public) box.appendChild(el("div", "beta", "التعليقات تجربة للأدمن - هتتفتح للناس بعد ما الإشراف يجهز"));
+      var list = el("div"); box.appendChild(list);
+      var lastId = 0;
+      var load = function (after) {
+        return call("GET", "/api/reviews/" + id + "/comments?after=" + after).then(function (d) {
+          d.items.forEach(function (c) { list.appendChild(commentRow(c)); lastId = c.id; });
+          if (d.next) return load(d.next);
+          if (!list.childNodes.length) list.appendChild(el("div", "empty", "لسه مفيش تعليقات"));
+        });
+      };
+      load(0);
+      var comp = el("div", "compose"), ta = el("textarea"); ta.maxLength = 500; ta.placeholder = "اكتب تعليق...";
+      var send = el("button", "btn primary", "إرسال"), msg = el("div", "msg");
+      send.onclick = function () {
+        send.disabled = true;
+        call("POST", "/api/reviews/" + id + "/comments", { text: ta.value }).then(function (d) {
+          send.disabled = false; ta.value = ""; msg.textContent = ""; clear(list);
+          d.items.forEach(function (c) { list.appendChild(commentRow(c)); });
+        }).catch(function (e) { send.disabled = false; msg.textContent = e.message; });
+      };
+      comp.appendChild(ta); comp.appendChild(send); box.appendChild(comp); box.appendChild(msg);
+    }).catch(function (e) { clear(box).appendChild(el("div", "empty", e.message)); });
+  }
+  function commentRow(c) {
+    var w = el("div", "cmt"), hd = el("div", "hd");
+    var name = el("b", "ltr", c.author.name); name.onclick = function () { openUser(c.author.id); };
+    hd.appendChild(name); hd.appendChild(el("span", "", ago(c.at))); w.appendChild(hd);
+    w.appendChild(el("div", "bd ltr", c.text));
+    var ft = el("div", "ft"), heart = el("button", "heart" + (c.liked ? " on" : ""));
+    var paint = function () { heart.className = "heart" + (c.liked ? " on" : ""); heart.textContent = (c.liked ? "♥ " : "♡ ") + c.likes; };
+    paint();
+    heart.onclick = function () { if (c.mine) return; haptic();
+      call(c.liked ? "DELETE" : "POST", "/api/comments/" + c.id + "/like").then(function (x) { c.likes = x.likes; c.liked = x.liked; paint(); }).catch(function (e) { notify(e.message); }); };
+    ft.appendChild(heart);
+    if (!c.mine) { var rp = el("button", "linkish", "إبلاغ"); rp.onclick = function () { reportSheet("comment", c.id); }; ft.appendChild(rp); }
+    if (c.can_delete) { var del = el("button", "linkish", "مسح"); del.onclick = function () { confirmBox("تمسح التعليق؟", function () {
+      call("DELETE", "/api/comments/" + c.id).then(function () { w.remove(); }).catch(function (e) { notify(e.message); }); }); }; ft.appendChild(del); }
+    w.appendChild(ft);
+    return w;
   }
 
   // ---------- حسابي ----------
@@ -1567,12 +2277,13 @@
     $("add-open").innerHTML = ICON.plus + " "; $("add-open").appendChild(document.createTextNode("إضافة تريلر"));
 
     $("d-title").textContent = m.title;
-    var meta = $("d-meta"); meta.textContent = "";
-    [m.genre, m.duration].filter(Boolean).forEach(function (p, i) { if (i) meta.appendChild(document.createTextNode(" • ")); meta.appendChild(el("bdi", "", p)); });
+    // كل البيانات في صف واحد (كل chip لوحدها - العربي والإنجليزي ما يتلخبطوش في سطر واحد)
+    var meta = $("d-meta"); meta.textContent = ""; meta.style.display = "none";
     var chips = $("d-chips"); chips.textContent = "";
     if (m.rating) chips.appendChild(el("span", "chip gold ltr", m.rating));
-    if (m.release) chips.appendChild(el("span", "chip ltr", m.release));
-    if (m.language) chips.appendChild(el("span", "chip ltr", m.language));
+    [m.genre, m.duration, m.release, m.language].filter(Boolean).forEach(function (v) { chips.appendChild(el("span", "chip ltr", v)); });
+    if (DATA && DATA.bot) { var shc = el("button", "chip share-chip"); shc.innerHTML = ICON.share; shc.appendChild(document.createTextNode(" شارك"));
+      shc.onclick = function () { shareItem("mv_" + m.id, "«" + m.title + "» على CFTRadar"); }; chips.appendChild(shc); }
 
     var actions = $("d-actions"); actions.textContent = "";
     if (m.bookable) {
@@ -1593,10 +2304,14 @@
     var desc = $("d-desc"); desc.textContent = m.description || ""; desc.classList.remove("open");
     $("d-more").style.display = (m.description || "").length > 140 ? "" : "none";
     loadFilm(m);                                       // تقييم CFTRadar والمراجعات (من سيرفر البوت)
+    // التفاصيل: اللي مش ظاهر فوق بس (النجوم، الترجمة، ...) - بالقيمة مش بالاسم (مصر والإمارات أساميهم مختلفة)
     var details = $("d-details"); details.textContent = "";
+    var shown = [m.genre, m.duration, m.release, m.language, m.rating].filter(Boolean).map(function (v) { return String(v).trim(); });
     (m.details || []).forEach(function (p) {
+      if (shown.indexOf(String(p[1] || "").trim()) >= 0) return;
       var row = el("div", "row"); row.appendChild(el("span", "k", p[0])); row.appendChild(el("span", "v ltr", p[1])); details.appendChild(row);
     });
+    $("d-details-title").style.display = details.childNodes.length ? "" : "none";
     go("s-detail");
   }
   $("play").onclick = function () {                     // التريلر فوق اسم الفيلم - بيشتغل هنا جوه الصفحة

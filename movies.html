@@ -43,6 +43,9 @@
   .flag.eg { background: linear-gradient(#ce1126 0 33.4%, #fff 33.4% 66.6%, #111 66.6%); }
   .flag.ae { background: linear-gradient(90deg, #ef3340 0 26%, transparent 26%),
                          linear-gradient(#00843d 0 33.4%, #fff 33.4% 66.6%, #111 66.6%); }
+  /* السعودية: أخضر + الشهادة (خط كتابة) + السيف تحتها - مبسّطين على قد العلم الصغير */
+  .flag.sa { background: repeating-linear-gradient(90deg, rgba(255,255,255,.9) 0 .9px, transparent .9px 1.7px) 50% 34% / 58% 2.4px no-repeat,
+                         linear-gradient(#fff, #fff) 50% 70% / 60% 1.3px no-repeat, #006c35; }
   .flag.xx { background: var(--surface-2); }
 
   /* ---------- الهيدر ---------- */
@@ -768,17 +771,17 @@
     if (text != null) n.textContent = text;   // نص بس - أي حاجة جاية من البيانات ما بتتنفذش
     return n;
   }
-  function flag(code) { return el("span", "flag " + (/^(eg|ae)$/.test(code) ? code : "xx")); }
+  function flag(code) { return el("span", "flag " + (/^(eg|ae|sa)$/.test(code) ? code : "xx")); }
   function countryName(code) {
     var list = (DATA && DATA.countries) || [];
     for (var i = 0; i < list.length; i++) if (list[i].code === code) return list[i].name;
-    return { eg: "مصر", ae: "الإمارات" }[code] || code;
+    return { eg: "مصر", ae: "الإمارات", sa: "السعودية" }[code] || code;
   }
   function poster(m) { return m.poster || "no_poster.jpg"; }
   function isConcert(m) {                              // البوت للأفلام بس (حتى لو البيانات قديمة): من غير حفلات ولا Musical
     return /concert|حفل|كونسير|music|موسيق|استعراض/i.test(m.genre || "") ||
       (m.details || []).some(function (p) { return /concert/i.test(String(p[1] || "")); }) ||
-      /world tour|in concert|live viewing|\(live\)|: live\s*$/i.test(m.title || "");
+      /world tour|concert|live viewing|\(live\)|: live\s*$/i.test(m.title || "");
   }
   function listIds(name) {
     return (DATA[name] || []).filter(function (id) { var m = DATA.movies[String(id)]; return m && !isConcert(m); });
@@ -922,7 +925,7 @@
   };
   function renderCountryOptions(box, onPick) {
     box.textContent = "";
-    var list = (DATA && DATA.countries) || [{ code: "eg", name: "مصر" }, { code: "ae", name: "الإمارات" }];
+    var list = (DATA && DATA.countries) || [{ code: "eg", name: "مصر" }, { code: "ae", name: "الإمارات" }, { code: "sa", name: "السعودية" }];
     list.forEach(function (c) {
       var b = el("button", "country-opt" + (c.code === country ? " active" : ""));
       b.appendChild(flag(c.code)); b.appendChild(el("span", "", c.name));

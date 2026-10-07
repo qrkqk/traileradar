@@ -127,6 +127,12 @@
   h1 { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.3; color: var(--cream); }
   .meta { color: var(--muted); font-size: 14px; margin-top: 4px; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  /* نسخ نفس الفيلم (العادية / Infinity Vision / ...) - كارت واحد وجواه النسخ */
+  .versions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
+  .versions:empty { display: none; }
+  .versions .v-label { color: var(--muted); font-size: 12.5px; font-weight: 700; margin-inline-end: 2px; }
+  .versions .pill .v-open { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
+    margin-inline-start: 6px; vertical-align: middle; }
   .chip { font-size: 12.5px; padding: 3px 10px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); }
   .chip.gold { color: var(--gold); border-color: rgba(240,192,72,.5); }
   .actions { display: flex; gap: 10px; margin-top: 16px; }
@@ -623,6 +629,7 @@
     <h1 class="ltr" id="d-title"></h1>
     <div class="meta" id="d-meta"></div>
     <div class="chips" id="d-chips"></div>
+      <div class="versions" id="d-versions"></div>
     <div class="actions" id="d-actions"></div>
     <div class="score" id="d-score" style="display:none"></div>
     <div class="desc ltr" id="d-desc"></div>
@@ -788,8 +795,8 @@
     return { eg: "مصر" }[code] || code;
   }
   function poster(m) { return m.poster || "no_poster.jpg"; }
-  function isConcert(m) {                              // البوت للأفلام بس (حتى لو البيانات قديمة): من غير حفلات ولا Musical
-    return /concert|حفل|كونسير|music|موسيق|استعراض/i.test(m.genre || "") ||
+  function isConcert(m) {                              // البوت للأفلام بس (حتى لو البيانات قديمة): من غير حفلات ولا Musical ولا وثائقي
+    return /concert|حفل|كونسير|music|موسيق|استعراض|documentar|وثائق|تسجيلي/i.test(m.genre || "") ||
       (m.details || []).some(function (p) { return /concert/i.test(String(p[1] || "")); }) ||
       /world tour|concert|live viewing|\(live\)|: live\s*$/i.test(m.title || "");
   }
@@ -2309,9 +2316,16 @@
   document.querySelectorAll(".tab").forEach(function (t) {
     t.onclick = function () { if (t.dataset.s !== section) { haptic(); setTab(t.dataset.s); window.scrollTo(0, 0); } };
   });
+  // كل نسخ الفيلم (الأساسية الأول) - من بيانات البلد
+  function versionsOf(m, code) {
+    var src = (code && CACHE[code]) || DATA;
+    return (m.versions || [m.id]).map(function (id) { return src && src.movies[String(id)]; }).filter(Boolean);
+  }
+  function versionsText(n) { return n === 2 ? "نسختين" : n + " نسخ"; }
   function subLine(m) {                                 // كل جزء لوحده عشان التواريخ ما تتقلبش
     var box = el("div", "sub");
-    [m.genre, m.section === "c" ? m.release : m.duration].filter(Boolean).forEach(function (part, i) {
+    var n = (m.versions || []).length;
+    [m.genre, m.section === "c" ? m.release : m.duration, n > 1 ? versionsText(n) : ""].filter(Boolean).forEach(function (part, i) {
       if (i) box.appendChild(document.createTextNode(" • "));
       var b = el("bdi", "", part); box.appendChild(b);
     });
@@ -2346,7 +2360,9 @@
       watchedIds().forEach(function (id) {
         codes.forEach(function (c) {
           var m = CACHE[c] && CACHE[c].movies[id];
-          if (m && !isConcert(m) && !m.bookable) items.push({ m: m, c: c });
+          if (!m || isConcert(m) || m.bookable) return;
+          var main = CACHE[c].movies[String((m.versions || [m.id])[0])] || m;      // الكارت = الفيلم (أي نسخة)
+          if (!items.some(function (it) { return it.m.id === main.id && it.c === c; })) items.push({ m: main, c: c });
         });
       });
       done(items);
@@ -2391,7 +2407,7 @@
       img.onerror = function () { if (!img.dataset.f) { img.dataset.f = 1; img.src = "no_poster.jpg"; } };
       card.appendChild(img);
       if (m.rating) card.appendChild(el("span", "badge rating ltr", m.rating));
-      if (m.bookable || m.others) card.appendChild(el("span", "badge book", "احجز"));
+      if (versionsOf(m, code).some(function (v) { return v.bookable || v.others; })) card.appendChild(el("span", "badge book", "احجز"));
       var info = el("div", "info");
       info.appendChild(el("div", "title ltr", m.title));
       info.appendChild(subLine(m));
@@ -2412,7 +2428,7 @@
     var local = null; try { local = localStorage.getItem("cft_trailer_" + country + "_" + m.id); } catch (e) {}
     return m.trailer || local || null;
   }
-  function showDetail(m) {
+  function showDetail(m, replace) {                    // replace: تغيير النسخة جوه نفس الصفحة
     current = m;
     var hero = $("hero"), tr = trailerOf(m);
     var old = hero.querySelector("iframe"); if (old) old.remove();
@@ -2431,6 +2447,18 @@
     [m.genre, m.duration, m.release, m.language].filter(Boolean).forEach(function (v) { chips.appendChild(el("span", "chip ltr", v)); });
     if (DATA && DATA.bot) { var shc = el("button", "chip share-chip"); shc.innerHTML = ICON.share; shc.appendChild(document.createTextNode(" شارك"));
       shc.onclick = function () { shareItem("mv_" + m.id, "«" + m.title + "» على CFTRadar"); }; chips.appendChild(shc); }
+
+    var vbox = $("d-versions"); vbox.textContent = "";
+    var vers = versionsOf(m);
+    if (vers.length > 1) {                              // «النسخ: العادية • Infinity Vision» - كل نسخة بمواعيدها
+      vbox.appendChild(el("span", "v-label", "النسخ"));
+      vers.forEach(function (v) {
+        var b = el("button", "pill small ltr" + (v.id === m.id ? " active" : ""), v.version || "العادية");
+        if (v.bookable || v.others) { var dot = el("span", "v-open"); dot.title = "الحجز متاح"; b.appendChild(dot); }
+        b.onclick = function () { if (v.id === current.id) return; haptic(); showDetail(v, true); };
+        vbox.appendChild(b);
+      });
+    }
 
     var actions = $("d-actions"); actions.textContent = "";
     if (m.bookable || m.others) {                       // VOX أو سينمات تانية
@@ -2460,7 +2488,7 @@
       var row = el("div", "row"); row.appendChild(el("span", "k", p[0])); row.appendChild(el("span", "v ltr", p[1])); details.appendChild(row);
     });
     $("d-details-title").style.display = details.childNodes.length ? "" : "none";
-    go("s-detail");
+    if (replace) show("s-detail"); else go("s-detail");
   }
   $("play").onclick = function () {                     // التريلر فوق اسم الفيلم - بيشتغل هنا جوه الصفحة
     var tr = current && trailerOf(current); if (!tr) return;

@@ -26,7 +26,7 @@
     --glasses: linear-gradient(90deg, var(--blue), var(--red));
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; background: var(--bg); color: var(--text);
+  html, body { margin: 0; background: var(--bg); color: var(--text); overflow-x: clip;
     font-family: "Cairo", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif; }
   body { min-height: 100vh; padding-bottom: env(safe-area-inset-bottom); }
   button { font: inherit; border: 0; cursor: pointer; color: inherit; background: none; }
@@ -41,11 +41,6 @@
   .flag { display: inline-block; width: 22px; height: 15px; border-radius: 3px; vertical-align: -2px;
     box-shadow: 0 0 0 1px rgba(255,255,255,.18); flex: none; }
   .flag.eg { background: linear-gradient(#ce1126 0 33.4%, #fff 33.4% 66.6%, #111 66.6%); }
-  .flag.ae { background: linear-gradient(90deg, #ef3340 0 26%, transparent 26%),
-                         linear-gradient(#00843d 0 33.4%, #fff 33.4% 66.6%, #111 66.6%); }
-  /* السعودية: أخضر + الشهادة (خط كتابة) + السيف تحتها - مبسّطين على قد العلم الصغير */
-  .flag.sa { background: repeating-linear-gradient(90deg, rgba(255,255,255,.9) 0 .9px, transparent .9px 1.7px) 50% 34% / 58% 2.4px no-repeat,
-                         linear-gradient(#fff, #fff) 50% 70% / 60% 1.3px no-repeat, #006c35; }
   .flag.xx { background: var(--surface-2); }
 
   /* ---------- الهيدر ---------- */
@@ -63,18 +58,18 @@
     display: grid; place-items: center; background: var(--surface); color: var(--gold); font-weight: 800; }
   .avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
   .tabs { display: flex; gap: 8px; margin: 12px 0 0; }
-  .tab { flex: 1 1 0; min-width: 0; padding: 10px 4px; border-radius: 12px; background: var(--surface); color: var(--muted);
+  .tab { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; padding: 10px 4px; border-radius: 12px; background: var(--surface); color: var(--muted);
     font-weight: 700; font-size: 14px; line-height: 1.35; border: 1px solid var(--line); white-space: nowrap; }
   .tab.active { background: var(--gold-grad); color: #1a1205; border-color: transparent; box-shadow: 0 4px 18px rgba(240,192,72,.25); }
   .tab small { font-weight: 600; opacity: .8; }
-  @media (max-width: 345px) { .tab { font-size: 12.5px; padding: 10px 2px; } .tabs { gap: 6px; } }
+  @media (max-width: 380px) { .tab { font-size: 12.5px; padding: 10px 2px; } .tabs { gap: 6px; } }
   .glasses-line { height: 3px; margin: 12px -14px 0; background: var(--glasses); opacity: .55; }
 
   /* ---------- شبكة الأفلام + تحريك 3D ---------- */
-  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 14px; }
-  @media (min-width: 560px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 14px; }
+  /* البوسترات: عمودين في كل المقاسات (طلب صاحب البوت) */
   /* بوسترات 3D زي 3d-tilt.html: الكارت بيميل مع الماوس/الصباع + لمعة + عناصر بارزة بأعماق مختلفة */
-  .card { position: relative; border-radius: 14px; background: var(--surface); border: 1px solid var(--line);
+  .card { position: relative; min-width: 0; border-radius: 14px; background: var(--surface); border: 1px solid var(--line);
     text-align: right; padding: 0; cursor: pointer; transform-style: preserve-3d;
     transition: transform .12s ease-out, box-shadow .4s ease; box-shadow: 0 14px 30px rgba(0,0,0,.45);
     animation: rise .45s ease backwards; }       /* backwards: ما بتمسكش آخر حالة فما بتغطيش على الميلان */
@@ -470,7 +465,7 @@
   .ptabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 4px -16px 12px; padding: 0 16px; }
   .ptabs::-webkit-scrollbar { display: none; }
   .ptabs .pill { flex: none; }
-  .poster-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .poster-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .pg-item { text-align: center; min-width: 0; }
   /* الأفلام المفضلة (5 أفلام بيختارهم صاحب الحساب) */
   .top-films { margin: 2px 0 14px; }
@@ -786,11 +781,11 @@
     if (text != null) n.textContent = text;   // نص بس - أي حاجة جاية من البيانات ما بتتنفذش
     return n;
   }
-  function flag(code) { return el("span", "flag " + (/^(eg|ae|sa)$/.test(code) ? code : "xx")); }
+  function flag(code) { return el("span", "flag " + (/^(eg)$/.test(code) ? code : "xx")); }
   function countryName(code) {
     var list = (DATA && DATA.countries) || [];
     for (var i = 0; i < list.length; i++) if (list[i].code === code) return list[i].name;
-    return { eg: "مصر", ae: "الإمارات", sa: "السعودية" }[code] || code;
+    return { eg: "مصر" }[code] || code;
   }
   function poster(m) { return m.poster || "no_poster.jpg"; }
   function isConcert(m) {                              // البوت للأفلام بس (حتى لو البيانات قديمة): من غير حفلات ولا Musical
@@ -928,6 +923,9 @@
     var t = el("div"); t.appendChild(el("div", "n ltr", fullName()));
     if (user && user.username) t.appendChild(el("div", "u", "@" + user.username));
     who.appendChild(t);
+    var many = ((DATA && DATA.countries) || []).length > 1;      // بلد واحدة (مصر): من غير «انت منين؟»
+    $("login-countries").style.display = many ? "" : "none";
+    document.querySelector("#s-login .choose").style.display = many ? "" : "none";
     renderCountryOptions($("login-countries"), function (code) { country = code; renderLogin(); loadCountry(code, renderLogin); });
     renderLoginGov();
     $("login-go").innerHTML = ICON.login + " ";
@@ -961,7 +959,7 @@
   }
   function renderCountryOptions(box, onPick) {
     box.textContent = "";
-    var list = (DATA && DATA.countries) || [{ code: "eg", name: "مصر" }, { code: "ae", name: "الإمارات" }, { code: "sa", name: "السعودية" }];
+    var list = (DATA && DATA.countries) || [{ code: "eg", name: "مصر" }];
     list.forEach(function (c) {
       var b = el("button", "country-opt" + (c.code === country ? " active" : ""));
       b.appendChild(flag(c.code)); b.appendChild(el("span", "", c.name));
@@ -2599,12 +2597,17 @@
   }
 
   // ---------- تحميل البيانات ----------
+  var DEFAULT_COUNTRY = "eg";
   function loadCountry(code, done) {
     if (CACHE[code]) { DATA = CACHE[code]; country = code; done && done(); return; }
     fetch(dataBase + "/" + code + ".json?t=" + Date.now(), { cache: "no-store" })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (data) { CACHE[code] = data; DATA = data; country = code; done && done(); })
       .catch(function () {
+        if (code !== DEFAULT_COUNTRY) {                 // بلد اتشالت (لينك قديم): مصر
+          store.set("country", DEFAULT_COUNTRY);
+          return loadCountry(DEFAULT_COUNTRY, done);
+        }
         if (!DATA) { show("s-list"); $("grid").textContent = ""; $("grid").style.display = "block";
           $("grid").appendChild(el("div", "error", "مش قادر أجيب الأفلام دلوقتي.\nاقفل الصفحة وافتحها تاني كمان شوية.")); }
       });

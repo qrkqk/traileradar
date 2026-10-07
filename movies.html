@@ -2,7 +2,7 @@
 <!--
   CFTRadar - صفحة الأفلام (Telegram Mini App)
   البوت بيرفعها لوحده على GitHub Pages، وبيرفع بيانات الأفلام والمواعيد على فرع data:
-      movies.html?c=<eg|ae>&s=<s|c>&d=<رابط فولدر البيانات>
+      movies.html?c=<eg>&s=<s|c>&d=<رابط فولدر البيانات>
   الألوان من شعار CFTRadar بس: أسود + ذهبي + كريمي (الفشار) + أحمر/أزرق (النظارة).
 -->
 <html lang="ar" dir="rtl">
@@ -2452,7 +2452,7 @@
     var desc = $("d-desc"); desc.textContent = m.description || ""; desc.classList.remove("open");
     $("d-more").style.display = (m.description || "").length > 140 ? "" : "none";
     loadFilm(m);                                       // تقييم CFTRadar والمراجعات (من سيرفر البوت)
-    // التفاصيل: اللي مش ظاهر فوق بس (النجوم، الترجمة، ...) - بالقيمة مش بالاسم (مصر والإمارات أساميهم مختلفة)
+    // التفاصيل: اللي مش ظاهر فوق بس (النجوم، الترجمة، ...) - بالقيمة مش بالاسم (أسامي العناوين ممكن تختلف)
     var details = $("d-details"); details.textContent = "";
     var shown = [m.genre, m.duration, m.release, m.language, m.rating].filter(Boolean).map(function (v) { return String(v).trim(); });
     (m.details || []).forEach(function (p) {

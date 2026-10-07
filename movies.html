@@ -166,6 +166,18 @@
   .cinema h3 { margin: 0 0 10px; font-size: 16.5px; font-weight: 800; color: var(--cream); display: flex; gap: 8px; align-items: center; }
   .cinema h3::before { content: ""; width: 18px; height: 3px; border-radius: 2px; background: var(--glasses); }
   .screen-type { color: var(--muted); font-size: 13px; font-weight: 700; margin: 8px 0 7px; }
+  /* السينمات التانية (elCinema): المحافظة والمنطقة، والسعر تحت الميعاد */
+  .t-filter { display: flex; gap: 8px; padding: 0 14px 10px; flex-wrap: wrap; }
+  .t-filter:empty { display: none; }
+  .gov-select { flex: 1 1 140px; min-width: 0; padding: 9px 10px; border-radius: 11px; background: var(--surface);
+    border: 1px solid var(--line); color: var(--cream); font: inherit; font-size: 13.5px; font-weight: 700; }
+  .cinema-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: -4px 0 6px; color: var(--muted); font-size: 12px; }
+  .cinema-meta .src { color: var(--gold); }
+  .time .price { display: block; font-size: 10.5px; font-weight: 700; color: var(--muted); margin-top: 1px; }
+  .gov-empty { text-align: center; padding: 22px 12px; color: var(--muted); }
+  .gov-empty .btn { margin-top: 12px; }
+  #login-gov { margin-top: 12px; }
+  #login-gov label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 13px; }
   .times { display: flex; flex-wrap: wrap; gap: 8px; }
   .time { position: relative; padding: 7px 14px; border-radius: 9px; font-weight: 800; font-size: 14px; direction: ltr;
     color: var(--gold); border: 1.5px solid rgba(240,192,72,.65); background: rgba(240,192,72,.06); }
@@ -563,6 +575,7 @@
     <div class="who" id="login-who"></div>
     <div class="choose">انت منين؟</div>
     <div class="country-list" id="login-countries"></div>
+    <div id="login-gov"></div>
     <button class="btn primary" id="login-go"></button>
   </div>
 </section>
@@ -680,8 +693,9 @@
 
 <!-- ============ المواعيد والحجز ============ -->
 <section class="screen" id="s-times">
-  <div class="st-head"><h2 class="ltr" id="t-title"></h2><p>اختار الميعاد وهيفتحلك صفحة الحجز بتاعته</p></div>
+  <div class="st-head"><h2 class="ltr" id="t-title"></h2><p>اختار الميعاد وهيفتحلك صفحة الحجز</p></div>
   <div class="scroller" id="t-days"></div>
+    <div class="t-filter" id="t-filter"></div>
   <div class="scroller" id="t-cinemas"></div>
   <div id="t-list"></div>
 </section>
@@ -715,6 +729,7 @@
     <div class="field"><label>الشكل</label><div class="swatches" id="e-presets"></div></div>
     <div class="field"><label>اللون</label><div class="media-row"><input type="color" id="e-accent">
       <span class="pills" id="e-effects"></span></div></div>
+    <div class="field" id="e-gov-field"><label>محافظتك (السينمات اللي بتظهر في «احجز دلوقتي»)</label><div id="e-gov"></div></div>
     <div class="field"><label>الخصوصية</label><div class="grid2" id="e-privacy"></div></div>
     <div class="msg" id="e-msg"></div>
     <button class="btn primary" id="e-save">حفظ</button>
@@ -798,7 +813,7 @@
     var m = DATA.movies[target.m], view = target.v; target = null;
     if (!m || isConcert(m)) return;
     showDetail(m);
-    if (view === "t" && m.bookable) openTimes(m);
+    if (view === "t" && (m.bookable || m.others)) openTimes(m);
   }
   function isAdmin() {                                  // البوت بيعلّم لينك الأدمن (والبوت بيتأكد تاني قبل ما يقبل أي تريلر)
     if (q.get("adm") === "1") return true;
@@ -913,7 +928,8 @@
     var t = el("div"); t.appendChild(el("div", "n ltr", fullName()));
     if (user && user.username) t.appendChild(el("div", "u", "@" + user.username));
     who.appendChild(t);
-    renderCountryOptions($("login-countries"), function (code) { country = code; renderLogin(); });
+    renderCountryOptions($("login-countries"), function (code) { country = code; renderLogin(); loadCountry(code, renderLogin); });
+    renderLoginGov();
     $("login-go").innerHTML = ICON.login + " ";
     $("login-go").appendChild(document.createTextNode("دخول بحساب تيليجرام"));
   }
@@ -921,8 +937,28 @@
     haptic("medium");
     store.set("login", JSON.stringify({ v: 1, at: Date.now() }));
     store.set("country", country);
+    if (country === "eg") setGov(GOV);
     loadCountry(country, function () { renderHeader(); setTab(section); show("s-list"); openTarget(); syncCountry(country); });
   };
+  // ---------- المحافظة (مصر): «احجز دلوقتي» بيعرض سينمات محافظتك بس - و«كل المحافظات» لكل حاجة ----------
+  var GOV = "";
+  function govList() { return (DATA && DATA.govs) || []; }
+  function setGov(g) { GOV = g || ""; store.set("gov", GOV); }
+  function govSelect(value, onChange, allLabel) {
+    var sel = el("select", "gov-select");
+    [["", allLabel || "كل المحافظات"]].concat(govList().map(function (g) { return [g, g]; })).forEach(function (o) {
+      var opt = el("option", "", o[1]); opt.value = o[0]; sel.appendChild(opt);
+    });
+    sel.value = govList().indexOf(value) >= 0 ? value : "";
+    sel.onchange = function () { haptic(); onChange(sel.value); };
+    return sel;
+  }
+  function renderLoginGov() {
+    var box = clear($("login-gov"));
+    if (country !== "eg" || !govList().length) return;
+    box.appendChild(el("label", "", "محافظتك؟ (تقدر تغيّرها بعدين)"));
+    box.appendChild(govSelect(GOV, function (g) { GOV = g; }));
+  }
   function renderCountryOptions(box, onPick) {
     box.textContent = "";
     var list = (DATA && DATA.countries) || [{ code: "eg", name: "مصر" }, { code: "ae", name: "الإمارات" }, { code: "sa", name: "السعودية" }];
@@ -1043,7 +1079,14 @@
 
   // ---------- تعديل الملف ----------
   var EDIT = null, PICK = null;
+  function renderEditGov() {
+    var field = $("e-gov-field"), box = clear($("e-gov"));
+    field.style.display = country === "eg" && govList().length ? "" : "none";
+    if (field.style.display === "none") return;
+    box.appendChild(govSelect(GOV, function (g) { setGov(g); notify(g ? "هتشوف سينمات " + g + " الأول" : "هتشوف سينمات كل المحافظات"); }));
+  }
   function openEdit() {
+    renderEditGov();
     if (!ME) return;
     EDIT = { preset: ME.theme.preset, accent: ME.theme.accent, effect: ME.theme.effect, privacy: Object.assign({}, ME.privacy),
              cover_y: ME.theme.cover_y != null ? ME.theme.cover_y : 50, cover_zoom: ME.theme.cover_zoom || 100 };
@@ -1818,7 +1861,7 @@
   function openAdmin(tab) { go("s-admin"); renderAdmin(tab); }
   function renderAdmin(tab) {
     var seg = clear($("a-seg")), body = clear($("a-body"));
-    [["reports", "البلاغات"], ["users", "المستخدمين"], ["hidden", "المخفي"], ["logs", "السجل"]].forEach(function (t) {
+    [["reports", "البلاغات"], ["users", "المستخدمين"], ["hidden", "المخفي"], ["logs", "السجل"], ["elcinema", "السينمات التانية"]].forEach(function (t) {
       var b = el("button", "pill small" + (t[0] === tab ? " active" : ""), t[1]); b.onclick = function () { haptic(); renderAdmin(t[0]); }; seg.appendChild(b);
     });
     ADMIN_TAB[tab](body);
@@ -1834,7 +1877,43 @@
     if (t.text) card.appendChild(el("div", "body ltr", t.text));
   }
   function modAct(label, cls, fn) { var b = el("button", "mini " + (cls || ""), label); b.onclick = function () { haptic("medium"); fn(b); }; return b; }
+  // السينمات التانية (elCinema): كل فيلم مربوط بفيلم VOX ولا لوحده - لو المطابقة غلطت: ربط / فصل بإيدك
+  function ecAdmin(body, d) {
+    clear(body);
+    body.appendChild(el("div", "linkish", "الفيلم اللي في VOX وسينمات تانية بيبقى فيلم واحد. لو اتربط غلط افصله، ولو اتكرر اربطه بفيلم VOX."));
+    var post = function (work, target) {
+      call("POST", "/api/admin/elcinema", { work_id: work, movie_id: target })
+        .then(function (r) { closeSheet(); notify("تمام ✓"); ecAdmin(body, r); }).catch(function (e) { notify(e.message); });
+    };
+    if (!d.works.length) body.appendChild(el("div", "empty", "لسه مفيش أفلام من السينمات التانية"));
+    d.works.forEach(function (w) {
+      var card = el("div", "mod-card"), hd = el("div", "hd");
+      hd.appendChild(el("b", "ltr", w.title + (w.title_ar && w.title_ar !== w.title ? " • " + w.title_ar : "")));
+      hd.appendChild(el("span", "", w.kind === "s" ? "يعرض حاليًا" : "قريبًا"));
+      card.appendChild(hd);
+      var st = w.linked && w.linked.vox ? "نفس فيلم VOX «" + w.linked.title + "»" : "فيلم لوحده (مش في VOX)";
+      if (w.mode === "manual") st += " • بإيد الأدمن"; else if (w.mode === "split") st += " • مفصول بإيد الأدمن";
+      card.appendChild(el("div", "who", st));
+      var acts = el("div", "mod-acts");
+      acts.appendChild(modAct("اربط بفيلم VOX", "blue", function () {
+        openSheet("اربط «" + w.title + "» بـ", function (sh) {
+          d.vox.forEach(function (v) {
+            var row = el("button", "btn outline", v.title); row.style.marginTop = "6px";
+            row.onclick = function () { post(w.work_id, v.id); }; sh.appendChild(row);
+          });
+        });
+      }));
+      if (w.linked && w.linked.vox) acts.appendChild(modAct("افصل", "red", function () { post(w.work_id, null); }));
+      if (w.mode !== "auto") acts.appendChild(modAct("رجّعه تلقائي", "", function () { post(w.work_id, "auto"); }));
+      acts.appendChild(modAct("elCinema", "", function () { if (tg && tg.openLink) tg.openLink(w.url); else window.open(w.url, "_blank"); }));
+      card.appendChild(acts); body.appendChild(card);
+    });
+  }
   var ADMIN_TAB = {
+    elcinema: function (body) {
+      body.appendChild(el("div", "empty", "بيحمّل..."));
+      call("GET", "/api/admin/elcinema").then(function (d) { ecAdmin(body, d); }).catch(function (e) { clear(body); body.appendChild(el("div", "error", e.message)); });
+    },
     reports: function (body) {
       var list = el("div"); body.appendChild(list);
       pager(list, body, function (c) { return call("GET", "/api/admin/reports?offset=" + (c || 0)); }, function (l, g) {
@@ -2314,7 +2393,7 @@
       img.onerror = function () { if (!img.dataset.f) { img.dataset.f = 1; img.src = "no_poster.jpg"; } };
       card.appendChild(img);
       if (m.rating) card.appendChild(el("span", "badge rating ltr", m.rating));
-      if (m.bookable) card.appendChild(el("span", "badge book", "احجز"));
+      if (m.bookable || m.others) card.appendChild(el("span", "badge book", "احجز"));
       var info = el("div", "info");
       info.appendChild(el("div", "title ltr", m.title));
       info.appendChild(subLine(m));
@@ -2356,7 +2435,7 @@
       shc.onclick = function () { shareItem("mv_" + m.id, "«" + m.title + "» على CFTRadar"); }; chips.appendChild(shc); }
 
     var actions = $("d-actions"); actions.textContent = "";
-    if (m.bookable) {
+    if (m.bookable || m.others) {                       // VOX أو سينمات تانية
       var book = el("button", "btn primary"); book.appendChild(document.createTextNode("احجز دلوقتي "));
       book.insertAdjacentHTML("beforeend", ICON.ticket);  // الأيقونة على الشمال
       book.onclick = function () { haptic(); openTimes(m); }; actions.appendChild(book);
@@ -2370,7 +2449,7 @@
       var watch = el("button", "btn outline"); watch.innerHTML = ICON.eye; watch.appendChild(document.createTextNode(" راقب"));
       watch.onclick = function () { setWatched(m.id, true); sendToBot({ a: "watch", id: m.id }, "w_" + m.id); }; actions.appendChild(watch);
     }
-    if (!m.bookable && m.section === "s") actions.appendChild(el("div", "btn note", "الحجز لسه ما فتحش"));
+    if (!m.bookable && !m.others && m.section === "s") actions.appendChild(el("div", "btn note", "الحجز لسه ما فتحش"));
 
     var desc = $("d-desc"); desc.textContent = m.description || ""; desc.classList.remove("open");
     $("d-more").style.display = (m.description || "").length > 140 ? "" : "none";
@@ -2425,9 +2504,17 @@
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (data) {
         TIMES = data; timesDay = (data.days[0] || {}).key;
-        store.get("cinema_" + country, function (v) { timesCinema = v || ""; renderTimes(); });
+        timesArea = ""; timesAll = false;
+        store.get("gov", function (g) {                 // محافظتك المحفوظة (حتى لو الصفحة لسه فاتحة حالًا)
+          GOV = g || ""; timesGov = GOV;
+          store.get("cinema_" + country, function (v) { timesCinema = v || ""; renderTimes(); });
+        });
       })
       .catch(function () { list.textContent = ""; list.appendChild(el("div", "error", "مش قادر أجيب المواعيد دلوقتي.\nجرّب تاني كمان شوية.")); });
+  }
+  var timesGov = "", timesArea = "", timesAll = false;
+  function timesHasGov() {                             // فيه سينمات معروف محافظتها (مصر)؟
+    return Object.keys(TIMES.byDay).some(function (k) { return TIMES.byDay[k].some(function (c) { return c.gov; }); });
   }
   function renderTimes() {
     var days = $("t-days"); days.textContent = "";
@@ -2436,7 +2523,29 @@
       b.onclick = function () { haptic(); timesDay = d.key; renderTimes(); };
       days.appendChild(b);
     });
-    var cinemas = TIMES.byDay[timesDay] || [];
+    var all = TIMES.byDay[timesDay] || [];
+    // المحافظة والمنطقة: الاختيار بيتفتكر (محافظتك)، و«كل المحافظات» من رسالة «مش بيتعرض» للمرة دي بس
+    var filter = $("t-filter"); filter.textContent = "";
+    var gov = timesAll || !timesHasGov() ? "" : timesGov;
+    if (timesHasGov() && govList().length) {
+      filter.appendChild(govSelect(gov, function (g) { timesAll = false; timesGov = g; timesArea = ""; setGov(g); renderTimes(); }));
+      if (gov) {
+        var areas = [];
+        Object.keys(TIMES.byDay).forEach(function (k) {
+          TIMES.byDay[k].forEach(function (c) { if (c.gov === gov && c.area && areas.indexOf(c.area) < 0) areas.push(c.area); });
+        });
+        if (areas.length > 1) {
+          var asel = el("select", "gov-select");
+          [["", "كل المناطق"]].concat(areas.map(function (a) { return [a, a]; })).forEach(function (o) {
+            var opt = el("option", "", o[1]); opt.value = o[0]; asel.appendChild(opt);
+          });
+          asel.value = areas.indexOf(timesArea) >= 0 ? timesArea : "";
+          asel.onchange = function () { haptic(); timesArea = asel.value; renderTimes(); };
+          filter.appendChild(asel);
+        }
+      }
+    }
+    var cinemas = all.filter(function (c) { return (!gov || c.gov === gov) && (!timesArea || c.area === timesArea); });
     var names = cinemas.map(function (c) { return c.cinema; });
     if (timesCinema && names.indexOf(timesCinema) < 0) timesCinema = "";
     var bar = $("t-cinemas"); bar.textContent = "";
@@ -2450,11 +2559,19 @@
     var list = $("t-list"); list.textContent = "";
     cinemas.filter(function (c) { return !timesCinema || c.cinema === timesCinema; }).forEach(function (c) {
       var box = el("div", "cinema"); box.appendChild(el("h3", "ltr", c.cinema));
+      var place = [c.area, c.gov].filter(function (v, i, a) { return v && a.indexOf(v) === i; }).join("، ");
+      if (place || c.src === "ec") {
+        var meta = el("div", "cinema-meta");
+        if (place) meta.appendChild(el("span", "", place));
+        if (c.src === "ec") meta.appendChild(el("span", "src", "الحجز من elCinema"));
+        box.appendChild(meta);
+      }
       c.screens.forEach(function (sc) {
         if (sc.type) box.appendChild(el("div", "screen-type ltr", sc.type));
         var times = el("div", "times");
         sc.times.forEach(function (t) {
           var b = el("button", "time" + (t[1] ? "" : " full"), t[0]);
+          if (t[2]) b.appendChild(el("small", "price", t[2] + " ج.م"));
           if (t[1]) b.onclick = function () {
             haptic("medium");
             if (tg && tg.openLink) tg.openLink(t[1]); else window.open(t[1], "_blank");
@@ -2466,7 +2583,19 @@
       });
       list.appendChild(box);
     });
-    if (!list.childNodes.length) list.appendChild(el("div", "empty", "مفيش عروض في اليوم ده."));
+    if (!list.childNodes.length) {
+      if (gov && all.length) {                         // فيه عروض بس مش في محافظتك
+        var anyDay = Object.keys(TIMES.byDay).some(function (k) {
+          return TIMES.byDay[k].some(function (c) { return c.gov === gov; });
+        });
+        var box2 = el("div", "gov-empty");
+        box2.appendChild(el("div", "", "الفيلم ده مش بيتعرض في " + gov + (anyDay ? " في اليوم ده." : ".")));
+        var allBtn = el("button", "btn outline", "كل المحافظات");
+        allBtn.onclick = function () { haptic(); timesAll = true; timesArea = ""; renderTimes(); };
+        box2.appendChild(allBtn);
+        list.appendChild(box2);
+      } else list.appendChild(el("div", "empty", "مفيش عروض في اليوم ده."));
+    }
   }
 
   // ---------- تحميل البيانات ----------
@@ -2570,6 +2699,7 @@
     store.get("country", function (saved) {
       // من تنبيه: بلد الفيلم (اللي في اللينك) هي اللي تمشي - غير كده آخر بلد كنت بتتفرج عليها
       if (!target && saved && /^[a-z]{2}$/.test(saved)) country = saved;
+      store.get("gov", function (v) { GOV = v || ""; });
       loadCountry(country, function () {
         var go_on = function () {
           loadMe(function () { syncWant(); });          // التسجيل التلقائي (أول مرة) + صورة الحساب + هشوفهم بعدين

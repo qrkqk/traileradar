@@ -471,14 +471,6 @@
   .pg-item img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 10px; background: var(--surface-2); display: block; }
   .pg-item .stars { font-size: 11px; margin-top: 3px; }
   .pg-item .times { font-size: 11px; color: var(--muted); }
-  .month { color: var(--gold); font-weight: 800; font-size: 13px; margin: 14px 2px 7px; }
-  .diary-row { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 12px; background: var(--surface);
-    border: 1px solid var(--line); margin-bottom: 7px; width: 100%; text-align: right; }
-  .diary-row .day { width: 30px; text-align: center; font-size: 18px; font-weight: 800; color: var(--cream); flex: none; }
-  .diary-row img { width: 36px; height: 54px; object-fit: cover; border-radius: 6px; flex: none; background: var(--surface-2); }
-  .diary-row .t { flex: 1; min-width: 0; font-weight: 700; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .diary-row .meta2 { display: block; font-size: 11.5px; font-weight: 600; color: var(--muted); }
-  .tag-small { font-size: 10.5px; color: var(--gold); border: 1px solid rgba(240,192,72,.45); border-radius: 99px; padding: 0 7px; }
   .sys-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
   .sys-tile { padding: 12px 4px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); text-align: center; }
   .sys-tile svg.i { width: 24px; height: 24px; color: var(--gold); }
@@ -578,7 +570,7 @@
     <img class="logo" src="logo.png" alt="">
     <h2><b>CFT</b><span>Radar</span></h2>
     <p style="font-size:17px;color:var(--cream);font-weight:800;margin-top:6px">حاليًا في صيانة</p>
-    <p>بنظبط حاجات عشان نرجعلك أحسن - الصفحة هتكمل لوحدها أول ما نرجع</p>
+    <p>بنظبط شوية حاجات، والصفحة هتفتح لوحدها أول ما نخلص</p>
     <button class="btn primary" id="maint-retry">جرّب تاني</button>
   </div>
 </section>
@@ -950,12 +942,12 @@
     var base = apiBase();
     return fetch(base + path, opts).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (j) {
-        if (!r.ok) { var err = new Error(j.error || "حصلت مشكلة - جرّب تاني"); err.data = j; throw err; }
+        if (!r.ok) { var err = new Error(j.error || "حصلت مشكلة، جرّب تاني"); err.data = j; throw err; }
         if (j && j.new_badges && j.new_badges.length) celebrate(j.new_badges);
         return j;
       });
     }, function () {                                     // السيرفر ما ردّش خالص: عنوانه ممكن يكون اتغير
-      var down = new Error("مش قادر أوصل للبوت دلوقتي - جرّب كمان شوية");
+      var down = new Error("مش قادر أوصل للبوت دلوقتي، جرّب كمان شوية");
       if (retried) throw down;
       if (apiBase() !== base) return call(method, path, body, true);     // طلب تاني جاب العنوان الجديد خلاص
       return new Promise(function (res) { refreshApi(res); }).then(function (changed) {
@@ -982,7 +974,7 @@
     if (!p) {
       pf.dataset.preset = "gold"; pf.dataset.effect = "none";
       pf.appendChild(el("div", "pf-note", apiBase() ? "الحساب مش متاح دلوقتي.\nافتح الصفحة من زرار «اضغط هنا» في البوت، أو جرّب كمان شوية."
-                                                   : "الحسابات بتتجهز - هتبقى متاحة قريب."));
+                                                   : "الحسابات لسه بتتجهز وهتشتغل قريب."));
       return;
     }
     pf.dataset.preset = p.theme.preset; pf.dataset.effect = p.theme.effect;
@@ -1006,7 +998,7 @@
       var ur = el("div", "user-row"), un = el("div", "pf-user" + (p.username_hidden ? " off" : ""), "@" + p.username);
       if (p.owner) {                                   // زرار العين: يخفي اليوزر عن الكل (في كل حتة)
         var eye = el("button", "eye-btn"); eye.innerHTML = p.username_hidden ? ICON.eyeOff : ICON.eye;
-        eye.title = p.username_hidden ? "اليوزر مخفي - اضغط عشان يظهر" : "اضغط عشان تخفي اليوزر";
+        eye.title = p.username_hidden ? "اليوزر مخفي، اضغط عشان يظهر" : "اضغط عشان تخفي اليوزر";
         eye.onclick = function () {
           haptic("medium"); eye.disabled = true;
           call("PATCH", "/api/me", { privacy: { username: p.username_hidden ? "everyone" : "me" } })
@@ -1021,7 +1013,7 @@
     if (p.private) { body.appendChild(el("div", "pf-note", "الحساب ده خاص.")); pf.appendChild(body); return; }
     if (p.bio) body.appendChild(el("div", "pf-bio ltr", p.bio));
     var stats = el("div", "pf-stats");
-    [["followers", "المتابعون"], ["following", p.owner ? "أتابع" : "بيتابع"], ["reviews", "مراجعات"], ["ratings", "تقييمات"]].forEach(function (x) {
+    [["followers", "متابعين"], ["following", p.owner ? "أتابع" : "بيتابع"], ["reviews", "مراجعات"], ["ratings", "تقييمات"]].forEach(function (x) {
       var v = (p.counts || {})[x[0]], cell = el("div" + "");
       cell.appendChild(el("b", "", v == null ? "–" : String(v))); cell.appendChild(el("span", "", x[1]));
       if (x[0] === "followers" || x[0] === "following") { cell.className = "tap"; cell.onclick = function () { haptic(); openPeople(p, x[0]); }; }
@@ -1029,7 +1021,7 @@
     });
     body.appendChild(stats);
     if (p.owner && p.status && p.status.state === "suspended")
-      body.appendChild(el("div", "warn", "حسابك موقوف" + (p.status.until ? " لحد " + fmtDate(p.status.until) : "") + " - تقدر تتفرج بس"));
+      body.appendChild(el("div", "warn", "حسابك موقوف" + (p.status.until ? " لحد " + fmtDate(p.status.until) : "") + "، تقدر تتفرج بس"));
     if (p.owner && p.admin) { var ab = el("button", "admin-btn", "لوحة الإدارة" + (p.open_reports ? " • " + p.open_reports + " بلاغ" : ""));
       ab.onclick = function () { haptic(); openAdmin("reports"); }; body.appendChild(ab); }
     if (p.owner && p.requests) { var rb = el("button", "req-banner", "عندك " + p.requests + " طلب متابعة"); rb.onclick = function () { haptic(); openRequests(); }; body.appendChild(rb); }
@@ -1110,7 +1102,7 @@
     });
     $("e-accent").value = EDIT.accent;
     var fx = $("e-effects"); fx.textContent = "";
-    [["none", "بدون"], ["glow", "توهج"], ["sparkle", "لمعة"]].forEach(function (x) {
+    [["none", "من غير"], ["glow", "توهج"], ["sparkle", "لمعة"]].forEach(function (x) {
       var b = el("button", "pill small" + (EDIT.effect === x[0] ? " active" : ""), x[1]);
       b.onclick = function () { haptic(); EDIT.effect = x[0]; renderThemeControls(); }; fx.appendChild(b);
     });
@@ -1119,10 +1111,10 @@
   function renderPrivacy() {
     var box = $("e-privacy"); box.textContent = "";
     [["profile", "الحساب"], ["ratings", "التقييمات"], ["reviews", "المراجعات"], ["lists", "القوائم وهشوفهم بعدين"],
-     ["watched", "شفتهم وسجل المشاهدة"], ["activity", "نشاطي"]].forEach(function (x) {
+     ["watched", "شفتهم"], ["activity", "نشاطي"]].forEach(function (x) {
       var f = el("div"); f.appendChild(el("label", "", x[1]));
       var sel = el("select");
-      [["everyone", "الجميع"], ["followers", "المتابعون فقط"], ["me", "أنا فقط"]].forEach(function (o) {
+      [["everyone", "الكل"], ["followers", "المتابعين بس"], ["me", "أنا بس"]].forEach(function (o) {
         var opt = el("option", "", o[1]); opt.value = o[0]; if (EDIT.privacy[x[0]] === o[0]) opt.selected = true; sel.appendChild(opt);
       });
       sel.onchange = function () { EDIT.privacy[x[0]] = sel.value; };
@@ -1137,7 +1129,7 @@
   $("e-file").onchange = function () {
     var f = this.files && this.files[0]; this.value = "";
     if (!f || !PICK) return;
-    if (f.size > 8 * 1024 * 1024) { $("e-msg").textContent = "الصورة كبيرة - أقصى حجم 8 ميجا"; return; }
+    if (f.size > 8 * 1024 * 1024) { $("e-msg").textContent = "الصورة كبيرة، أقصى حجم 8 ميجا"; return; }
     var fd = new FormData(); fd.append("file", f, f.name);
     $("e-msg").textContent = "بيترفع..."; busy(true);
     call("POST", "/api/me/" + PICK, fd).then(function (p) { afterChange(p); busy(false); }).catch(fail);
@@ -1200,7 +1192,7 @@
   }
   function privacySelect(value) {
     var sel = el("select");
-    [["everyone", "الجميع"], ["followers", "المتابعون فقط"], ["me", "أنا فقط"]].forEach(function (o) {
+    [["everyone", "الكل"], ["followers", "المتابعين بس"], ["me", "أنا بس"]].forEach(function (o) {
       var opt = el("option", "", o[1]); opt.value = o[0]; if (o[0] === value) opt.selected = true; sel.appendChild(opt);
     });
     return sel;
@@ -1321,7 +1313,7 @@
     call("DELETE", "/api/films/" + m.id + "/watch" + (confirmed ? "?confirm=1" : "")).then(function (x) {
       if (FILM_MOVIE !== m) return; FILM.watch = x.watch; FILM.lists = x.lists; closeSheet(); renderLists();
     }).catch(function (e) {
-      if (e.data && e.data.confirm) confirmBox(e.message + " - متأكد؟", function () { removeWatched(true); });
+      if (e.data && e.data.confirm) confirmBox(e.message + ". متأكد؟", function () { removeWatched(true); });
       else notify(e.message);
     });
   }
@@ -1331,7 +1323,7 @@
       var box = el("div"); sh.appendChild(box);
       var draw = function () {
         box.textContent = "";
-        if (!FILM.my_lists.length) box.appendChild(el("div", "sub", "لسه ما عملتش قوائم - اعمل أول واحدة تحت."));
+        if (!FILM.my_lists.length) box.appendChild(el("div", "sub", "لسه ما عملتش قوائم. اعمل أول واحدة من تحت."));
         FILM.my_lists.forEach(function (l) {
           var r = checkRow(l.title, l.has);
           r.onclick = function () {
@@ -1347,7 +1339,7 @@
       var t = el("input"); t.type = "text"; t.maxLength = 60; t.placeholder = "مثلًا: أفضل أفلام الرعب";
       var pv = privacySelect("everyone"); pv.style.marginTop = "8px";
       f.appendChild(t); f.appendChild(pv); sh.appendChild(f);
-      var msg = el("div", "msg"), mk = el("button", "btn primary", "إنشاء وإضافة الفيلم");
+      var msg = el("div", "msg"), mk = el("button", "btn primary", "اعملها وضيف الفيلم");
       mk.onclick = function () {
         mk.disabled = true;
         call("POST", "/api/lists", { title: t.value, privacy: pv.value, movie_id: m.id }).then(function (L) {
@@ -1365,7 +1357,7 @@
       FILM.lists = x.lists; renderLists();
       if (kind === "want" || kind === "seen") { setWatched(m.id, x.lists.want); syncWant(); }
       if (kind === "want" && on)                        // الحجز مفتوح = مفيش تنبيه يستناه
-        notify(m.bookable ? "تمام - اتضاف لـ«هشوفهم بعدين»" : "تمام - هيوصلك تنبيه أول ما حجز الفيلم ده يفتح");
+        notify(m.bookable ? "اتضاف لـ«هشوفهم بعدين»" : "هيوصلك تنبيه أول ما حجز الفيلم ده يفتح");
     }).catch(function (e) { notify(e.message); });
   }
   function syncWant() {                                // «أريد مشاهدتها» من السيرفر (أحدث من لينك البوت)
@@ -1390,7 +1382,7 @@
       wb.onclick = function () { haptic(); openWriter(); }; head.appendChild(wb);
     }
     box.appendChild(head);
-    if (!FILM.count) box.appendChild(el("div", "note lead", "لسه محدش قيّم - كن أول واحد"));
+    if (!FILM.count) box.appendChild(el("div", "note lead", "لسه محدش قيّمه، قيّمه انت الأول"));
     var top = el("div", "score-top");
     var avg = el("div", "score-avg", FILM.average != null ? String(FILM.average) : "–");
     avg.appendChild(el("small", "", FILM.count ? FILM.count + " تقييم" : "لسه محدش قيّم"));
@@ -1439,7 +1431,7 @@
     h.onclick = function () { haptic(); openUser(r.author.id); };
     c.appendChild(h);
     var t = el("div", "rv-text ltr" + (r.spoiler && !r.mine ? " spoil" : ""), r.text);
-    if (r.spoiler && !r.mine) { t.onclick = function () { t.classList.remove("spoil"); }; c.appendChild(t); c.appendChild(el("div", "spoil-tag", "فيها حرق - دوس عشان تشوفها")); }
+    if (r.spoiler && !r.mine) { t.onclick = function () { t.classList.remove("spoil"); }; c.appendChild(t); c.appendChild(el("div", "spoil-tag", "فيها حرق، دوس عشان تشوفها")); }
     else c.appendChild(t);
     var f = el("div", "rv-foot"); var heart = el("button", "heart" + (r.liked ? " on" : ""));
     var paint = function () { heart.className = "heart" + (r.liked ? " on" : ""); heart.textContent = (r.liked ? "♥ " : "♡ ") + r.likes; };
@@ -1503,8 +1495,8 @@
     $("w-delete").style.display = r ? "" : "none";
     // التعديل مرتين بس (السيرفر هو اللي بيعد) - بعدها للقراية بس، والمسح مسموح
     var note = $("w-edits"); note.className = "edits-note" + (locked ? " locked" : "");
-    note.textContent = !r ? "" : locked ? "مراجعتك اتعدلت مرتين - مش هينفع تتعدل تاني. تقدر تمسحها وتكتب واحدة جديدة."
-      : r.edits_left === 1 ? "فاضلك تعديل واحد - بعده المراجعة هتتقفل" : "فاضلك تعديلين";
+    note.textContent = !r ? "" : locked ? "مراجعتك اتعدلت مرتين ومش هينفع تتعدل تاني. تقدر تمسحها وتكتب واحدة جديدة."
+      : r.edits_left === 1 ? "فاضلك تعديل واحد، وبعده المراجعة هتتقفل" : "فاضلك تعديلين";
     $("w-text").readOnly = locked; $("w-spoiler").disabled = locked;
     $("w-save").style.display = locked ? "none" : "";
     $("w-save").textContent = r ? "حفظ التعديل" : "نشر";
@@ -1560,18 +1552,11 @@
         function (g, x) {
           var it = el("button", "pg-item"); it.appendChild(posterImg(x.movie));
           it.onclick = function () { openMovie(x.movie); }; g.appendChild(it);
-        }, owner ? "لسه مفيش أفلام هنا - دوس «هشوفه بعدين» أو «راقب» على أي فيلم" : "لسه مفيش أفلام هنا");
+        }, owner ? "لسه مفيش أفلام هنا. دوس «هشوفه بعدين» أو «راقب» على أي فيلم." : "لسه مفيش أفلام هنا");
     },
     watched: function (body, uid, owner, p) {
       if ((p.lists || {}).seen == null && !owner) return hiddenNote(body);
-      var seg = el("div", "seg"), inner = el("div"); body.appendChild(seg); body.appendChild(inner);
-      var views = [["films", "الأفلام"], ["diary", "سجل المشاهدة"]];
-      var show = function (v) {
-        seg.querySelectorAll(".pill").forEach(function (b) { b.classList.toggle("active", b.dataset.v === v); });
-        inner.textContent = ""; (v === "films" ? watchedGrid : diaryList)(inner, uid, owner);
-      };
-      views.forEach(function (v) { var b = el("button", "pill small", v[1]); b.dataset.v = v[0]; b.onclick = function () { haptic(); show(v[0]); }; seg.appendChild(b); });
-      show("films");
+      watchedGrid(body, uid, owner);                   // الأفلام على طول (من غير تابات جوه التاب)
     },
     ratings: function (body, uid, owner) {
       var list = el("div"); body.appendChild(list);
@@ -1597,7 +1582,7 @@
       var list = el("div"); body.appendChild(list);
       pager(list, body, function (c) { return call("GET", "/api/users/" + uid + "/lists?offset=" + (c || 0)); },
         function (l, x) { l.appendChild(listRow(x)); },
-        owner ? "لسه ما عملتش قوائم - اعمل قائمة لأفلامك المفضلة في أي نوع" : "مفيش قوائم تتشاف هنا");
+        owner ? "لسه ما عملتش قوائم. اعمل قائمة لأفلامك المفضلة من أي نوع." : "مفيش قوائم تتشاف هنا");
     }
   };
   function clear(node) { node.textContent = ""; return node; }
@@ -1625,7 +1610,7 @@
             it.appendChild(el("div", "times ltr", x.movie.title));
             it.onclick = function () { var next = films.slice(); if (index < next.length) next[index] = x.movie; else next.push(x.movie); save(next); };
             g.appendChild(it);
-          }, "لسه ما شفتش أفلام - دوس «شفته» على أي فيلم الأول");
+          }, "لسه ما شفتش أفلام. دوس «شفته» على أي فيلم الأول.");
       });
     };
     var slotSheet = function (index) {
@@ -1657,7 +1642,7 @@
     };
     draw();
   }
-  function watchedGrid(inner, uid) {
+  function watchedGrid(inner, uid, owner) {
     var grid = el("div", "poster-grid"); inner.appendChild(grid);
     pager(grid, inner, function (c) { return call("GET", "/api/users/" + uid + "/watched?offset=" + (c || 0)); },
       function (g, x) {
@@ -1665,38 +1650,7 @@
         if (x.stars) it.appendChild(starsText(x.stars));
         if (x.times > 1) it.appendChild(el("div", "times", "اتشاف " + (x.times === 2 ? "مرتين" : x.times + " مرات")));
         it.onclick = function () { openMovie(x.movie); }; g.appendChild(it);
-      }, "لسه مفيش أفلام هنا");
-  }
-  function diaryList(inner, uid, owner) {
-    var list = el("div"), lastMonth = "";
-    inner.appendChild(list);
-    pager(list, inner, function (c) { return call("GET", "/api/users/" + uid + "/diary" + (c ? "?before=" + encodeURIComponent(c) : "")); },
-      function (l, x) {
-        var mk = x.date.slice(0, 7);
-        if (mk !== lastMonth) { lastMonth = mk; l.appendChild(el("div", "month", MONTHS[+mk.slice(5) - 1] + " " + mk.slice(0, 4))); }
-        var r = el("button", "diary-row"); r.appendChild(el("span", "day", String(+x.date.slice(8))));
-        r.appendChild(posterImg(x.movie));
-        var t = el("span", "t ltr", x.movie.title), meta = el("span", "meta2");
-        if (x.stars) meta.appendChild(starsText(x.stars));
-        if (x.rewatch) { meta.appendChild(document.createTextNode(" ")); meta.appendChild(el("span", "tag-small", "مشاهدة تانية")); }
-        if (x.fav) meta.appendChild(document.createTextNode(" ♥"));
-        t.appendChild(meta); r.appendChild(t);
-        r.onclick = function () { if (owner && x.id) diarySheet(x, function () { diaryList(clear(inner), uid, owner); }); else openMovie(x.movie); };
-        l.appendChild(r);
-      }, owner ? "سجل المشاهدة فاضي - سجّل مشاهدة من صفحة أي فيلم وحدد تاريخها" : "سجل المشاهدة فاضي");
-  }
-  function diarySheet(x, done) {
-    openSheet(x.movie.title, function (sh) {
-      sh.appendChild(el("div", "sub", "اتفرجت عليه يوم " + fmtDate(x.date)));
-      var d = el("input"); d.type = "date"; d.max = todayISO(); d.value = x.date; sh.appendChild(d);
-      var msg = el("div", "msg"), save = el("button", "btn primary", "حفظ التاريخ");
-      save.onclick = function () { call("PATCH", "/api/diary/" + x.id, { date: d.value }).then(function () { closeSheet(); done(); }).catch(function (e) { msg.textContent = e.message; }); };
-      var open = el("button", "btn outline", "افتح الفيلم"); open.onclick = function () { closeSheet(); openMovie(x.movie); };
-      var del = el("button", "logout", "امسح التسجيل ده");
-      del.onclick = function () { confirmBox("تمسح التسجيل ده من سجل المشاهدة؟", function () {
-        call("DELETE", "/api/diary/" + x.id).then(function () { closeSheet(); done(); }).catch(function (e) { msg.textContent = e.message; }); }); };
-      sh.appendChild(save); sh.appendChild(msg); sh.appendChild(open); sh.appendChild(del);
-    });
+      }, owner ? "لسه مفيش أفلام هنا. دوس «شفته» على أي فيلم شفته." : "لسه مفيش أفلام هنا");
   }
   function listRow(x) {
     var r = el("button", "list-row"), col = el("div", "collage");
@@ -1706,7 +1660,7 @@
     }
     r.appendChild(col);
     var t = el("div", "t"); t.appendChild(el("b", "ltr", x.title));
-    var meta = el("span", "", x.count + " فيلم" + (x.mine && x.privacy !== "everyone" ? (x.privacy === "me" ? " • أنا فقط" : " • المتابعون فقط") : ""));
+    var meta = el("span", "", x.count + " فيلم" + (x.mine && x.privacy !== "everyone" ? (x.privacy === "me" ? " • أنا بس" : " • المتابعين بس") : ""));
     t.appendChild(meta); r.appendChild(t);
     r.onclick = function () { haptic(); openListView(x.id); };
     return r;
@@ -1735,11 +1689,11 @@
       var h = el("h2", "ltr", L.title); lv.appendChild(h);
       if (L.description) lv.appendChild(el("div", "lv-desc ltr", L.description));
       var meta = L.count + " فيلم • " + (L.mine ? "قائمتك" : "قائمة " + L.owner.name);
-      if (L.mine) meta += " • " + { everyone: "الجميع", followers: "المتابعون فقط", me: "أنا فقط" }[L.privacy];
+      if (L.mine) meta += " • " + { everyone: "الكل", followers: "المتابعين بس", me: "أنا بس" }[L.privacy];
       lv.appendChild(el("div", "lv-meta", meta));
       if (L.public) { var shl = el("button", "btn outline", "شارك القائمة"); shl.style.width = "100%"; shl.style.marginBottom = "8px";
         shl.onclick = function () { shareItem("ls_" + L.id, "قائمة «" + L.title + "» على CFTRadar"); }; lv.appendChild(shl); }
-      if (L.mine && L.hidden) lv.appendChild(el("div", "warn", "القائمة دي مخفية من الإدارة - محدش غيرك شايفها"));
+      if (L.mine && L.hidden) lv.appendChild(el("div", "warn", "القائمة دي مخفية من الإدارة، ومحدش غيرك شايفها"));
       if (!L.mine) { var rpl = el("button", "linkish", "إبلاغ عن القائمة"); rpl.style.marginBottom = "10px";
         rpl.onclick = function () { reportSheet("list", L.id); }; lv.appendChild(rpl); }
       if (L.mine) { var eb = el("button", "btn outline", "تعديل القائمة"); eb.style.width = "100%"; eb.style.marginBottom = "12px"; eb.onclick = function () { haptic(); editList(id); }; lv.appendChild(eb); }
@@ -1748,7 +1702,7 @@
       pager(list, lv, function (c) {
         if (firstPage) { firstPage = false; return Promise.resolve({ items: L.items, next: L.next }); }
         return call("GET", "/api/lists/" + id + "?offset=" + c);
-      }, function (l, x) { n++; l.appendChild(lvItem(x.movie, n)); }, "القائمة فاضية - ضيف أفلام من صفحة أي فيلم («أضف لقائمة»)");
+      }, function (l, x) { n++; l.appendChild(lvItem(x.movie, n)); }, "القائمة فاضية. ضيف أفلام من «أضف لقائمة» في صفحة أي فيلم.");
     }).catch(function (e) { clear(lv).appendChild(el("div", "empty", e.message)); });
   }
   function lvItem(mv, n) {
@@ -1838,12 +1792,12 @@
       });
       var note = el("textarea"); note.maxLength = 300; note.placeholder = "تفاصيل (اختياري)";
       note.style.cssText = "width:100%;margin-top:12px;min-height:64px;padding:10px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--line);color:var(--text);font:inherit";
-      var msg = el("div", "msg"), send = el("button", "btn primary", "إرسال البلاغ");
+      var msg = el("div", "msg"), send = el("button", "btn primary", "ابعت البلاغ");
       send.onclick = function () {
         if (!pick) { msg.textContent = "اختار سبب"; return; }
         send.disabled = true;
         call("POST", "/api/reports", { kind: kind, id: id, reason: pick, note: note.value })
-          .then(function () { closeSheet(); notify("تمام - البلاغ وصل للإدارة"); })
+          .then(function () { closeSheet(); notify("البلاغ وصل للإدارة"); })
           .catch(function (e) { send.disabled = false; msg.textContent = e.message; });
       };
       sh.appendChild(note); sh.appendChild(send); sh.appendChild(msg);
@@ -1898,7 +1852,7 @@
           if (!g.target.hidden) acts.appendChild(modAct("إخفاء", "", content("hide")));
           else acts.appendChild(modAct("استرجاع", "blue", content("restore")));
           acts.appendChild(modAct("مسح نهائي", "red", content("delete")));
-        } else acts.appendChild(modAct("إجراء على الحساب", "red", function () { userAdminSheet(g.target_id); }));
+        } else acts.appendChild(modAct("تعمل إيه في الحساب ده؟", "red", function () { userAdminSheet(g.target_id); }));
         acts.appendChild(modAct("تجاهل", "", function () {
           call("POST", "/api/admin/reports/dismiss", { kind: g.kind, id: g.target_id, reason: reason.value }).then(function () { done("اتجاهل ✓"); });
         }));
@@ -2016,7 +1970,7 @@
     var sum = el("div", "badge-sum"); box.appendChild(sum);
     var grid = el("div", "badge-grid"); box.appendChild(grid);
     call("GET", "/api/users/" + uid + "/badges").then(function (d) {
-      sum.textContent = owner ? "فتحت " + d.earned + " من " + d.total + " - الشارات بتتفتح لوحدها من نشاطك" : d.earned + " شارة";
+      sum.textContent = owner ? "فتحت " + d.earned + " من " + d.total + ". الشارات بتتفتح لوحدها من نشاطك." : d.earned + " شارة";
       if (!d.items.length) grid.appendChild(el("div", "empty", "مفيش شارات تتشاف هنا"));
       d.items.forEach(function (b) {
         var c = el("div", "badge-card" + (b.earned ? "" : " locked")); c.appendChild(medal(b));
@@ -2074,7 +2028,7 @@
   }
   function openPeople(p, which) {
     if (p.private) return;
-    $("pp-title").textContent = which === "followers" ? "المتابعون" : (p.owner ? "أتابع" : "بيتابع");
+    $("pp-title").textContent = which === "followers" ? "المتابعين" : (p.owner ? "أتابع" : "بيتابع");
     var body = clear($("pp-body")), list = el("div"); body.appendChild(list); go("s-people");
     pager(list, body, function (c) { return call("GET", "/api/users/" + p.id + "/" + which + "?offset=" + (c || 0)); }, function (l, u) {
       var extra = [];
@@ -2141,7 +2095,7 @@
     if (tab === "feed") {
       var list = el("div"); body.appendChild(list);
       pager(list, body, function (c) { return call("GET", "/api/feed" + (c ? "?before=" + c : "")); },
-        function (l, x) { l.appendChild(activityRow(x)); }, "لسه مفيش نشاط من الناس اللي بتتابعهم - شوف «اكتشف» وتابع ناس ذوقهم قريب منك");
+        function (l, x) { l.appendChild(activityRow(x)); }, "لسه مفيش نشاط من الناس اللي بتتابعهم. شوف «اكتشف» وتابع ناس ذوقهم قريب منك.");
     } else if (tab === "reviews") {
       var rl = el("div"); body.appendChild(rl);
       pager(rl, body, function (c) { return call("GET", "/api/community/reviews?offset=" + (c || 0)); },
@@ -2161,7 +2115,7 @@
           body.appendChild(strip);
         }
         if (d.lists.length) { body.appendChild(el("div", "section-title", "قوائم مميزة")); d.lists.forEach(function (x) { body.appendChild(listRow(x)); }); }
-        body.appendChild(el("div", "section-title", "مستخدمون مقترحون"));
+        body.appendChild(el("div", "section-title", "ناس ممكن تتابعهم"));
         if (!d.users.length) body.appendChild(el("div", "empty", "لسه مفيش اقتراحات"));
         d.users.forEach(function (u) {
           var fb = el("button", "mini gold", "تابع");
@@ -2183,7 +2137,7 @@
       if (r.movie) { var om = el("button", "btn outline", "افتح الفيلم"); om.style.width = "100%"; om.onclick = function () { openMovie(r.movie); }; box.appendChild(om); }
       if (!(ME && ME.comments_enabled)) return;
       box.appendChild(el("div", "section-title", "التعليقات"));
-      if (!ME.comments_public) box.appendChild(el("div", "beta", "التعليقات تجربة للأدمن - هتتفتح للناس بعد ما الإشراف يجهز"));
+      if (!ME.comments_public) box.appendChild(el("div", "beta", "التعليقات لسه تجربة للأدمن بس، وهتتفتح للكل قريب."));
       var list = el("div"); box.appendChild(list);
       var lastId = 0;
       var load = function (after) {
@@ -2195,7 +2149,7 @@
       };
       load(0);
       var comp = el("div", "compose"), ta = el("textarea"); ta.maxLength = 500; ta.placeholder = "اكتب تعليق...";
-      var send = el("button", "btn primary", "إرسال"), msg = el("div", "msg");
+      var send = el("button", "btn primary", "ابعت"), msg = el("div", "msg");
       send.onclick = function () {
         send.disabled = true;
         call("POST", "/api/reviews/" + id + "/comments", { text: ta.value }).then(function (d) {
@@ -2248,7 +2202,11 @@
     else a.textContent = ((user && user.first_name) || "؟").trim().charAt(0).toUpperCase();
     $("count-s").textContent = "(" + listIds("whatson").length + ")";
     $("count-c").textContent = "(" + listIds("comingsoon").length + ")";
-    $("count-w").textContent = "(" + watchedIds().length + ")";
+    updateWatchCount();
+  }
+  function updateWatchCount() {                         // نفس عدد اللي بيظهر في «مراقباتي» (من غير اللي حجزه فتح)
+    if (!watchedIds().length) { $("count-w").textContent = "(0)"; return; }
+    watchItems(function (items) { $("count-w").textContent = "(" + items.length + ")"; });
   }
   $("country-btn").onclick = function () {              // تغيير البلد من جوه الصفحة على طول
     var list = (DATA && DATA.countries) || [];
@@ -2298,13 +2256,18 @@
     card.addEventListener("touchmove", function (e) { var t = e.touches[0]; move(t.clientX, t.clientY); }, { passive: true });
     card.addEventListener("touchend", leave); card.addEventListener("touchcancel", leave);
   }
-  function watchItems(done) {                           // الأفلام اللي بتراقبها في كل البلاد
+  // «مراقباتي»: الأفلام اللي بتراقبها وحجزها لسه ما فتحش (في كل البلاد). أول ما الحجز يفتح الفيلم بيطلع من هنا
+  // (التنبيه وصلك خلاص) ويفضل في «هشوفهم بعدين» في حسابك - نفس القايمة، دي بس اللي لسه مستنية.
+  function watchItems(done) {
     var codes = ((DATA && DATA.countries) || [{ code: country }]).map(function (c) { return c.code; });
     var pending = codes.filter(function (c) { return !CACHE[c]; });
     var finish = function () {
       var items = [];
       watchedIds().forEach(function (id) {
-        codes.forEach(function (c) { var m = CACHE[c] && CACHE[c].movies[id]; if (m && !isConcert(m)) items.push({ m: m, c: c }); });
+        codes.forEach(function (c) {
+          var m = CACHE[c] && CACHE[c].movies[id];
+          if (m && !isConcert(m) && !m.bookable) items.push({ m: m, c: c });
+        });
       });
       done(items);
     };
@@ -2324,7 +2287,7 @@
         if (section !== "w") return;
         grid.textContent = "";
         if (!items.length) {
-          grid.appendChild(el("div", "empty", "لسه مفيش أفلام هنا.\nافتح أي فيلم ودوس «هشوفه بعدين» أو «راقب» - وهيوصلك تنبيه أول ما حجزه يفتح."));
+          grid.appendChild(el("div", "empty", "لسه مفيش أفلام هنا.\nدوس «راقب» على أي فيلم حجزه لسه ما فتحش، وهيوصلك تنبيه أول ما يفتح.\nوالأفلام اللي حجزها فتح بتلاقيها في «هشوفهم بعدين» في حسابك."));
           grid.style.display = "block"; return done();
         }
         grid.style.display = "";
@@ -2452,7 +2415,7 @@
     $("t-title").textContent = m.title;
     $("t-days").textContent = ""; $("t-cinemas").textContent = "";
     var list = $("t-list"); list.textContent = "";
-    if (!m.showtimes) { list.appendChild(el("div", "empty", "المواعيد لسه بتتجهز.\nجرب كمان شوية.")); go("s-times"); return; }
+    if (!m.showtimes) { list.appendChild(el("div", "empty", "المواعيد لسه بتتجهز.\nجرّب كمان شوية.")); go("s-times"); return; }
     for (var i = 0; i < 2; i++) { var sk = el("div", "skeleton cinema"); sk.style.aspectRatio = "auto"; sk.style.height = "130px"; list.appendChild(sk); }
     go("s-times");
     fetch(dataBase + "/" + country + "/st/" + m.id + ".json?t=" + Date.now(), { cache: "no-store" })
@@ -2461,7 +2424,7 @@
         TIMES = data; timesDay = (data.days[0] || {}).key;
         store.get("cinema_" + country, function (v) { timesCinema = v || ""; renderTimes(); });
       })
-      .catch(function () { list.textContent = ""; list.appendChild(el("div", "error", "مش قادر أجيب المواعيد دلوقتي.\nجرب تاني كمان شوية.")); });
+      .catch(function () { list.textContent = ""; list.appendChild(el("div", "error", "مش قادر أجيب المواعيد دلوقتي.\nجرّب تاني كمان شوية.")); });
   }
   function renderTimes() {
     var days = $("t-days"); days.textContent = "";
@@ -2591,7 +2554,7 @@
   $("maint-retry").onclick = function () {
     haptic(); this.disabled = true; var btn = this;
     API_FRESH_AT = 0;                                   // الزرار: نسأل GitHub عن العنوان الجديد على طول
-    checkAlive(function (alive) { btn.disabled = false; if (alive) leaveMaint(); else notify("لسه في صيانة - جرّب كمان شوية"); });
+    checkAlive(function (alive) { btn.disabled = false; if (alive) leaveMaint(); else notify("لسه في صيانة، جرّب كمان شوية"); });
   };
   (function start() {
     var grid = $("grid");

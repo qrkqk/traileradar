@@ -131,6 +131,7 @@
   .versions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
   .versions:empty { display: none; }
   .versions .v-label { color: var(--muted); font-size: 12.5px; font-weight: 700; margin-inline-end: 2px; }
+  .t-versions { padding: 0 14px 6px; margin-top: 0; }
   .versions .pill .v-open { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
     margin-inline-start: 6px; vertical-align: middle; }
   .chip { font-size: 12.5px; padding: 3px 10px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); }
@@ -375,6 +376,7 @@
   .rate-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px;
     padding-top: 12px; border-top: 1px solid var(--line); gap: 10px; flex-wrap: wrap; }
   .rate-row .lbl { color: var(--cream); font-weight: 700; font-size: 14px; }
+  .score .rate-row:first-child { margin-top: 0; padding-top: 0; border-top: 0; }   /* مفيش تقييمات: من غير خط فاضي فوق */
   .rate-stars { direction: ltr; display: flex; gap: 2px; }
   .rate-stars button { font-size: 28px; line-height: 1; color: #4a4436; padding: 0 2px; transition: transform .15s; }
   .rate-stars button.on { color: var(--gold); text-shadow: 0 0 10px rgba(240,192,72,.45); }
@@ -629,15 +631,14 @@
     <h1 class="ltr" id="d-title"></h1>
     <div class="meta" id="d-meta"></div>
     <div class="chips" id="d-chips"></div>
-      <div class="versions" id="d-versions"></div>
     <div class="actions" id="d-actions"></div>
-    <div class="score" id="d-score" style="display:none"></div>
     <div class="desc ltr" id="d-desc"></div>
     <button class="more" id="d-more">عرض المزيد</button>
     <div class="section-title" id="d-details-title">التفاصيل</div>
     <div class="details" id="d-details"></div>
     <div id="d-community" style="display:none">
-      <div class="section-title">المراجعات</div>
+      <div class="section-title">التقييم والمراجعات</div>
+      <div class="score" id="d-score" style="display:none"></div>
       <div class="raters" id="d-raters"></div>
       <div class="seg" id="d-rv-seg"><button class="pill small active" data-sort="top">الأفضل</button><button class="pill small" data-sort="new">الأحدث</button></div>
       <div id="d-reviews"></div>
@@ -696,6 +697,7 @@
 <!-- ============ المواعيد والحجز ============ -->
 <section class="screen" id="s-times">
   <div class="st-head"><h2 class="ltr" id="t-title"></h2><p>اختار الميعاد وهيفتحلك صفحة الحجز</p></div>
+  <div class="versions t-versions" id="t-versions"></div>
   <div class="scroller" id="t-days"></div>
     <div class="t-filter" id="t-filter"></div>
   <div class="scroller" id="t-cinemas"></div>
@@ -1427,13 +1429,6 @@
     // فيلم لسه ما نزلش (ومفيش تقييمات): مفيش حاجة تتقيّم - الكارت ما يظهرش خالص
     if (!FILM.eligible && !FILM.count) { box.style.display = "none"; return; }
     box.style.display = "";
-    var head = el("div", "score-head"); head.appendChild(el("div", "section-title", "تقييم CFTRadar"));
-    if (FILM.eligible) {
-      var wb = el("button", "btn outline small", !FILM.my_review ? "اكتب مراجعة" : FILM.my_review.locked ? "مراجعتك" : "عدّل مراجعتك");
-      wb.onclick = function () { haptic(); openWriter(); }; head.appendChild(wb);
-    }
-    box.appendChild(head);
-    if (!FILM.count) box.appendChild(el("div", "note lead", "لسه محدش قيّمه، قيّمه انت الأول"));
     var top = el("div", "score-top");
     var avg = el("div", "score-avg", FILM.average != null ? String(FILM.average) : "–");
     avg.appendChild(el("small", "", FILM.count ? FILM.count + " تقييم" : "لسه محدش قيّم"));
@@ -1457,6 +1452,9 @@
       b.onclick = function () { haptic("medium"); rate(k); }; st.appendChild(b);
     })(k);
     rr.appendChild(st); box.appendChild(rr);
+    // «اكتب مراجعة» مكان واحد بس (للفيلم كله - مش لنسخة)
+    var wb = el("button", "btn outline", !FILM.my_review ? "اكتب مراجعة" : FILM.my_review.locked ? "مراجعتك" : "عدّل مراجعتك");
+    wb.style.marginTop = "12px"; wb.onclick = function () { haptic(); openWriter(); }; box.appendChild(wb);
     if (FILM.my_review && FILM.my_review.hidden) box.appendChild(el("div", "warn", "مراجعتك مخفية من الإدارة"));
   }
   function rate(n) {
@@ -1526,11 +1524,8 @@
     });
     var list = $("d-reviews"); list.textContent = "";
     var items = SORT === "top" ? FILM.top : FILM.latest;
-    if (!items.length) {
-      var e0 = el("div", "note lead"); e0.style.margin = "0 0 6px";
-      e0.appendChild(document.createTextNode("لسه مفيش مراجعات. "));
-      var wl = el("button", "linkish", "اكتب أول واحدة"); wl.style.color = "var(--gold)"; wl.onclick = function () { haptic(); openWriter(); };
-      e0.appendChild(wl); list.appendChild(e0);
+    if (!items.length) {                                // زرار «اكتب مراجعة» فوق في نفس القسم
+      var e0 = el("div", "note lead", "لسه مفيش مراجعات."); e0.style.margin = "6px 0"; list.appendChild(e0);
     }
     items.forEach(function (r) { list.appendChild(reviewCard(r)); });
   }
@@ -2428,7 +2423,11 @@
     var local = null; try { local = localStorage.getItem("cft_trailer_" + country + "_" + m.id); } catch (e) {}
     return m.trailer || local || null;
   }
-  function showDetail(m, replace) {                    // replace: تغيير النسخة جوه نفس الصفحة
+  var PICK_VERSION = null;                             // النسخة اللي تتختار في «احجز دلوقتي» (لو اتفتح من تنبيه نسخة)
+  function showDetail(m) {
+    var all = versionsOf(m);
+    if (all.length > 1 && all[0].id !== m.id) { PICK_VERSION = m.id; m = all[0]; }   // الصفحة للفيلم كله
+    else if (all.length > 1) PICK_VERSION = PICK_VERSION && all.some(function (v) { return v.id === PICK_VERSION; }) ? PICK_VERSION : null;
     current = m;
     var hero = $("hero"), tr = trailerOf(m);
     var old = hero.querySelector("iframe"); if (old) old.remove();
@@ -2448,20 +2447,9 @@
     if (DATA && DATA.bot) { var shc = el("button", "chip share-chip"); shc.innerHTML = ICON.share; shc.appendChild(document.createTextNode(" شارك"));
       shc.onclick = function () { shareItem("mv_" + m.id, "«" + m.title + "» على CFTRadar"); }; chips.appendChild(shc); }
 
-    var vbox = $("d-versions"); vbox.textContent = "";
-    var vers = versionsOf(m);
-    if (vers.length > 1) {                              // «النسخ: العادية • Infinity Vision» - كل نسخة بمواعيدها
-      vbox.appendChild(el("span", "v-label", "النسخ"));
-      vers.forEach(function (v) {
-        var b = el("button", "pill small ltr" + (v.id === m.id ? " active" : ""), v.version || "العادية");
-        if (v.bookable || v.others) { var dot = el("span", "v-open"); dot.title = "الحجز متاح"; b.appendChild(dot); }
-        b.onclick = function () { if (v.id === current.id) return; haptic(); showDetail(v, true); };
-        vbox.appendChild(b);
-      });
-    }
-
     var actions = $("d-actions"); actions.textContent = "";
-    if (m.bookable || m.others) {                       // VOX أو سينمات تانية
+    var any = all.some(function (v) { return v.bookable || v.others; });
+    if (any) {                                           // VOX أو سينمات تانية - أي نسخة
       var book = el("button", "btn primary"); book.appendChild(document.createTextNode("احجز دلوقتي "));
       book.insertAdjacentHTML("beforeend", ICON.ticket);  // الأيقونة على الشمال
       book.onclick = function () { haptic(); openTimes(m); }; actions.appendChild(book);
@@ -2475,7 +2463,7 @@
       var watch = el("button", "btn outline"); watch.innerHTML = ICON.eye; watch.appendChild(document.createTextNode(" راقب"));
       watch.onclick = function () { setWatched(m.id, true); sendToBot({ a: "watch", id: m.id }, "w_" + m.id); }; actions.appendChild(watch);
     }
-    if (!m.bookable && !m.others && m.section === "s") actions.appendChild(el("div", "btn note", "الحجز لسه ما فتحش"));
+    if (!any && m.section === "s") actions.appendChild(el("div", "btn note", "الحجز لسه ما فتحش"));
 
     var desc = $("d-desc"); desc.textContent = m.description || ""; desc.classList.remove("open");
     $("d-more").style.display = (m.description || "").length > 140 ? "" : "none";
@@ -2488,7 +2476,7 @@
       var row = el("div", "row"); row.appendChild(el("span", "k", p[0])); row.appendChild(el("span", "v ltr", p[1])); details.appendChild(row);
     });
     $("d-details-title").style.display = details.childNodes.length ? "" : "none";
-    if (replace) show("s-detail"); else go("s-detail");
+    go("s-detail");
   }
   $("play").onclick = function () {                     // التريلر فوق اسم الفيلم - بيشتغل هنا جوه الصفحة
     var tr = current && trailerOf(current); if (!tr) return;
@@ -2519,31 +2507,72 @@
 
   // ---------- المواعيد والحجز ----------
   var TIMES = null, timesDay = null, timesCinema = "";
+  // «احجز دلوقتي»: لو الفيلم ليه كذا نسخة (العادية / Infinity Vision) الاختيار هنا، وكل نسخة بمواعيدها
+  var TIMES_ALL = {}, TIMES_VERSIONS = [], timesVersion = null;
   function openTimes(m) {
-    $("t-title").textContent = m.title;
-    $("t-days").textContent = ""; $("t-cinemas").textContent = "";
+    var all = versionsOf(m);
+    var main = all[0] || m;
+    var want = PICK_VERSION || (all.length > 1 && all[0].id !== m.id ? m.id : null);
+    PICK_VERSION = null;
+    $("t-title").textContent = main.title;
+    $("t-days").textContent = ""; $("t-cinemas").textContent = ""; $("t-versions").textContent = "";
     var list = $("t-list"); list.textContent = "";
-    if (!m.showtimes) { list.appendChild(el("div", "empty", "المواعيد لسه بتتجهز.\nجرّب كمان شوية.")); go("s-times"); return; }
+    TIMES_VERSIONS = all.length ? all : [m];
+    var ready = TIMES_VERSIONS.filter(function (v) { return v.showtimes; });
+    if (!ready.length) { list.appendChild(el("div", "empty", "المواعيد لسه بتتجهز.\nجرّب كمان شوية.")); go("s-times"); return; }
+    timesVersion = (ready.filter(function (v) { return v.id === want; })[0] || ready[0]).id;
     for (var i = 0; i < 2; i++) { var sk = el("div", "skeleton cinema"); sk.style.aspectRatio = "auto"; sk.style.height = "130px"; list.appendChild(sk); }
     go("s-times");
-    fetch(dataBase + "/" + country + "/st/" + m.id + ".json?t=" + Date.now(), { cache: "no-store" })
-      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (data) {
-        TIMES = data; timesDay = (data.days[0] || {}).key;
-        timesArea = ""; timesAll = false;
-        store.get("gov", function (g) {                 // محافظتك المحفوظة (حتى لو الصفحة لسه فاتحة حالًا)
-          GOV = g || ""; timesGov = GOV;
-          store.get("cinema_" + country, function (v) { timesCinema = v || ""; renderTimes(); });
-        });
-      })
-      .catch(function () { list.textContent = ""; list.appendChild(el("div", "error", "مش قادر أجيب المواعيد دلوقتي.\nجرّب تاني كمان شوية.")); });
+    TIMES_ALL = {};
+    Promise.all(ready.map(function (v) {
+      return fetch(dataBase + "/" + country + "/st/" + v.id + ".json?t=" + Date.now(), { cache: "no-store" })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (data) { TIMES_ALL[v.id] = data; }, function () {});
+    })).then(function () {
+      if (!TIMES_ALL[timesVersion]) {
+        var got = Object.keys(TIMES_ALL)[0];
+        if (!got) { list.textContent = ""; list.appendChild(el("div", "error", "مش قادر أجيب المواعيد دلوقتي.\nجرّب تاني كمان شوية.")); return; }
+        timesVersion = Number(got);
+      }
+      TIMES = TIMES_ALL[timesVersion]; timesDay = (TIMES.days[0] || {}).key;
+      timesArea = ""; timesAll = false;
+      store.get("gov", function (g) {                 // محافظتك المحفوظة (حتى لو الصفحة لسه فاتحة حالًا)
+        GOV = g || ""; timesGov = GOV;
+        store.get("cinema_" + country, function (v) { timesCinema = v || ""; renderTimes(); });
+      });
+    });
+  }
+  function renderVersions() {                         // «النسخة: العادية | Infinity Vision» - كل واحدة بمواعيدها
+    var box = $("t-versions"); box.textContent = "";
+    if (TIMES_VERSIONS.length < 2) return;
+    box.appendChild(el("span", "v-label", "النسخة"));
+    TIMES_VERSIONS.forEach(function (v) {
+      var b = el("button", "pill small ltr" + (v.id === timesVersion ? " active" : ""), v.version || "العادية");
+      if (v.bookable || v.others) { var dot = el("span", "v-open"); dot.title = "الحجز متاح"; b.appendChild(dot); }
+      b.onclick = function () {
+        if (v.id === timesVersion) return;
+        haptic(); timesVersion = v.id;
+        var data = TIMES_ALL[v.id];
+        if (data) { TIMES = data; if (!data.byDay[timesDay]) timesDay = (data.days[0] || {}).key; }
+        renderTimes();
+      };
+      box.appendChild(b);
+    });
   }
   var timesGov = "", timesArea = "", timesAll = false;
   function timesHasGov() {                             // فيه سينمات معروف محافظتها (مصر)؟
     return Object.keys(TIMES.byDay).some(function (k) { return TIMES.byDay[k].some(function (c) { return c.gov; }); });
   }
   function renderTimes() {
+    renderVersions();
     var days = $("t-days"); days.textContent = "";
+    if (TIMES_VERSIONS.length > 1 && !TIMES_ALL[timesVersion]) {   // نسخة لسه حجزها ما فتحش
+      $("t-filter").textContent = ""; $("t-cinemas").textContent = "";
+      var v = TIMES_VERSIONS.filter(function (x) { return x.id === timesVersion; })[0] || {};
+      var l = $("t-list"); l.textContent = "";
+      l.appendChild(el("div", "empty", "حجز نسخة " + (v.version || "دي") + " لسه ما فتحش" + (v.release ? " - من " + v.release : "") + "."));
+      return;
+    }
     TIMES.days.forEach(function (d) {
       var b = el("button", "pill" + (d.key === timesDay ? " active" : ""), d.label);
       b.onclick = function () { haptic(); timesDay = d.key; renderTimes(); };

@@ -216,19 +216,18 @@
   .pill.active { background: var(--cream); color: var(--bg); font-weight: 800; }
   .pill.small { font-size: 13px; padding: 0 12px; min-height: 38px; }
   .pill.small.active { background: var(--cream); color: var(--bg); border-color: var(--cream); }
-  /* كارت السينما: VOX بإطار ذهبي وراس ذهبية وظل أحمر، والسينمات التانية إطار كريمي و«الحجز من elCinema» تحت */
+  /* كارت السينما: VOX بإطار ذهبي وراس ذهبية وظل أحمر، والسينمات التانية إطار كريمي */
   .cinema { display: flex; flex-wrap: wrap; align-items: stretch; margin: 14px 18px 18px 22px; padding: 0;
     border: 2px solid var(--cream); background: transparent; }
   .cinema h3 { flex: 1 1 auto; min-width: 0; margin: 0; padding: 10px 12px; font-family: var(--font-display); font-weight: 400;
     font-size: 21px; line-height: 1.3; color: var(--cream); border-bottom: 2px solid var(--cream); }
   .cinema-meta { display: contents; }
-  .cinema-meta span:not(.src) { flex: 0 1 auto; display: flex; align-items: center; padding: 10px 12px; font-size: 12px;
+  .cinema-meta span { flex: 0 1 auto; display: flex; align-items: center; padding: 10px 12px; font-size: 12px;
     font-weight: 700; color: var(--muted); border-bottom: 2px solid var(--cream); }
-  .cinema-meta .src { order: 99; flex: 1 0 100%; padding: 0 12px 12px; font-size: 11px; font-weight: 700; color: var(--muted); }
-  .cinema:not(:has(.src)) { border: 3px solid var(--gold); box-shadow: var(--shadow-hard); }
-  .cinema:not(:has(.src)) h3, .cinema:not(:has(.src)) .cinema-meta span { background: var(--gold); color: var(--bg);
+  .cinema.vox { border: 3px solid var(--gold); box-shadow: var(--shadow-hard); }
+  .cinema.vox h3, .cinema.vox .cinema-meta span { background: var(--gold); color: var(--bg);
     border-bottom: 0; font-weight: 800; }
-  .cinema:not(:has(.src)) h3 { font-weight: 400; font-size: 22px; }
+  .cinema.vox h3 { font-weight: 400; font-size: 22px; }
   .screen-type { flex: 1 0 100%; color: var(--gold); font-size: 13px; font-weight: 800; margin: 0; padding: 12px 14px 0; }
   .cinema > .times { flex: 1 0 100%; }
   /* السينمات التانية (elCinema): المحافظة والمنطقة، والسعر تحت الميعاد */
@@ -710,10 +709,161 @@
   body.has-nav .bottom-nav { display: flex; }
   body.has-nav { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
   body.has-nav .toast { bottom: calc(88px + env(safe-area-inset-bottom)); }
-  .bottom-nav button { display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px;
-    color: var(--cream); font-weight: 700; font-size: 14px; }
-  .bottom-nav button svg.i { width: 18px; height: 18px; }
-  .bottom-nav button.on { background: var(--gold); color: var(--bg); font-weight: 800; box-shadow: var(--shadow-sm); padding: 0 14px; }
+  .bottom-nav button { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; min-height: 52px; padding: 4px 2px; color: var(--cream); font-weight: 700; font-size: 12px; white-space: nowrap; }
+  .bottom-nav button svg.i { width: 22px; height: 22px; }
+  .bottom-nav button.on { background: var(--gold); color: var(--bg); font-weight: 800; box-shadow: var(--shadow-sm); }
+
+  /* ============ الهيدر: البحث + الجرس (تابات الأفلام في «الأفلام» بس) ============ */
+  .tabs { display: none; }
+  body.on-list .tabs { display: flex; }
+  .head-search { display: flex; gap: 8px; margin-top: 10px; }
+  .search-box { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; height: 42px; padding: 0 12px;
+    background: var(--bg); border: 2px solid var(--cream); color: var(--muted); font-size: 13px; font-weight: 700; text-align: right; }
+  .search-box span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .icon-btn.bell { position: relative; width: 42px; height: 42px; color: var(--gold); flex: none; }
+  .bell .count { position: absolute; top: -7px; left: -7px; min-width: 20px; height: 20px; padding: 0 4px; display: grid; place-items: center;
+    background: var(--red); color: var(--cream); font-size: 11px; font-weight: 800; border: 2px solid var(--bg); }
+  .bell .count[hidden] { display: none; }
+
+  /* ============ المجتمع ============ */
+  .comm { padding: 0 16px 24px; }
+  .comm-hero { position: relative; margin: 0 -16px 14px; padding: 34px 16px 16px; background: var(--burst), var(--bg);
+    border-bottom: 3px solid var(--gold); }
+  .comm-hero h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 44px; line-height: 1.75; color: var(--gold);
+    text-shadow: 3px 3px 0 var(--bg), 5px 5px 0 var(--red); }
+  .comm-hero p { margin: 2px 0 0; color: var(--muted); font-size: 13px; font-weight: 700; line-height: 1.7; }
+  .comm-hero p.lead { color: var(--cream); font-size: 16px; font-weight: 800; }
+  .saved-btn { position: absolute; top: 14px; left: 14px; display: flex; align-items: center; gap: 6px; height: 38px; padding: 0 10px;
+    background: var(--bg); border: 2px solid var(--cream); color: var(--cream); font-size: 12px; font-weight: 800; }
+  .comm-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 14px; }
+  @media (min-width: 600px) { .comm-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+  .ctab { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 4px;
+    border: 2px solid var(--cream); color: var(--cream); font-weight: 700; font-size: 13px; white-space: nowrap; }
+  .ctab svg.i { width: 17px; height: 17px; flex: none; }
+  .ctab.active { background: var(--gold); border-color: var(--gold); color: var(--bg); font-weight: 800; box-shadow: var(--shadow-sm); }
+  .composer { display: flex; gap: 10px; align-items: flex-start; padding: 12px; margin-bottom: 18px; border: 2px solid var(--cream);
+    background: var(--surface); box-shadow: 4px 4px 0 var(--blue); }
+  .composer .av, .post-head .av { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; flex: none;
+    background: var(--gold); color: var(--bg); font-weight: 800; border: 2px solid var(--cream); cursor: pointer; }
+  .composer .av img, .post-head .av img { width: 100%; height: 100%; object-fit: cover; }
+  .composer .col { flex: 1; min-width: 0; }
+  .fake-input { width: 100%; min-height: 44px; padding: 0 12px; text-align: right; background: var(--bg); border: 2px solid var(--line);
+    color: var(--muted); font-size: 13px; font-weight: 700; }
+  .tools { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .tool { display: inline-flex; align-items: center; gap: 5px; min-height: 40px; min-width: 40px; justify-content: center; padding: 0 8px;
+    border: 2px solid var(--line); color: var(--cream); font-size: 12px; font-weight: 800; }
+  .tool.on { border-color: var(--gold); color: var(--gold); }
+  .pub { margin-inline-start: auto; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px;
+    background: var(--gold); color: var(--bg); font-weight: 800; font-size: 14px; box-shadow: var(--shadow-sm); }
+  .comm-grid { display: flex; flex-direction: column-reverse; gap: 18px; }   /* موبايل: الرائج والأعضاء فوق المنشورات */
+  @media (min-width: 760px) { .comm-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; align-items: start; }
+    .comm-side { position: sticky; top: 140px; } }
+  .side-box { border: 2px solid var(--cream); background: var(--surface); padding: 12px; margin-bottom: 14px; }
+  .side-title { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-family: var(--font-display); font-weight: 400;
+    font-size: 22px; line-height: 1.6; color: var(--gold); }
+  .side-title svg.i { width: 20px; height: 20px; }
+  .trend-row { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 0; border-top: 1px solid var(--line); text-align: right; }
+  .trend-row .rank { width: 30px; height: 30px; flex: none; display: grid; place-items: center; border: 2px solid var(--gold);
+    color: var(--gold); font-weight: 800; }
+  .trend-row .tx { flex: 1; min-width: 0; }
+  .trend-row b { display: block; font-size: 14px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .trend-row span { font-size: 12px; color: var(--muted); }
+  .trend-row img { width: 42px; height: 60px; object-fit: cover; flex: none; border: 2px solid var(--cream); }
+  .members { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .member { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px; border: 2px solid var(--line); text-align: center; min-width: 0; }
+  .member .av { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: var(--gold);
+    color: var(--bg); font-weight: 800; font-size: 18px; border: 2px solid var(--cream); cursor: pointer; }
+  .member:nth-child(3n+2) .av { background: var(--blue); color: var(--cream); }
+  .member:nth-child(3n) .av { background: var(--cream); }
+  .member .av img { width: 100%; height: 100%; object-fit: cover; }
+  .member b { max-width: 100%; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+  .member span { font-size: 11px; color: var(--muted); }
+  .follow-mini { min-height: 34px; padding: 0 12px; background: var(--red); color: var(--cream); font-weight: 800; font-size: 12px; }
+  .follow-mini.done { background: transparent; border: 2px solid var(--line); }
+  /* كارت المنشور */
+  .post-card { padding: 12px; margin-bottom: 18px; border: 2px solid var(--cream); background: var(--surface); box-shadow: var(--shadow-hard); }
+  .post-card:nth-child(even) { box-shadow: 5px 5px 0 var(--blue); }
+  .repost-by { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; color: var(--muted); font-size: 12px; font-weight: 800; cursor: pointer; }
+  .repost-by svg.i { width: 15px; height: 15px; }
+  .post-head { display: flex; align-items: center; gap: 10px; }
+  .post-head .pwho { flex: 1; min-width: 0; cursor: pointer; }
+  .post-head .pwho b { display: block; font-size: 15px; font-weight: 800; }
+  .post-head .when { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); }
+  .post-head .when svg.i { width: 13px; height: 13px; }
+  .more-btn-i { width: 40px; height: 40px; display: grid; place-items: center; color: var(--cream); flex: none; }
+  .post-text { margin-top: 10px; font-size: 15px; line-height: 1.75; white-space: pre-line; color: #EBDDBE; overflow-wrap: anywhere; }
+  .post-text.clamp { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .post-img { display: block; width: 100%; max-height: 420px; object-fit: cover; margin-top: 10px; border: 2px solid var(--cream); cursor: pointer;
+    background: var(--bg); }
+  .film-card { display: flex; gap: 10px; align-items: center; width: 100%; margin-top: 10px; padding: 8px; text-align: right;
+    border: 2px solid var(--line); background: var(--bg); }
+  .film-card img { width: 52px; height: 76px; object-fit: cover; flex: none; border: 2px solid var(--cream); box-shadow: 2px 2px 0 var(--red); }
+  .film-card .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .film-card b { font-size: 15px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .film-card .rate { display: inline-flex; align-items: center; gap: 4px; color: var(--gold); font-weight: 800; font-size: 14px; }
+  .film-card .rate svg.i { width: 15px; height: 15px; fill: currentColor; }
+  .film-card .genre { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .poll { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .poll-opt { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 0 12px;
+    border: 2px solid var(--cream); overflow: hidden; text-align: right; font-weight: 700; }
+  .poll-opt i { position: absolute; inset: 0 0 0 auto; background: rgba(233,185,73,.22); transition: width .3s ease; }
+  .poll-opt.mine { border-color: var(--gold); }
+  .poll-opt.mine i { background: rgba(233,185,73,.4); }
+  .poll-opt span, .poll-opt b { position: relative; }
+  .poll-total { font-size: 12px; color: var(--muted); }
+  .post-actions { display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); }
+  .pa { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 10px; color: var(--cream); font-weight: 800; font-size: 14px; }
+  .pa svg.i { width: 20px; height: 20px; }
+  .pa.like.on { color: var(--red); }
+  .pa.like.on svg.i { fill: currentColor; }
+  .pa.rp.on { color: var(--gold); }
+  .pa:disabled { opacity: .35; }
+  .pa.save { margin-inline-start: auto; }
+  .pa.save.on { color: var(--gold); }
+  .pa.save.on svg.i { fill: currentColor; }
+  .btn.outline.danger { border-color: var(--red); color: var(--cream); background: rgba(201,65,44,.2); }
+  .sheet .btn + .btn { margin-top: 10px; }
+  /* اكتب منشور */
+  .post-input { width: 100%; min-height: 110px; padding: 11px 12px; resize: vertical; font: inherit; }
+  .attach { margin-top: 8px; }
+  .img-prev { position: relative; display: inline-block; margin-top: 8px; }
+  .img-prev img { max-width: 100%; max-height: 180px; border: 2px solid var(--cream); display: block; }
+  .x-mini { position: absolute; top: 6px; left: 6px; width: 32px; height: 32px; background: var(--bg); border: 2px solid var(--cream); color: var(--cream); }
+  .poll-edit { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .poll-edit:empty, .film-pick:empty { display: none; }
+  .poll-edit input, .film-pick input { width: 100%; min-height: 44px; padding: 0 12px; background: var(--bg); border: 2px solid var(--line); color: var(--cream); }
+  .film-pick { margin-top: 10px; }
+  .film-results { margin-top: 8px; }
+
+  /* ============ البحث + الإشعارات ============ */
+  .search-row { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px; border: 2px solid var(--cream); background: var(--surface);
+    margin-bottom: 10px; }
+  .search-row input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; color: var(--cream); font-size: 15px; outline: none; }
+  .act.notif.unread { border-color: var(--gold); box-shadow: 3px 3px 0 var(--red); }
+
+  /* ============ الرئيسية ============ */
+  .home { padding: 4px 0 24px; }
+  .home-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px 0; }
+  .home-head h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 26px; line-height: 1.6; color: var(--gold); }
+  .see-all { min-height: 38px; padding: 0 12px; border: 2px solid var(--cream); color: var(--cream); font-weight: 800; font-size: 13px; flex: none; }
+  .home .side-box, .home .post-card, .home .review { margin-left: 18px; margin-right: 16px; }
+  .home .side-box { margin-top: 14px; }
+
+  /* ============ المواعيد ============ */
+  #sh-days { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 14px 18px 4px 22px; overflow: visible; }
+  #sh-days:empty { display: none; }
+  #sh-days .pill { height: 52px; padding: 0 4px; white-space: normal; line-height: 1.25; font-weight: 800; }
+  #sh-days .pill.active { background: var(--red); border-color: var(--red); color: var(--cream); box-shadow: 3px 3px 0 var(--gold); }
+  .cin-pills { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 18px 0 22px; }
+  .cin-pills:empty { display: none; }
+  .sh-film { flex: 1 0 100%; border-top: 1px solid var(--line); }
+  .cinema h3 + .sh-film, .cinema .cinema-meta + .sh-film { border-top: 0; }
+  .sh-title { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 14px 0; text-align: right; }
+  .sh-title img { width: 40px; height: 58px; object-fit: cover; flex: none; border: 2px solid var(--cream); }
+  .sh-title .tx { min-width: 0; display: flex; flex-direction: column; }
+  .sh-title b { font-size: 15px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sh-title span { font-size: 12px; color: var(--gold); font-weight: 800; }
 </style>
 </head>
 <body>
@@ -752,6 +902,10 @@
       <button class="icon-btn" id="comm-btn" title="المجتمع" aria-label="المجتمع"></button>
       <button class="avatar-btn" id="avatar-btn"></button>
     </div>
+  </div>
+  <div class="head-search">
+    <button class="search-box" id="search-open"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>ابحث عن فيلم، عضو، أو منشور...</span></button>
+    <button class="icon-btn bell" id="bell-btn" aria-label="الإشعارات"><svg class="i" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><span class="count" id="bell-count" hidden></span></button>
   </div>
   <div class="tabs">
     <button class="tab" data-s="s">يعرض دلوقتي <small id="count-s"></small></button>
@@ -802,7 +956,7 @@
     <div class="edits-note" id="w-edits"></div>
     <div class="field" id="w-stars-field"><label>تقييمك</label><div class="rate-stars" id="w-stars"></div></div>
     <div class="field"><label>رأيك <span class="count" id="w-count"></span></label>
-      <textarea id="w-text" maxlength="1000" placeholder="إيه اللي عجبك وإيه اللي ما عجبكش؟"></textarea></div>
+      <textarea id="w-text" maxlength="5000" placeholder="إيه اللي عجبك وإيه اللي ما عجبكش؟"></textarea></div>
     <label class="toggle field"><input type="checkbox" id="w-spoiler"> فيها حرق (هتتخبى لحد ما حد يدوس عليها)</label>
     <div class="msg" id="w-msg"></div>
     <button class="btn primary" id="w-save">نشر</button>
@@ -813,12 +967,46 @@
 <!-- ============ قائمة (مخصصة) ============ -->
 <section class="screen" id="s-listview"><div class="edit" id="lv"></div></section>
 
+<!-- ============ الرئيسية (ملخص) ============ -->
+<section class="screen" id="s-home"><div class="home" id="home"></div></section>
+
+<!-- ============ المواعيد (حسب السينما) ============ -->
+<section class="screen" id="s-showtimes">
+  <div class="st-head"><h2>المواعيد</h2><p>اختار اليوم والسينما، وكل ميعاد بيفتحلك صفحة الحجز</p></div>
+  <div class="scroller" id="sh-days"></div>
+  <div class="t-filter" id="sh-filter"></div>
+  <div class="cin-pills" id="sh-cinemas"></div>
+  <div id="sh-list"></div>
+</section>
+
 <!-- ============ المجتمع ============ -->
-<section class="screen" id="s-community"><div class="edit">
-  <h2>المجتمع</h2>
-  <div class="seg" id="c-seg"></div>
-  <div id="c-body"></div>
+<section class="screen" id="s-community"><div class="comm">
+  <div class="comm-hero">
+    <h2>المجتمع</h2>
+    <p class="lead">مكان يجمع كل محبي السينما في مصر</p>
+    <p>ناقش الأفلام، شارك أراءك، اكتشف أفلام جديدة، وتابع الأعضاء.</p>
+    <button class="saved-btn" id="c-saved"><svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>المحفوظات</button>
+  </div>
+  <div class="comm-tabs" id="c-seg"></div>
+  <div class="composer" id="c-compose"></div>
+  <div class="comm-grid">
+    <div id="c-body"></div>
+    <aside class="comm-side" id="c-side"></aside>
+  </div>
 </div></section>
+
+<!-- ============ منشور + تعليقاته ============ -->
+<section class="screen" id="s-post"><div class="edit" id="pst"></div></section>
+
+<!-- ============ البحث ============ -->
+<section class="screen" id="s-search"><div class="edit">
+  <div class="search-row"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <input type="search" id="q-input" placeholder="ابحث عن فيلم، عضو، أو منشور..." autocomplete="off"></div>
+  <div id="q-body"></div>
+</div></section>
+
+<!-- ============ الإشعارات ============ -->
+<section class="screen" id="s-notifs"><div class="edit"><h2>الإشعارات</h2><div id="n-body"></div></div></section>
 
 <!-- ============ ناس (متابعون / أتابع / طلبات) ============ -->
 <section class="screen" id="s-people"><div class="edit"><h2 id="pp-title"></h2><div id="pp-body"></div></div></section>
@@ -893,9 +1081,11 @@
 
 <!-- ============ شريط التنقل تحت (الأفلام / المجتمع / بروفايلي) - بيظهر في الشاشات التلاتة دول بس ============ -->
 <nav class="bottom-nav" id="bottom-nav" aria-label="التنقل">
+  <button data-to="s-home" id="nav-home"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>الرئيسية</button>
   <button data-to="s-list" id="nav-movies"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>الأفلام</button>
+  <button data-to="s-showtimes" id="nav-times"><svg class="i" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg>المواعيد</button>
   <button data-to="s-community" id="nav-comm"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6 6 0 0 1 3.5 5.5"/></svg>المجتمع</button>
-  <button data-to="s-profile" id="nav-me"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>بروفايلي</button>
+  <button data-to="s-profile" id="nav-me"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>حسابي</button>
 </nav>
 
 <script>
@@ -909,7 +1099,7 @@
   var target = /^\d+$/.test(q.get("m") || "") ? { m: q.get("m"), v: q.get("v") === "t" ? "t" : "d" } : null;
   // لينك متشارك: مراجعة / قائمة / حساب (السيرفر بيتأكد من الخصوصية)
   var shared = null, adminLink = q.get("admin") === "1";
-  ["review", "list", "user"].forEach(function (k) { if (/^\d+$/.test(q.get(k) || "")) shared = { kind: k, id: +q.get(k) }; });
+  ["review", "list", "user", "post"].forEach(function (k) { if (/^\d+$/.test(q.get(k) || "")) shared = { kind: k, id: +q.get(k) }; });
   var dataBase = (q.get("d") || "").replace(/\/$/, "");
   var DATA = null, CACHE = {}, current = null, stack = [];
   var user = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
@@ -965,7 +1155,8 @@
     if (shared) {
       var sh = shared; shared = null;
       if (!apiReady()) return;
-      if (sh.kind === "review") openReview(sh.id); else if (sh.kind === "list") openListView(sh.id); else openUser(sh.id);
+      if (sh.kind === "review") openReview(sh.id); else if (sh.kind === "list") openListView(sh.id);
+      else if (sh.kind === "post") openPost(sh.id); else openUser(sh.id);
       return;
     }
     if (!target) return;
@@ -1001,11 +1192,13 @@
   };
 
   // ---------- التنقل بين الشاشات (زرار الرجوع بتاع تيليجرام) ----------
-  var NAV_SCREENS = ["s-list", "s-community", "s-profile"];
+  var NAV_SCREENS = ["s-home", "s-list", "s-showtimes", "s-community", "s-profile"];
+  var TOP_SCREENS = ["s-home", "s-list", "s-showtimes", "s-community"];
   function show(id) {
     document.querySelectorAll(".screen").forEach(function (s) { s.classList.toggle("on", s.id === id); });
-    $("top").style.display = (id === "s-list") ? "" : "none";
-    var navOn = NAV_SCREENS.indexOf(id) >= 0;           // شريط التنقل تحت: الأفلام / المجتمع / بروفايلي بس
+    $("top").style.display = TOP_SCREENS.indexOf(id) >= 0 ? "" : "none";   // الهيدر (البحث + الجرس)
+    document.body.classList.toggle("on-list", id === "s-list");            // تابات الأفلام في «الأفلام» بس
+    var navOn = NAV_SCREENS.indexOf(id) >= 0;           // شريط التنقل تحت: في الخمس شاشات الرئيسية بس
     document.body.classList.toggle("has-nav", navOn);
     document.querySelectorAll("#bottom-nav button").forEach(function (b) { b.classList.toggle("on", b.dataset.to === id); });
     window.scrollTo(0, 0);
@@ -1717,7 +1910,7 @@
       var b = el("button", k <= W_STARS ? "on" : "", "★"); b.onclick = function () { haptic(); W_STARS = k; paintWriterStars(); }; st.appendChild(b);
     })(k);
   }
-  function wCount() { $("w-count").textContent = $("w-text").value.length + "/1000"; $("w-msg").textContent = ""; }
+  function wCount() { $("w-count").textContent = ""; $("w-msg").textContent = ""; }   // حد المراجعة (5000) ما بيظهرش للمستخدم
   $("w-text").oninput = wCount;
   $("w-save").onclick = function () {
     var m = FILM_MOVIE; haptic("medium"); $("w-save").disabled = true;
@@ -1741,7 +1934,8 @@
     var seg = el("div", "ptabs"), body = el("div");
     // حسابي: هشوفهم بعدين / شفتهم / تقييماتي ... - حساب حد تاني: هيشوفهم بعدين / شافهم / تقييماته ...
     var tabs = [["want", owner ? "هشوفهم بعدين" : "هيشوفهم بعدين"], ["watched", owner ? "شفتهم" : "شافهم"],
-                ["ratings", owner ? "تقييماتي" : "تقييماته"], ["reviews", owner ? "مراجعاتي" : "مراجعاته"], ["lists", owner ? "قوائمي" : "قوائمه"]];
+                ["ratings", owner ? "تقييماتي" : "تقييماته"], ["reviews", owner ? "مراجعاتي" : "مراجعاته"], ["lists", owner ? "قوائمي" : "قوائمه"],
+                ["posts", owner ? "منشوراتي" : "منشوراته"]];
     var show = function (k) {
       seg.querySelectorAll(".pill").forEach(function (b) { b.classList.toggle("active", b.dataset.k === k); });
       body.textContent = ""; TAB[k](body, uid, owner, p);
@@ -1789,6 +1983,16 @@
       pager(list, body, function (c) { return call("GET", "/api/users/" + uid + "/lists?offset=" + (c || 0)); },
         function (l, x) { l.appendChild(listRow(x)); },
         owner ? "لسه ما عملتش قوائم. اعمل قائمة لأفلامك المفضلة من أي نوع." : "مفيش قوائم تتشاف هنا");
+    },
+    posts: function (body, uid, owner) {
+      if (owner) {
+        var wrap = el("div", "center-act"), nb = el("button", "btn outline", "+ منشور جديد");
+        nb.onclick = function () { haptic(); openComposer(""); };
+        wrap.appendChild(nb); body.appendChild(wrap);
+      }
+      var list = el("div"); body.appendChild(list);
+      pager(list, body, function (c) { return call("GET", "/api/users/" + uid + "/posts" + (c ? "?before=" + encodeURIComponent(c) : "")); },
+        function (l, x) { l.appendChild(postCard(x.post)); }, owner ? "لسه ما نشرتش حاجة." : "مفيش منشورات تتشاف هنا");
     }
   };
   function clear(node) { node.textContent = ""; return node; }
@@ -2013,7 +2217,7 @@
   // ---------- المرحلة 6: لوحة الإدارة ----------
   var ACTIONS = { hide: "إخفاء", restore: "استرجاع", "delete": "مسح نهائي", dismiss: "تجاهل البلاغ", auto_hide: "إخفاء تلقائي (3 بلاغات)",
                   suspend: "إيقاف", unsuspend: "فك الإيقاف", ban: "حظر", unban: "فك الحظر", reset_profile: "تصفير الملف" };
-  var KIND_AR = { review: "مراجعة", comment: "تعليق", user: "حساب", list: "قائمة" };
+  var KIND_AR = { review: "مراجعة", comment: "تعليق", user: "حساب", list: "قائمة", post: "منشور", post_comment: "تعليق على منشور" };
   function stateTag(st) {
     var t = st.state === "banned" ? "محظور" : st.state === "suspended" ? "موقوف" + (st.until ? " لحد " + fmtDate(st.until) : " دايم") : "نشط";
     return el("span", "state " + st.state, t);
@@ -2322,52 +2526,585 @@
     };
     return r;
   }
-  // ---------- المجتمع ----------
+  // ---------- المجتمع (زي الصورة: تابات + اكتب منشور + الرائج + أعضاء مقترحون) ----------
+  var PICON = {
+    repost: '<svg class="i" viewBox="0 0 24 24"><path d="M17 2l3 3-3 3"/><path d="M4 11V9a4 4 0 0 1 4-4h12"/><path d="M7 22l-3-3 3-3"/><path d="M20 13v2a4 4 0 0 1-4 4H4"/></svg>',
+    save: '<svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+    image: '<svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/></svg>',
+    gif: '<svg class="i" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M10 10H8v4h2v-2M13 10v4M16.5 14v-4h2.5M16.5 12h2"/></svg>',
+    poll: '<svg class="i" viewBox="0 0 24 24"><path d="M5 20V10M10 20V4M15 20v-7M20 20v-4"/></svg>',
+    more: '<svg class="i" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg>',
+    globe: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>',
+    send: '<svg class="i" viewBox="0 0 24 24"><path d="M21 3L10 14"/><path d="M21 3l-7 18-4-7-7-4z"/></svg>',
+    fire: '<svg class="i" viewBox="0 0 24 24"><path d="M12 21c4 0 7-2.7 7-6.5 0-3.4-2.3-5.2-3.6-7.6-.5 2-1.7 3.2-3 3.6.4-2.9-.6-5.6-3.4-7.5.2 3.3-1.5 5-3 6.8C4.8 11.3 5 12.6 5 14.5 5 18.3 8 21 12 21z"/></svg>',
+    home: '<svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
+    star: '<svg class="i" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>',
+    review: '<svg class="i" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>'
+  };
+  var CTAB = "all", COMM_SIDE = null;
+  function enc(c) { return encodeURIComponent(c); }
   $("comm-btn").innerHTML = ICON.people;
   $("comm-btn").onclick = function () {
     haptic();
     if (!apiReady()) { notify("افتح الصفحة من زرار «اضغط هنا» في البوت"); return; }
-    go("s-community"); renderCommunity("feed");
+    go("s-community"); renderCommunity("all");
   };
+  $("c-saved").onclick = function () { haptic(); openSaved(); };
   function renderCommunity(tab) {
+    CTAB = tab;
     var seg = clear($("c-seg")), body = clear($("c-body"));
-    [["feed", "أتابعهم"], ["reviews", "مراجعات جديدة"], ["discover", "اكتشف"]].forEach(function (t) {
-      var b = el("button", "pill small" + (t[0] === tab ? " active" : ""), t[1]); b.onclick = function () { haptic(); renderCommunity(t[0]); }; seg.appendChild(b);
+    [["all", "الكل", PICON.home], ["following", "المتابعين", ICON.people], ["reviews", "مراجعات", PICON.review],
+     ["ratings", "تقييمات", PICON.star], ["posts", "مناقشات", ICON.chat], ["lists", "قوائم", ICON.addlist]].forEach(function (t) {
+      var b = el("button", "ctab" + (t[0] === tab ? " active" : "")); b.dataset.k = t[0];
+      b.innerHTML = t[2]; b.appendChild(el("span", "", t[1]));
+      b.onclick = function () { if (t[0] !== CTAB) { haptic(); renderCommunity(t[0]); } }; seg.appendChild(b);
     });
-    if (tab === "feed") {
-      var list = el("div"); body.appendChild(list);
-      pager(list, body, function (c) { return call("GET", "/api/feed" + (c ? "?before=" + c : "")); },
-        function (l, x) { l.appendChild(activityRow(x)); }, "لسه مفيش نشاط من الناس اللي بتتابعهم. شوف «اكتشف» وتابع ناس ذوقهم قريب منك.");
+    renderComposerBar();
+    renderCommSide();
+    var list = el("div"); body.appendChild(list);
+    if (tab === "all" || tab === "following") {
+      pager(list, body, function (c) { return call("GET", "/api/community/stream?scope=" + tab + (c ? "&before=" + enc(c) : "")); },
+        function (l, x) { l.appendChild(streamItem(x)); },
+        tab === "following" ? "لسه مفيش نشاط من الناس اللي بتتابعهم. تابع ناس ذوقهم قريب منك من «أعضاء مقترحون»." : "لسه مفيش حاجة هنا. ابدأ انت أول منشور!");
     } else if (tab === "reviews") {
-      var rl = el("div"); body.appendChild(rl);
-      pager(rl, body, function (c) { return call("GET", "/api/community/reviews?offset=" + (c || 0)); },
+      pager(list, body, function (c) { return call("GET", "/api/community/reviews?offset=" + (c || 0)); },
         function (l, x) { l.appendChild(reviewCard(x, true)); }, "لسه مفيش مراجعات");
+    } else if (tab === "ratings") {
+      pager(list, body, function (c) { return call("GET", "/api/community/ratings" + (c ? "?before=" + enc(c) : "")); },
+        function (l, x) { l.appendChild(activityRow(x.activity)); }, "لسه مفيش تقييمات");
+    } else if (tab === "posts") {
+      pager(list, body, function (c) { return call("GET", "/api/posts" + (c ? "?before=" + enc(c) : "")); },
+        function (l, x) { l.appendChild(postCard(x.post)); }, "لسه مفيش مناقشات. ابدأ انت أول واحدة!");
     } else {
-      body.appendChild(el("div", "empty", "..."));
-      call("GET", "/api/community").then(function (d) {
-        clear(body);
-        if (d.films.length) {
-          body.appendChild(el("div", "section-title", "أفلام عليها تفاعل"));
-          var strip = el("div", "strip");
-          d.films.forEach(function (f) {
-            var t = el("div", "trend"); t.appendChild(posterImg(f.movie));
-            t.appendChild(el("span", "", f.average != null ? "★ " + f.average + " (" + f.count + ")" : f.movie.title));
-            t.onclick = function () { openMovie(f.movie); }; strip.appendChild(t);
-          });
-          body.appendChild(strip);
-        }
-        if (d.lists.length) { body.appendChild(el("div", "section-title", "قوائم مميزة")); d.lists.forEach(function (x) { body.appendChild(listRow(x)); }); }
-        body.appendChild(el("div", "section-title", "ناس ممكن تتابعهم"));
-        if (!d.users.length) body.appendChild(el("div", "empty", "لسه مفيش اقتراحات"));
-        d.users.forEach(function (u) {
-          var fb = el("button", "mini gold", "تابع");
-          fb.onclick = function () { haptic(); fb.disabled = true;
-            call("PUT", "/api/users/" + u.id + "/follow").then(function (x) { fb.textContent = x.follow === "accepted" ? "متابَع ✓" : "مستني الموافقة"; fb.className = "mini"; })
-              .catch(function (e) { fb.disabled = false; notify(e.message); }); };
-          body.appendChild(personRow(u, [fb]));
-        });
-      }).catch(function (e) { clear(body).appendChild(el("div", "empty", e.message)); });
+      pager(list, body, function (c) { return call("GET", "/api/community/lists?offset=" + (c || 0)); },
+        function (l, x) { l.appendChild(listRow(x)); }, "لسه مفيش قوائم");
     }
+  }
+  function streamItem(x) {
+    if (x.type === "post") return postCard(x.post);
+    if (x.type === "review") return reviewCard(x.review, true);
+    return activityRow(x.activity);
+  }
+  function renderComposerBar() {
+    var box = clear($("c-compose"));
+    box.appendChild(avatarEl(ME, "av"));
+    var col = el("div", "col");
+    var fake = el("button", "fake-input", "شارك رأيك عن فيلم أو ابدأ مناقشة...");
+    fake.onclick = function () { haptic(); openComposer(""); };
+    col.appendChild(fake);
+    var row = el("div", "tools");
+    [["image", PICON.image, "صورة"], ["gif", PICON.gif, "GIF"], ["poll", PICON.poll, "استفتاء"]].forEach(function (t) {
+      var b = el("button", "tool"); b.innerHTML = t[1]; b.setAttribute("aria-label", t[2]);
+      b.onclick = function () { haptic(); openComposer(t[0]); }; row.appendChild(b);
+    });
+    var pub = el("button", "pub"); pub.innerHTML = PICON.send; pub.appendChild(el("span", "", "نشر"));
+    pub.onclick = function () { haptic(); openComposer(""); }; row.appendChild(pub);
+    col.appendChild(row); box.appendChild(col);
+  }
+  function renderCommSide() {
+    var side = clear($("c-side"));
+    var fill = function (d) {
+      clear(side);
+      if (d.trending && d.trending.length) side.appendChild(trendingBox(d.trending));
+      if (d.users && d.users.length) {
+        var sec = el("section", "side-box"), h = el("h3", "side-title"); h.innerHTML = ICON.people;
+        h.appendChild(el("span", "", "أعضاء مقترحون")); sec.appendChild(h);
+        var grid = el("div", "members");
+        d.users.slice(0, 6).forEach(function (u) {
+          var m = el("div", "member"); var a = avatarSmall(u, "av"); a.onclick = function () { openUser(u.id); }; m.appendChild(a);
+          var nm = el("b", "ltr", u.name); nm.onclick = function () { openUser(u.id); }; m.appendChild(nm);
+          if (u.counts && u.counts.followers != null) m.appendChild(el("span", "", u.counts.followers + " متابع"));
+          var fb = el("button", "follow-mini", "تابع");
+          fb.onclick = function () { haptic(); fb.disabled = true;
+            call("PUT", "/api/users/" + u.id + "/follow").then(function (x) { fb.textContent = x.follow === "accepted" ? "متابَع ✓" : "مستني الموافقة"; fb.className = "follow-mini done"; })
+              .catch(function (e) { fb.disabled = false; notify(e.message); }); };
+          m.appendChild(fb); grid.appendChild(m);
+        });
+        sec.appendChild(grid); side.appendChild(sec);
+      }
+    };
+    if (COMM_SIDE && Date.now() - COMM_SIDE.at < 120000) return fill(COMM_SIDE.d);
+    call("GET", "/api/community/side").then(function (d) { COMM_SIDE = { d: d, at: Date.now() }; fill(d); }).catch(function () {});
+  }
+  function trendingBox(items) {
+    var sec = el("section", "side-box"), h = el("h3", "side-title"); h.innerHTML = PICON.fire;
+    h.appendChild(el("span", "", "المواضيع الرائجة")); sec.appendChild(h);
+    items.forEach(function (t, i) {
+      var r = el("button", "trend-row"); r.appendChild(el("span", "rank", String(i + 1)));
+      var tx = el("div", "tx"); tx.appendChild(el("b", "ltr", t.movie.title || ""));
+      if (t.posts) tx.appendChild(el("span", "", t.posts + " منشور"));
+      r.appendChild(tx); r.appendChild(posterImg(t.movie));
+      r.onclick = function () { haptic(); openMovie(t.movie); }; sec.appendChild(r);
+    });
+    return sec;
+  }
+
+  // ---------- كارت المنشور ----------
+  function postCard(p) {
+    var c = el("article", "post-card");
+    if (p.repost_by) { var rb = el("div", "repost-by"); rb.innerHTML = PICON.repost; rb.appendChild(el("span", "ltr", p.repost_by.name + " شارك"));
+      rb.onclick = function () { openUser(p.repost_by.id); }; c.appendChild(rb); }
+    var hd = el("div", "post-head"); var av = avatarSmall(p.author, "av"); hd.appendChild(av);
+    var who = el("div", "pwho"); who.appendChild(el("b", "ltr", p.author.name));
+    var when = el("span", "when", ago(p.at)); if (p.public) when.insertAdjacentHTML("afterbegin", PICON.globe); who.appendChild(when);
+    hd.appendChild(who); av.onclick = who.onclick = function () { haptic(); openUser(p.author.id); };
+    var more = el("button", "more-btn-i"); more.innerHTML = PICON.more; more.setAttribute("aria-label", "اختيارات");
+    more.onclick = function () { haptic(); postMenu(p, c); }; hd.appendChild(more);
+    c.appendChild(hd);
+    if (p.text) {
+      var t = el("div", "post-text ltr", p.text); c.appendChild(t);
+      if (p.text.length > 280 || p.text.split("\n").length > 6) {
+        t.classList.add("clamp"); var mr = el("button", "more", "عرض المزيد");
+        mr.onclick = function () { t.classList.remove("clamp"); mr.remove(); }; c.appendChild(mr);
+      }
+    }
+    if (p.image) { var im = el("img", "post-img"); im.src = media(p.image); im.alt = ""; im.loading = "lazy";
+      im.onclick = function () { openPost(p.id); }; c.appendChild(im); }
+    if (p.poll) c.appendChild(pollBlock(p));
+    if (p.movie) c.appendChild(filmCard(p.movie));
+    c.appendChild(postActions(p));
+    return c;
+  }
+  function filmCard(mv) {
+    var f = el("button", "film-card"); f.appendChild(posterImg(mv));
+    var tx = el("div", "tx"); tx.appendChild(el("b", "ltr", mv.title || ""));
+    if (mv.average != null) { var s = el("span", "rate"); s.innerHTML = PICON.star; s.appendChild(document.createTextNode(" " + mv.average)); tx.appendChild(s); }
+    if (mv.genre) tx.appendChild(el("span", "genre ltr", mv.genre));
+    f.appendChild(tx); f.onclick = function () { haptic(); openMovie(mv); };
+    return f;
+  }
+  function pollBlock(p) {
+    var box = el("div", "poll");
+    var draw = function () {
+      clear(box);
+      var total = p.poll.total || 0;
+      p.poll.options.forEach(function (o, i) {
+        var pct = total ? Math.round(o.votes * 100 / total) : 0;
+        var b = el("button", "poll-opt" + (p.poll.voted === i ? " mine" : ""));
+        var bar = el("i"); bar.style.width = (p.poll.voted != null ? pct : 0) + "%"; b.appendChild(bar);
+        b.appendChild(el("span", "ltr", o.text));
+        if (p.poll.voted != null) b.appendChild(el("b", "", pct + "%"));
+        b.onclick = function () {
+          haptic();
+          call("POST", "/api/posts/" + p.id + "/vote", { option: i }).then(function (x) { p.poll = x.poll; draw(); }).catch(function (e) { notify(e.message); });
+        };
+        box.appendChild(b);
+      });
+      box.appendChild(el("div", "poll-total", total + " صوت"));
+    };
+    draw(); return box;
+  }
+  function postActions(p) {
+    var row = el("div", "post-actions");
+    var mk = function (cls, icon, n, on) { var b = el("button", "pa " + cls + (on ? " on" : "")); b.innerHTML = icon; b.appendChild(el("span", "", String(n || 0))); return b; };
+    var like = mk("like", ICON.heart, p.likes, p.liked);
+    like.onclick = function () {
+      haptic(); var on = !p.liked;
+      call(on ? "POST" : "DELETE", "/api/posts/" + p.id + "/like").then(function (x) { p.liked = x.liked; p.likes = x.likes; row.replaceWith(postActions(p)); })
+        .catch(function (e) { notify(e.message); });
+    };
+    var cm = mk("cm", ICON.chat, p.comments); cm.onclick = function () { haptic(); openPost(p.id); };
+    var rp = mk("rp", PICON.repost, p.reposts, p.reposted);
+    if (p.mine) rp.disabled = true;
+    rp.onclick = function () {
+      haptic(); var on = !p.reposted;
+      call(on ? "POST" : "DELETE", "/api/posts/" + p.id + "/repost").then(function (x) { p.reposted = x.reposted; p.reposts = x.reposts; row.replaceWith(postActions(p)); })
+        .catch(function (e) { notify(e.message); });
+    };
+    var sv = el("button", "pa save" + (p.saved ? " on" : "")); sv.innerHTML = PICON.save; sv.setAttribute("aria-label", "حفظ");
+    sv.onclick = function () {
+      haptic(); var on = !p.saved;
+      call(on ? "POST" : "DELETE", "/api/posts/" + p.id + "/save").then(function (x) { p.saved = x.saved; row.replaceWith(postActions(p)); })
+        .catch(function (e) { notify(e.message); });
+    };
+    [like, cm, rp, sv].forEach(function (b) { row.appendChild(b); });
+    return row;
+  }
+  function postMenu(p, card) {
+    openSheet("المنشور", function (sh) {
+      if (p.public) { var s = el("button", "btn outline", "شارك"); s.onclick = function () { closeSheet(); shareItem("ps_" + p.id, "منشور " + p.author.name + " على CFTRadar"); }; sh.appendChild(s); }
+      if (p.mine || (ME && ME.admin)) {
+        var d = el("button", "btn outline danger", "مسح المنشور");
+        d.onclick = function () { confirmBox("تمسح المنشور ده؟", function () {
+          call("DELETE", "/api/posts/" + p.id).then(function () { closeSheet(); if (card) card.remove(); if (document.querySelector(".screen.on").id === "s-post") back(); })
+            .catch(function (e) { notify(e.message); }); }); };
+        sh.appendChild(d);
+      }
+      if (!p.mine) { var r = el("button", "btn outline", "إبلاغ"); r.onclick = function () { closeSheet(); reportSheet("post", p.id); }; sh.appendChild(r); }
+    });
+  }
+
+  // ---------- صفحة منشور + التعليقات ----------
+  function openPost(id) {
+    go("s-post");
+    var box = clear($("pst")); box.appendChild(el("div", "empty", "..."));
+    call("GET", "/api/posts/" + id).then(function (p) {
+      clear(box); box.appendChild(el("h2", "", "منشور"));
+      box.appendChild(postCard(p));
+      if (!(ME && ME.comments_enabled)) return;
+      box.appendChild(el("div", "section-title", "التعليقات"));
+      var list = el("div"); box.appendChild(list);
+      var load = function (after) {
+        return call("GET", "/api/posts/" + id + "/comments?after=" + after).then(function (d) {
+          d.items.forEach(function (c) { list.appendChild(postCommentRow(c)); });
+          if (d.next) return load(d.next);
+          if (!list.childNodes.length) list.appendChild(el("div", "empty", "لسه مفيش تعليقات"));
+        });
+      };
+      load(0);
+      var comp = el("div", "compose"), ta = el("textarea"); ta.maxLength = 500; ta.placeholder = "اكتب تعليق...";
+      var send = el("button", "btn primary", "ابعت"), msg = el("div", "msg");
+      send.onclick = function () {
+        send.disabled = true;
+        call("POST", "/api/posts/" + id + "/comments", { text: ta.value }).then(function (d) {
+          send.disabled = false; ta.value = ""; msg.textContent = ""; clear(list);
+          d.items.forEach(function (c) { list.appendChild(postCommentRow(c)); });
+        }).catch(function (e) { send.disabled = false; msg.textContent = e.message; });
+      };
+      comp.appendChild(ta); comp.appendChild(send); box.appendChild(comp); box.appendChild(msg);
+    }).catch(function (e) { clear(box).appendChild(el("div", "empty", e.message)); });
+  }
+  function postCommentRow(c) {
+    var w = el("div", "cmt"), hd = el("div", "hd");
+    var name = el("b", "ltr", c.author.name); name.onclick = function () { openUser(c.author.id); };
+    hd.appendChild(name); hd.appendChild(el("span", "", ago(c.at))); w.appendChild(hd);
+    w.appendChild(el("div", "bd ltr", c.text));
+    var ft = el("div", "ft");
+    if (!c.mine) { var rp = el("button", "linkish", "إبلاغ"); rp.onclick = function () { reportSheet("post_comment", c.id); }; ft.appendChild(rp); }
+    if (c.can_delete) { var del = el("button", "linkish", "مسح"); del.onclick = function () { confirmBox("تمسح التعليق؟", function () {
+      call("DELETE", "/api/post-comments/" + c.id).then(function () { w.remove(); }).catch(function (e) { notify(e.message); }); }); }; ft.appendChild(del); }
+    w.appendChild(ft);
+    return w;
+  }
+  function openSaved() {
+    go("s-listview");
+    var lv = clear($("lv")); lv.appendChild(el("h2", "", "المحفوظات"));
+    var list = el("div"); lv.appendChild(list);
+    pager(list, lv, function (c) { return call("GET", "/api/me/saved" + (c ? "?before=" + enc(c) : "")); },
+      function (l, x) { l.appendChild(postCard(x.post)); }, "لسه ما حفظتش منشورات. دوس على علامة الحفظ تحت أي منشور.");
+  }
+
+  // ---------- اكتب منشور ----------
+  function openComposer(mode, presetMovie) {
+    if (!apiReady()) { notify("افتح الصفحة من زرار «اضغط هنا» في البوت"); return; }
+    var file = null, movie = presetMovie || null, poll = mode === "poll" ? ["", ""] : null;
+    openSheet("منشور جديد", function (sh) {
+      var ta = el("textarea", "post-input"); ta.maxLength = 2000; ta.placeholder = "شارك رأيك عن فيلم أو ابدأ مناقشة...";
+      sh.appendChild(ta);
+      var att = el("div", "attach"); sh.appendChild(att);
+      var pollBox = el("div", "poll-edit"); sh.appendChild(pollBox);
+      var filmBox = el("div", "film-pick"); sh.appendChild(filmBox);
+      var input = el("input"); input.type = "file"; input.accept = "image/jpeg,image/png,image/webp,image/gif"; input.hidden = true;
+      sh.appendChild(input);
+      var drawAttach = function () {
+        clear(att);
+        if (file) {
+          var pv = el("div", "img-prev"), im = el("img"); im.src = URL.createObjectURL(file); pv.appendChild(im);
+          var x = el("button", "x-mini", "✕"); x.onclick = function () { file = null; drawAttach(); }; pv.appendChild(x); att.appendChild(pv);
+        }
+        var tools = el("div", "tools");
+        [["image", PICON.image, "صورة", "image/jpeg,image/png,image/webp"], ["gif", PICON.gif, "GIF", "image/gif"]].forEach(function (t) {
+          var b = el("button", "tool"); b.innerHTML = t[1]; b.appendChild(el("span", "", t[2]));
+          b.onclick = function () { input.accept = t[3]; input.click(); }; tools.appendChild(b);
+        });
+        var pb = el("button", "tool" + (poll ? " on" : "")); pb.innerHTML = PICON.poll; pb.appendChild(el("span", "", "استفتاء"));
+        pb.onclick = function () { poll = poll ? null : ["", ""]; drawPoll(); drawAttach(); }; tools.appendChild(pb);
+        var fb = el("button", "tool" + (movie ? " on" : "")); fb.innerHTML = ICON.ticket; fb.appendChild(el("span", "", "فيلم"));
+        fb.onclick = function () { drawFilm(true); }; tools.appendChild(fb);
+        att.appendChild(tools);
+      };
+      input.onchange = function () {
+        var f = input.files && input.files[0]; input.value = "";
+        if (!f) return;
+        if (f.size > 8 * 1024 * 1024) { msg.textContent = "الصورة كبيرة، أقصى حجم 8 ميجا"; return; }
+        file = f; drawAttach();
+      };
+      var drawPoll = function () {
+        clear(pollBox);
+        if (!poll) return;
+        poll.forEach(function (v, i) {
+          var inp = el("input"); inp.type = "text"; inp.maxLength = 60; inp.value = v; inp.placeholder = "اختيار " + (i + 1);
+          inp.oninput = function () { poll[i] = inp.value; }; pollBox.appendChild(inp);
+        });
+        if (poll.length < 4) { var add = el("button", "linkish", "+ اختيار"); add.onclick = function () { poll.push(""); drawPoll(); }; pollBox.appendChild(add); }
+      };
+      var drawFilm = function (searching) {
+        clear(filmBox);
+        if (movie && !searching) {
+          var card = filmCard(movie); card.onclick = null; filmBox.appendChild(card);
+          var rm = el("button", "linkish", "شيل الفيلم"); rm.onclick = function () { movie = null; drawFilm(false); drawAttach(); }; filmBox.appendChild(rm);
+          return;
+        }
+        if (!searching) return;
+        var q2 = el("input"); q2.type = "search"; q2.placeholder = "اسم الفيلم"; filmBox.appendChild(q2);
+        var res = el("div", "film-results"); filmBox.appendChild(res);
+        q2.oninput = function () {
+          clear(res);
+          findMovies(q2.value, 6).forEach(function (m) {
+            var r = el("button", "r-item"); r.appendChild(posterImg(m)); r.appendChild(el("span", "t ltr", m.title));
+            r.onclick = function () { movie = { id: m.id, title: m.title, poster: m.poster, country: country, genre: m.genre }; drawFilm(false); drawAttach(); };
+            res.appendChild(r);
+          });
+        };
+        q2.focus();
+      };
+      drawAttach(); drawPoll(); drawFilm(false);
+      var msg = el("div", "msg"), pub = el("button", "btn primary", "نشر");
+      pub.onclick = function () {
+        var fd = new FormData();
+        fd.append("text", ta.value);
+        if (movie) fd.append("movie_id", String(movie.id));
+        if (poll) fd.append("poll", JSON.stringify(poll.filter(function (v) { return v.trim(); })));
+        if (file) fd.append("file", file, file.name);
+        pub.disabled = true; msg.textContent = "";
+        call("POST", "/api/posts", fd).then(function () {
+          closeSheet(); haptic("medium");
+          var on = document.querySelector(".screen.on").id;
+          if (on === "s-community") renderCommunity(CTAB === "all" || CTAB === "posts" ? CTAB : "all");
+          else if (on === "s-home") renderHome();
+          else notify("اتنشر ✓");
+        }).catch(function (e) { pub.disabled = false; msg.textContent = e.message; });
+      };
+      sh.appendChild(pub); sh.appendChild(msg);
+      if (mode === "image" || mode === "gif") { input.accept = mode === "gif" ? "image/gif" : "image/jpeg,image/png,image/webp"; input.click(); }
+    });
+  }
+
+  // ---------- البحث: أفلام (من بيانات الصفحة) + أعضاء + منشورات ----------
+  function norm(s) {
+    return String(s || "").normalize("NFKC").toLowerCase().replace(/[ً-ْـ]/g, "")
+      .replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي");
+  }
+  function findMovies(q, limit) {
+    var n = norm(q).trim(); if (n.length < 2 || !DATA) return [];
+    var seen = {}, out = [];
+    listIds("whatson").concat(listIds("comingsoon")).forEach(function (id) {
+      var m = DATA.movies[String(id)]; if (!m || seen[m.id]) return; seen[m.id] = 1;
+      if (norm(m.title).indexOf(n) >= 0 || norm(m.title_en || "").indexOf(n) >= 0) out.push(m);
+    });
+    return out.slice(0, limit || 8);
+  }
+  var SEARCH_T = null;
+  function openSearch() {
+    go("s-search"); $("q-input").value = ""; clear($("q-body"));
+    setTimeout(function () { try { $("q-input").focus(); } catch (e) {} }, 50);
+  }
+  $("search-open").onclick = function () { haptic(); openSearch(); };
+  $("q-input").oninput = function () {
+    clearTimeout(SEARCH_T);
+    var q = $("q-input").value;
+    SEARCH_T = setTimeout(function () { runSearch(q); }, 300);
+  };
+  function runSearch(q) {
+    var body = clear($("q-body"));
+    if (norm(q).trim().length < 2) return;
+    var films = findMovies(q, 8);
+    if (films.length) {
+      body.appendChild(el("div", "section-title", "أفلام"));
+      films.forEach(function (m) {
+        var r = el("button", "r-item"); r.appendChild(posterImg(m)); r.appendChild(el("span", "t ltr", m.title));
+        r.onclick = function () { showDetail(m); }; body.appendChild(r);
+      });
+    }
+    if (!apiReady()) { if (!films.length) body.appendChild(el("div", "empty", "مفيش نتايج")); return; }
+    var more = el("div"); body.appendChild(more);
+    call("GET", "/api/search?q=" + encodeURIComponent(q)).then(function (d) {
+      if ($("q-input").value !== q) return;
+      if (d.users.length) {
+        more.appendChild(el("div", "section-title", "أعضاء"));
+        d.users.forEach(function (u) { var r = personRow(u); if (u.followers != null) r.querySelector(".who").appendChild(el("span", "", u.followers + " متابع")); more.appendChild(r); });
+      }
+      if (d.posts.length) { more.appendChild(el("div", "section-title", "منشورات")); d.posts.forEach(function (p) { more.appendChild(postCard(p)); }); }
+      if (!films.length && !d.users.length && !d.posts.length) more.appendChild(el("div", "empty", "مفيش نتايج"));
+    }).catch(function (e) { more.appendChild(el("div", "empty", e.message)); });
+  }
+
+  // ---------- جرس الإشعارات ----------
+  var NOTIF_TEXT = {
+    comment: "علّق على مراجعتك عن «%»", reply: "رد في مراجعة «%» اللي علّقت عليها", like_review: "عجبته مراجعتك عن «%»",
+    like_comment: "عجبه تعليقك في مراجعة «%»", post_comment: "علّق على منشورك", post_reply: "رد في منشور علّقت عليه",
+    post_like: "عجبه منشورك", repost: "شارك منشورك", follow: "بدأ يتابعك", follow_request: "عايز يتابعك"
+  };
+  function updateBell() {
+    var n = (ME && ME.notif_unread) || 0, b = $("bell-count");
+    b.hidden = !n; b.textContent = n > 9 ? "9+" : String(n);
+  }
+  $("bell-btn").onclick = function () {
+    haptic();
+    if (!apiReady()) { notify("افتح الصفحة من زرار «اضغط هنا» في البوت"); return; }
+    go("s-notifs");
+    var body = clear($("n-body")), list = el("div"); body.appendChild(list);
+    pager(list, body, function (c) { return call("GET", "/api/notifications" + (c ? "?before=" + c : "")); },
+      function (l, n) { l.appendChild(notifRow(n)); }, "مفيش إشعارات لسه");
+    call("POST", "/api/notifications/read").then(function () { if (ME) ME.notif_unread = 0; updateBell(); }).catch(function () {});
+  };
+  function notifRow(n) {
+    var r = el("button", "act notif" + (n.read ? "" : " unread")); r.appendChild(avatarSmall(n.actor, "av"));
+    var txt = el("div", "txt"); txt.appendChild(el("b", "ltr", n.actor.name));
+    txt.appendChild(document.createTextNode(" " + (NOTIF_TEXT[n.kind] || "").replace("%", n.title)));
+    txt.appendChild(el("span", "when", ago(n.at))); r.appendChild(txt);
+    r.onclick = function () {
+      haptic();
+      if (n.post_id) openPost(n.post_id); else if (n.review_id) openReview(n.review_id);
+      else if (n.kind === "follow_request") openRequests(); else openUser(n.actor.id);
+    };
+    return r;
+  }
+
+  // ---------- الرئيسية (ملخص): يعرض دلوقتي / قريبًا / مراقباتي / الرائج / آخر المنشورات ----------
+  function goMovies(s) { haptic(); stack = []; show("s-list"); setTab(s); window.scrollTo(0, 0); }
+  function openHome() { go("s-home"); renderHome(); }
+  function homeSection(box, title, onAll) {
+    var hd = el("div", "home-head"); hd.appendChild(el("h2", "", title));
+    if (onAll) { var a = el("button", "see-all", "عرض الكل"); a.onclick = onAll; hd.appendChild(a); }
+    box.appendChild(hd);
+  }
+  function renderHome() {
+    var box = clear($("home"));
+    if (!DATA) return;
+    [["whatson", "يعرض دلوقتي", "s"], ["comingsoon", "يعرض قريبًا", "c"]].forEach(function (s) {
+      var ids = listIds(s[0]); if (!ids.length) return;
+      homeSection(box, s[1], function () { goMovies(s[2]); });
+      var g = el("div", "grid home-grid"); box.appendChild(g);
+      ids.slice(0, 4).forEach(function (id, n) { var m = DATA.movies[String(id)]; if (m) g.appendChild(cardFor(m, n, country)); });
+    });
+    var watch = el("div"); box.appendChild(watch);
+    watchItems(function (items) {
+      if (!items.length) return;
+      homeSection(watch, "مراقباتي", function () { goMovies("w"); });
+      var g = el("div", "grid home-grid"); watch.appendChild(g);
+      items.slice(0, 4).forEach(function (it, n) { g.appendChild(cardFor(it.m, n, it.c)); });
+    });
+    if (!apiReady()) return;
+    var soc = el("div"); box.appendChild(soc);
+    call("GET", "/api/community/side").then(function (d) { if (d.trending && d.trending.length) soc.appendChild(trendingBox(d.trending)); }).catch(function () {});
+    var posts = el("div"); box.appendChild(posts);
+    call("GET", "/api/community/stream?scope=all").then(function (d) {
+      var items = d.items.filter(function (x) { return x.type === "post" || x.type === "review"; }).slice(0, 3);
+      if (!items.length) return;
+      homeSection(posts, "آخر المنشورات", function () { $("nav-comm").click(); });
+      items.forEach(function (x) { posts.appendChild(streamItem(x)); });
+    }).catch(function () {});
+  }
+
+  // ---------- المواعيد (حسب السينما): كل الأفلام اللي في كل سينما، من غير المواعيد اللي خلصت ----------
+  var SHOW = null, shDay = null, shGov = null, shArea = "", shCinema = "";
+  function openShowtimes() {
+    go("s-showtimes");
+    if (shGov === null) shGov = GOV;
+    store.get("sh_cinema_" + country, function (v) { if (!shCinema) shCinema = v || ""; });
+    if (SHOW && SHOW.c === country && Date.now() - SHOW.at < 10 * 60000) return renderShowtimes();
+    clear($("sh-days")); clear($("sh-filter")); clear($("sh-cinemas"));
+    var list = clear($("sh-list"));
+    for (var i = 0; i < 2; i++) { var sk = el("div", "skeleton cinema"); sk.style.aspectRatio = "auto"; sk.style.height = "130px"; list.appendChild(sk); }
+    var films = Object.keys(DATA.movies).map(function (k) { return DATA.movies[k]; })
+      .filter(function (m) { return m.showtimes && !isConcert(m); });
+    var byDay = {}, labels = {}, code = country;
+    Promise.all(films.map(function (m) {
+      return fetch(dataBase + "/" + code + "/st/" + m.id + ".json?t=" + Date.now(), { cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : null; }).then(function (st) {
+          if (!st) return;
+          var main = versionsOf(m)[0] || m;
+          (st.days || []).forEach(function (d) { labels[d.key] = labels[d.key] || d.label; });
+          Object.keys(st.byDay || {}).forEach(function (k) {
+            st.byDay[k].forEach(function (c) {
+              var day = byDay[k] = byDay[k] || {};
+              var cin = day[c.cinema] = day[c.cinema] || { cinema: c.cinema, gov: c.gov, area: c.area, src: c.src, films: [] };
+              cin.films.push({ m: main, version: (m.versions || []).length > 1 ? (m.version || "العادية") : "", screens: c.screens });
+            });
+          });
+        }).catch(function () {});
+    })).then(function () {
+      SHOW = { c: code, at: Date.now(), byDay: byDay, days: Object.keys(labels).sort().map(function (k) { return { key: k, label: labels[k] }; }) };
+      if (document.querySelector(".screen.on").id === "s-showtimes") renderShowtimes();
+    });
+  }
+  function shLive(dayKey) {                               // السينمات (والأفلام جواها) اللي لسه فيها مواعيد ما خلصتش
+    var day = SHOW.byDay[dayKey] || {};
+    return Object.keys(day).map(function (name) {
+      var c = day[name];
+      var films = c.films.map(function (f) { var sc = liveScreens(dayKey, f.screens); return sc.length ? Object.assign({}, f, { screens: sc }) : null; }).filter(Boolean);
+      return films.length ? Object.assign({}, c, { films: films }) : null;
+    }).filter(Boolean).sort(function (a, b) {
+      var va = a.src === "ec" ? 1 : 0, vb = b.src === "ec" ? 1 : 0;           // VOX الأول
+      if (va !== vb) return va - vb;
+      var ga = govList().indexOf(a.gov), gb = govList().indexOf(b.gov);
+      if (ga !== gb) return (ga < 0 ? 99 : ga) - (gb < 0 ? 99 : gb);
+      return (a.area || "").localeCompare(b.area || "", "ar") || a.cinema.localeCompare(b.cinema, "ar");
+    });
+  }
+  function renderShowtimes() {
+    var days = clear($("sh-days")), filter = clear($("sh-filter")), bar = clear($("sh-cinemas")), list = clear($("sh-list"));
+    var live = SHOW.days.filter(function (d) { return shLive(d.key).length; });
+    if (!live.length) { list.appendChild(el("div", "empty", "مفيش مواعيد دلوقتي.")); return; }
+    if (!live.some(function (d) { return d.key === shDay; })) shDay = live[0].key;
+    live.forEach(function (d) {
+      var b = el("button", "pill" + (d.key === shDay ? " active" : ""), d.label);
+      b.onclick = function () { haptic(); shDay = d.key; renderShowtimes(); }; days.appendChild(b);
+    });
+    var all = shLive(shDay);
+    var hasGov = all.some(function (c) { return c.gov; });
+    var gov = hasGov ? shGov : "";
+    if (hasGov && govList().length) {
+      filter.appendChild(govSelect(gov, function (g) { shGov = g; shArea = ""; shCinema = ""; setGov(g); renderShowtimes(); }));
+      if (gov) {
+        var areas = [];
+        all.forEach(function (c) { if (c.gov === gov && c.area && areas.indexOf(c.area) < 0) areas.push(c.area); });
+        if (areas.length > 1) {
+          var asel = el("select", "gov-select");
+          [["", "كل المناطق"]].concat(areas.map(function (a) { return [a, a]; })).forEach(function (o) { var opt = el("option", "", o[1]); opt.value = o[0]; asel.appendChild(opt); });
+          asel.value = areas.indexOf(shArea) >= 0 ? shArea : "";
+          asel.onchange = function () { haptic(); shArea = asel.value; shCinema = ""; renderShowtimes(); };
+          filter.appendChild(asel);
+        }
+      }
+    }
+    var cinemas = all.filter(function (c) { return (!gov || c.gov === gov) && (!shArea || c.area === shArea); });
+    if (!cinemas.length && gov) {
+      var box2 = el("div", "gov-empty"); box2.appendChild(el("div", "", "مفيش مواعيد في " + gov + " في اليوم ده."));
+      var allBtn = el("button", "btn outline", "كل المحافظات"); allBtn.onclick = function () { haptic(); shGov = ""; renderShowtimes(); };
+      box2.appendChild(allBtn); list.appendChild(box2); return;
+    }
+    var names = cinemas.map(function (c) { return c.cinema; });
+    if (shCinema && names.indexOf(shCinema) < 0) shCinema = "";
+    var pickCinema = function (n) { haptic(); shCinema = n; store.set("sh_cinema_" + country, n); renderShowtimes(); };
+    if (names.length > 6) {                              // سينمات كتير: قايمة اختيار بدل الأزرار (ما تزقش المواعيد لتحت)
+      var csel = el("select", "gov-select");
+      [["", "كل السينمات"]].concat(names.map(function (n) { return [n, n]; })).forEach(function (o) {
+        var opt = el("option", "", o[1]); opt.value = o[0]; csel.appendChild(opt); });
+      csel.value = shCinema; csel.onchange = function () { pickCinema(csel.value); };
+      filter.appendChild(csel);
+    } else if (names.length > 1) {
+      [""].concat(names).forEach(function (n) {
+        var b = el("button", "pill small" + (n === shCinema ? " active" : ""), n || "كل السينمات");
+        b.onclick = function () { pickCinema(n); };
+        bar.appendChild(b);
+      });
+    }
+    cinemas.filter(function (c) { return !shCinema || c.cinema === shCinema; }).forEach(function (c) {
+      var box = el("div", "cinema " + (c.src === "ec" ? "ec" : "vox")); box.appendChild(el("h3", "ltr", c.cinema));
+      var place = [c.area, c.gov].filter(function (v, i, a) { return v && a.indexOf(v) === i; }).join("، ");
+      if (place) { var meta = el("div", "cinema-meta"); meta.appendChild(el("span", "", place)); box.appendChild(meta); }
+      c.films.forEach(function (f) {
+        var row = el("div", "sh-film");
+        var hd = el("button", "sh-title"); hd.appendChild(posterImg(f.m));
+        var tx = el("div", "tx"); tx.appendChild(el("b", "ltr", f.m.title)); if (f.version) tx.appendChild(el("span", "ltr", f.version));
+        hd.appendChild(tx); hd.onclick = function () { haptic(); showDetail(f.m); }; row.appendChild(hd);
+        f.screens.forEach(function (sc) {
+          if (sc.type) row.appendChild(el("div", "screen-type ltr", sc.type));
+          var times = el("div", "times");
+          sc.times.forEach(function (t) {
+            var b = el("button", "time" + (t[1] ? "" : " full"), t[0]);
+            if (t[2]) b.appendChild(el("small", "price", t[2] + " ج.م"));
+            if (t[1]) b.onclick = function () { haptic("medium"); if (tg && tg.openLink) tg.openLink(t[1]); else window.open(t[1], "_blank"); };
+            times.appendChild(b);
+          });
+          row.appendChild(times);
+        });
+        box.appendChild(row);
+      });
+      list.appendChild(box);
+    });
   }
   // ---------- مراجعة + تعليقات ----------
   function openReview(id) {
@@ -2440,7 +3177,11 @@
       if (b.dataset.to === "s-list") { haptic(); stack = []; show("s-list"); if (DATA) { renderHeader(); renderGrid(restoreList, true); } return; }
       var keep = LIST_POS;
       if (from !== "s-list") { stack = []; show("s-list"); }
-      (b.dataset.to === "s-community" ? $("comm-btn") : $("avatar-btn")).click();
+      var to = b.dataset.to;
+      if (to === "s-community") $("comm-btn").click();
+      else if (to === "s-profile") $("avatar-btn").click();
+      else if (to === "s-home") { haptic(); openHome(); }
+      else if (to === "s-showtimes") { haptic(); openShowtimes(); }
       if (from !== "s-list") LIST_POS = keep;
     };
   });
@@ -2457,6 +3198,7 @@
     if (ME && ME.avatar) { var ia = el("img"); ia.src = media(ME.avatar); ia.alt = ""; a.appendChild(ia); }
     else if (user && user.photo_url) { var im = el("img"); im.src = user.photo_url; im.alt = ""; a.appendChild(im); }
     else a.textContent = ((user && user.first_name) || "؟").trim().charAt(0).toUpperCase();
+    updateBell();
     $("count-s").textContent = "(" + listIds("whatson").length + ")";
     $("count-c").textContent = "(" + listIds("comingsoon").length + ")";
     updateWatchCount();
@@ -2735,6 +3477,38 @@
     });
   }
   var timesGov = "", timesArea = "", timesAll = false;
+  // ---- المواعيد اللي خلصت ما تظهرش (طلب صاحب البوت) ----
+  // الوقت بتوقيت مصر (مش توقيت جهاز المستخدم). الاختبارات بتثبّت الساعة بـ window.__CFT_NOW.
+  function cairoNow() {                                 // دقايق «ساعة الحيطة» في القاهرة (نفس مقياس showMinutes)
+    var d = new Date(window.__CFT_NOW || Date.now()), p = {};
+    try {
+      new Intl.DateTimeFormat("en-GB", { timeZone: "Africa/Cairo", year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(d).forEach(function (x) { p[x.type] = +x.value; });
+      return Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute) / 60000;
+    } catch (e) { return d.getTime() / 60000 + 120; }
+  }
+  function showMinutes(dayKey, text) {                  // «9:30م» / «12:15 ص» في يوم YYYYMMDD -> دقايق (أو null لو مش مفهوم)
+    var m = /(\d{1,2}):(\d{2})\s*([صم]|am|pm)?/i.exec(String(text || "")), k = String(dayKey || "");
+    if (!m || !/^\d{8}$/.test(k)) return null;
+    var h = +m[1] % 12, ampm = (m[3] || "").toLowerCase();
+    if (ampm === "م" || ampm === "pm") h += 12;
+    else if (!ampm && h < 6) h += 12;                   // من غير ص/م: الساعات الصغيرة بالليل
+    var mins = Date.UTC(+k.slice(0, 4), +k.slice(4, 6) - 1, +k.slice(6, 8), h, +m[2]) / 60000;
+    if ((ampm === "ص" || ampm === "am") && h < 6) mins += 24 * 60;   // بعد نص الليل = حفلة نفس اليوم (اليوم اللي بعده)
+    return mins;
+  }
+  function liveScreens(dayKey, screens) {               // الشاشات بمواعيدها اللي لسه ما بدأتش بس
+    var now = cairoNow();                               // (ميعاد من غير لينك = مفيش حجز أونلاين، مش «خلص»)
+    return screens.map(function (sc) {
+      return Object.assign({}, sc, { times: sc.times.filter(function (t) { var at = showMinutes(dayKey, t[0]); return at == null || at > now; }) });
+    }).filter(function (sc) { return sc.times.length; });
+  }
+  function liveCinemas(dayKey) {                        // السينمات اللي فيها ميعاد واحد على الأقل لسه ما بدأش
+    return ((TIMES && TIMES.byDay[dayKey]) || []).map(function (c) {
+      var screens = liveScreens(dayKey, c.screens);
+      return screens.length ? Object.assign({}, c, { screens: screens }) : null;
+    }).filter(Boolean);
+  }
   function timesHasGov() {                             // فيه سينمات معروف محافظتها (مصر)؟
     return Object.keys(TIMES.byDay).some(function (k) { return TIMES.byDay[k].some(function (c) { return c.gov; }); });
   }
@@ -2748,12 +3522,15 @@
       l.appendChild(el("div", "empty", "حجز نسخة " + (v.version || "دي") + " لسه ما فتحش" + (v.release ? " - من " + v.release : "") + "."));
       return;
     }
-    TIMES.days.forEach(function (d) {
+    // الأيام اللي لسه فيها مواعيد بس (النهارده بالليل بعد آخر حفلة: بيختفي)
+    var liveDays = TIMES.days.filter(function (d) { return liveCinemas(d.key).length; });
+    if (liveDays.length && !liveDays.some(function (d) { return d.key === timesDay; })) timesDay = liveDays[0].key;
+    liveDays.forEach(function (d) {
       var b = el("button", "pill" + (d.key === timesDay ? " active" : ""), d.label);
       b.onclick = function () { haptic(); timesDay = d.key; renderTimes(); };
       days.appendChild(b);
     });
-    var all = TIMES.byDay[timesDay] || [];
+    var all = liveCinemas(timesDay);                    // من غير المواعيد اللي خلصت، ومن غير سينما مفيهاش ميعاد متاح
     // المحافظة والمنطقة: الاختيار بيتفتكر (محافظتك)، و«كل المحافظات» من رسالة «مش بيتعرض» للمرة دي بس
     var filter = $("t-filter"); filter.textContent = "";
     var gov = timesAll || !timesHasGov() ? "" : timesGov;
@@ -2788,12 +3565,11 @@
     }
     var list = $("t-list"); list.textContent = "";
     cinemas.filter(function (c) { return !timesCinema || c.cinema === timesCinema; }).forEach(function (c) {
-      var box = el("div", "cinema"); box.appendChild(el("h3", "ltr", c.cinema));
+      var box = el("div", "cinema " + (c.src === "ec" ? "ec" : "vox")); box.appendChild(el("h3", "ltr", c.cinema));
       var place = [c.area, c.gov].filter(function (v, i, a) { return v && a.indexOf(v) === i; }).join("، ");
-      if (place || c.src === "ec") {
+      if (place) {
         var meta = el("div", "cinema-meta");
-        if (place) meta.appendChild(el("span", "", place));
-        if (c.src === "ec") meta.appendChild(el("span", "src", "الحجز من elCinema"));
+        meta.appendChild(el("span", "", place));
         box.appendChild(meta);
       }
       c.screens.forEach(function (sc) {

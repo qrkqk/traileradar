@@ -73,6 +73,8 @@
   .country-btn { display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 10px; font-size: 13px; font-weight: 800;
     color: var(--cream); background: var(--blue); border: 2px solid var(--cream); }
   .country-btn .caret { color: var(--gold); font-size: 10px; }
+  /* «مصر» وعلامة المجتمع اتشالوا من الهيدر (طلب صاحب البوت) - فاضلين في الصفحة مستخبيين عشان الكود والتستات */
+  #country-btn, #comm-btn { display: none !important; }
   .avatar-btn { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 2px solid var(--cream);
     display: grid; place-items: center; background: var(--gold); color: var(--bg); font-weight: 800; font-size: 16px; }
   .avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
@@ -709,8 +711,9 @@
   body.has-nav .bottom-nav { display: flex; }
   body.has-nav { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
   body.has-nav .toast { bottom: calc(88px + env(safe-area-inset-bottom)); }
+  .bottom-nav { padding-left: 4px; padding-right: 4px; }
   .bottom-nav button { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 3px; min-height: 52px; padding: 4px 2px; color: var(--cream); font-weight: 700; font-size: 12px; white-space: nowrap; }
+    gap: 3px; min-height: 52px; padding: 4px 1px; color: var(--cream); font-weight: 700; font-size: 11px; white-space: nowrap; }
   .bottom-nav button svg.i { width: 22px; height: 22px; }
   .bottom-nav button.on { background: var(--gold); color: var(--bg); font-weight: 800; box-shadow: var(--shadow-sm); }
 
@@ -864,6 +867,52 @@
   .sh-title .tx { min-width: 0; display: flex; flex-direction: column; }
   .sh-title b { font-size: 15px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .sh-title span { font-size: 12px; color: var(--gold); font-weight: 800; }
+
+  /* ============ على الشاشة ============ */
+  .scr-tabs { display: flex; gap: 8px; padding: 14px 16px 0; }
+  .scr-tabs .tab { flex: 1 1 0; }
+  .watch-box { margin-top: 18px; padding: 12px; border: 2px solid var(--cream); background: var(--surface); box-shadow: 4px 4px 0 var(--blue); }
+  .watch-box h3 { margin: 0 0 8px; font-family: var(--font-display); font-weight: 400; font-size: 22px; line-height: 1.6; color: var(--gold); }
+  .watch-box .note { color: var(--muted); font-size: 14px; font-weight: 700; padding: 4px 0 8px; }
+  .offer { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 6px 8px; margin-bottom: 8px; text-align: right;
+    border: 2px solid var(--line); background: var(--bg); }
+  .offer img { width: 40px; height: 40px; object-fit: cover; flex: none; border: 2px solid var(--cream); }
+  .offer .tx { display: flex; flex-direction: column; min-width: 0; }
+  .offer b { font-size: 15px; font-weight: 800; }
+  .offer span { font-size: 12px; color: var(--gold); font-weight: 800; }
+
+  /* ============ الأعضاء + ملخص البروفايل ============ */
+  .hero-btns { position: absolute; top: 14px; left: 14px; display: flex; gap: 6px; }
+  .hero-btns .saved-btn { position: static; }
+  .mb-row { display: grid; grid-template-columns: minmax(0, 1fr) 48px 48px 56px; align-items: center; gap: 6px; padding: 8px 0;
+    border-top: 1px solid var(--line); }
+  .mb-head { color: var(--muted); font-size: 12px; font-weight: 800; border-top: 0; }
+  .mb-head span:not(:first-child), .mb-row .num { text-align: center; }
+  .mb-row .num { font-weight: 800; font-size: 14px; }
+  .mb-who { display: flex; align-items: center; gap: 8px; min-width: 0; text-align: right; }
+  .mb-who .av { width: 34px; height: 34px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; flex: none;
+    background: var(--gold); color: var(--bg); font-weight: 800; border: 2px solid var(--cream); }
+  .mb-who .av img { width: 100%; height: 100%; object-fit: cover; }
+  .mb-who .tx { min-width: 0; display: flex; flex-direction: column; }
+  .mb-who b { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mb-who small { font-size: 11px; color: var(--muted); }
+  .pf-stats { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .pf-stats > div:nth-child(5) { background: var(--surface); color: var(--cream); border: 2px solid var(--cream); }
+  .pf-stats b { font-size: 21px; }
+  .pf-stats span { font-size: 11px; }
+  .pf-overview { margin-bottom: 8px; }
+  .ov-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .ov-head .section-title { margin: 18px 0 10px; font-size: 24px; }
+  .pf-overview .top-row .pg-item img { aspect-ratio: 2 / 3; }
+  .pf-overview .top-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .hist { display: flex; align-items: flex-end; gap: 8px; height: 110px; padding: 0 4px; border-bottom: 2px solid var(--line); direction: ltr; }
+  .hcol { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: 4px; direction: ltr; }
+  .hcol i { display: block; background: var(--gold); box-shadow: 2px 2px 0 var(--red); }
+  .hcol span { text-align: center; font-size: 11px; color: var(--muted); font-weight: 800; }
+  .hist-total { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .diary-month { margin: 10px 0 6px; color: var(--gold); font-weight: 800; font-size: 14px; }
+  .diary-row .day { width: 30px; flex: none; text-align: center; font-family: var(--font-display); font-size: 22px; color: var(--cream); }
+  .diary-row img { width: 36px; height: 52px; }
 </style>
 </head>
 <body>
@@ -904,7 +953,7 @@
     </div>
   </div>
   <div class="head-search">
-    <button class="search-box" id="search-open"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>ابحث عن فيلم، عضو، أو منشور...</span></button>
+    <button class="search-box" id="search-open"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>ابحث</span></button>
     <button class="icon-btn bell" id="bell-btn" aria-label="الإشعارات"><svg class="i" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><span class="count" id="bell-count" hidden></span></button>
   </div>
   <div class="tabs">
@@ -970,6 +1019,13 @@
 <!-- ============ الرئيسية (ملخص) ============ -->
 <section class="screen" id="s-home"><div class="home" id="home"></div></section>
 
+<!-- ============ على الشاشة: أفلام ومسلسلات على المنصات + أفلام خرجت من السينما ============ -->
+<section class="screen" id="s-screen">
+  <div class="st-head"><h2>على الشاشة</h2><p>أفلام ومسلسلات تتفرج عليها في البيت</p></div>
+  <div class="scr-tabs" id="scr-tabs"></div>
+  <div class="grid" id="scr-grid"></div>
+</section>
+
 <!-- ============ المواعيد (حسب السينما) ============ -->
 <section class="screen" id="s-showtimes">
   <div class="st-head"><h2>المواعيد</h2><p>اختار اليوم والسينما، وكل ميعاد بيفتحلك صفحة الحجز</p></div>
@@ -985,7 +1041,10 @@
     <h2>المجتمع</h2>
     <p class="lead">مكان يجمع كل محبي السينما في مصر</p>
     <p>ناقش الأفلام، شارك أراءك، اكتشف أفلام جديدة، وتابع الأعضاء.</p>
-    <button class="saved-btn" id="c-saved"><svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>المحفوظات</button>
+    <div class="hero-btns">
+      <button class="saved-btn" id="c-members"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6 6 0 0 1 3.5 5.5"/></svg>الأعضاء</button>
+      <button class="saved-btn" id="c-saved"><svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>المحفوظات</button>
+    </div>
   </div>
   <div class="comm-tabs" id="c-seg"></div>
   <div class="composer" id="c-compose"></div>
@@ -995,13 +1054,19 @@
   </div>
 </div></section>
 
+<!-- ============ الأعضاء (زي Letterboxd) ============ -->
+<section class="screen" id="s-members"><div class="comm">
+  <div class="comm-hero"><h2>الأعضاء</h2><p class="lead">عشاق سينما ونقاد وأصحاب: لاقي أشهر الأعضاء</p></div>
+  <div id="mb-body"></div>
+</div></section>
+
 <!-- ============ منشور + تعليقاته ============ -->
 <section class="screen" id="s-post"><div class="edit" id="pst"></div></section>
 
 <!-- ============ البحث ============ -->
 <section class="screen" id="s-search"><div class="edit">
   <div class="search-row"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-    <input type="search" id="q-input" placeholder="ابحث عن فيلم، عضو، أو منشور..." autocomplete="off"></div>
+    <input type="search" id="q-input" placeholder="ابحث" autocomplete="off"></div>
   <div id="q-body"></div>
 </div></section>
 
@@ -1082,7 +1147,8 @@
 <!-- ============ شريط التنقل تحت (الأفلام / المجتمع / بروفايلي) - بيظهر في الشاشات التلاتة دول بس ============ -->
 <nav class="bottom-nav" id="bottom-nav" aria-label="التنقل">
   <button data-to="s-home" id="nav-home"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>الرئيسية</button>
-  <button data-to="s-list" id="nav-movies"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>الأفلام</button>
+  <button data-to="s-list" id="nav-movies"><svg class="i" viewBox="0 0 24 24"><path d="M4 9h16l-1.5 11h-13z"/><path d="M8 9l1 11M16 9l-1 11M12 9v11"/><path d="M7 9a2.5 2.5 0 0 1 1-4.6A3 3 0 0 1 12 3a3 3 0 0 1 4 1.4A2.5 2.5 0 0 1 17 9"/></svg>في السينما</button>
+  <button data-to="s-screen" id="nav-screen"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg>على الشاشة</button>
   <button data-to="s-showtimes" id="nav-times"><svg class="i" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg>المواعيد</button>
   <button data-to="s-community" id="nav-comm"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6 6 0 0 1 3.5 5.5"/></svg>المجتمع</button>
   <button data-to="s-profile" id="nav-me"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>حسابي</button>
@@ -1192,8 +1258,8 @@
   };
 
   // ---------- التنقل بين الشاشات (زرار الرجوع بتاع تيليجرام) ----------
-  var NAV_SCREENS = ["s-home", "s-list", "s-showtimes", "s-community", "s-profile"];
-  var TOP_SCREENS = ["s-home", "s-list", "s-showtimes", "s-community"];
+  var NAV_SCREENS = ["s-home", "s-list", "s-screen", "s-showtimes", "s-community", "s-profile"];
+  var TOP_SCREENS = ["s-home", "s-list", "s-screen", "s-showtimes", "s-community"];
   function show(id) {
     document.querySelectorAll(".screen").forEach(function (s) { s.classList.toggle("on", s.id === id); });
     $("top").style.display = TOP_SCREENS.indexOf(id) >= 0 ? "" : "none";   // الهيدر (البحث + الجرس)
@@ -1412,8 +1478,10 @@
     if (p.private) { body.appendChild(el("div", "pf-note", "الحساب ده خاص.")); pf.appendChild(body); return; }
     if (p.bio) body.appendChild(el("div", "pf-bio ltr", p.bio));
     var stats = el("div", "pf-stats");
-    [["followers", "متابعين"], ["following", p.owner ? "أتابع" : "بيتابع"], ["reviews", "مراجعات"], ["ratings", "تقييمات"]].forEach(function (x) {
-      var v = (p.counts || {})[x[0]], cell = el("div" + "");
+    var nums = p.stats || {};                          // زي Letterboxd: شاف / السنة دي / قوائم / بيتابع / متابعين
+    [["watched", p.owner ? "شفتهم" : "شافهم"], ["this_year", "السنة دي"], ["lists", "قوائم"],
+     ["following", p.owner ? "أتابع" : "بيتابع"], ["followers", "متابعين"]].forEach(function (x) {
+      var v = nums[x[0]], cell = el("div" + "");
       cell.appendChild(el("b", "", v == null ? "–" : String(v))); cell.appendChild(el("span", "", x[1]));
       if (x[0] === "followers" || x[0] === "following") { cell.className = "tap"; cell.onclick = function () { haptic(); openPeople(p, x[0]); }; }
       stats.appendChild(cell);
@@ -1645,7 +1713,8 @@
     if (fresh) { row = el("div", "tiles"); row.id = "d-lists"; $("d-actions").after(row); }
     var w = FILM.watch || {}, L = FILM.lists || {}, tiles = [];
     var seen = !!w.watched, want = !!L.want && !seen;
-    var showing = FILM_MOVIE && FILM_MOVIE.section === "s";
+    // «هشوفه بعدين» للي بيتعرض دلوقتي وللي على المنصات («على الشاشة») - «راقب» للي جاي السينما بس
+    var showing = FILM_MOVIE && (FILM_MOVIE.section === "s" || FILM_MOVIE.src === "screen");
     if (FILM.eligible) tiles.push(["fav", "heart", "أعجبني", L.fav, function () { toggleList("fav"); }]);
     if (FILM.eligible && !want) tiles.push(["seen", "seen", w.count > 1 ? "شفته ×" + w.count : "شفته", seen, openWatchSheet]);
     // نفس القايمة («هشوفهم بعدين» = «مراقباتي») باسم مناسب للفيلم: بيتعرض = هشوفه بعدين، لسه جاي = راقب
@@ -1763,7 +1832,7 @@
       FILM.lists = x.lists; renderLists();
       if (kind === "want" || kind === "seen") { setWatched(m.id, x.lists.want); syncWant(); }
       if (kind === "want" && on)                        // الحجز مفتوح = مفيش تنبيه يستناه
-        notify(m.bookable ? "اتضاف لـ«هشوفهم بعدين»" : "هيوصلك تنبيه أول ما حجز الفيلم ده يفتح");
+        notify(m.bookable || m.src === "screen" ? "اتضاف لـ«هشوفهم بعدين»" : "هيوصلك تنبيه أول ما حجز الفيلم ده يفتح");
     }).catch(function (e) { notify(e.message); });
   }
   function syncWant() {                                // «أريد مشاهدتها» من السيرفر (أحدث من لينك البوت)
@@ -1931,6 +2000,7 @@
   function profileTabs(box, uid, owner, p) {
     box.textContent = "";
     topFilms(box, owner, p);
+    overviewBlock(box, uid, owner, p, function (k) { show(k); seg.scrollIntoView({ block: "start" }); });
     var seg = el("div", "ptabs"), body = el("div");
     // حسابي: هشوفهم بعدين / شفتهم / تقييماتي ... - حساب حد تاني: هيشوفهم بعدين / شافهم / تقييماته ...
     var tabs = [["want", owner ? "هشوفهم بعدين" : "هيشوفهم بعدين"], ["watched", owner ? "شفتهم" : "شافهم"],
@@ -2173,7 +2243,8 @@
     }).catch(function (e) { clear(lv).appendChild(el("div", "empty", e.message)); });
   }
   function openMovie(mv) {                            // فيلم من قايمة حد (ممكن يكون من بلد تانية)
-    var open = function () { var m = DATA.movies[String(mv.id)]; if (m) showDetail(m); };
+    var open = function () { var m = DATA.movies[String(mv.id)]; if (m) showDetail(m); else ensureScreen(function () {
+      var s = DATA.movies[String(mv.id)]; if (s) showDetail(s); }); };
     if (mv.country && mv.country !== country) { store.set("country", mv.country); loadCountry(mv.country, function () { renderHeader(); open(); }); }
     else open();
   }
@@ -2784,6 +2855,118 @@
       function (l, x) { l.appendChild(postCard(x.post)); }, "لسه ما حفظتش منشورات. دوس على علامة الحفظ تحت أي منشور.");
   }
 
+
+  // ---------- الأعضاء (زي Letterboxd): مميزين / الأشهر الأسبوع ده / الأكتر نشاطًا ----------
+  function followMini(u) {
+    var fb = el("button", "follow-mini" + (u.follow ? " done" : ""),
+      u.follow === "accepted" ? "متابَع ✓" : u.follow === "pending" ? "مستني الموافقة" : "تابع");
+    if (u.follow) fb.disabled = true;
+    fb.onclick = function () { haptic(); fb.disabled = true;
+      call("PUT", "/api/users/" + u.id + "/follow").then(function (x) { fb.textContent = x.follow === "accepted" ? "متابَع ✓" : "مستني الموافقة"; fb.className = "follow-mini done"; })
+        .catch(function (e) { fb.disabled = false; notify(e.message); }); };
+    return fb;
+  }
+  function memberCard(u) {
+    var m = el("div", "member"); var a = avatarSmall(u, "av"); a.onclick = function () { openUser(u.id); }; m.appendChild(a);
+    var nm = el("b", "ltr", u.name); nm.onclick = function () { openUser(u.id); }; m.appendChild(nm);
+    if (u.counts) m.appendChild(el("span", "", (u.counts.watched != null ? u.counts.watched + " فيلم" : "") +
+      (u.counts.reviews != null ? " • " + u.counts.reviews + " مراجعة" : "")));
+    if (ME && u.id !== ME.id) m.appendChild(followMini(u));
+    return m;
+  }
+  $("c-members").onclick = function () { haptic(); openMembers(); };
+  function openMembers() {
+    go("s-members");
+    var body = clear($("mb-body")); body.appendChild(el("div", "empty", "..."));
+    call("GET", "/api/members").then(function (d) {
+      clear(body);
+      [["featured", "أعضاء مميزين"], ["popular", "الأشهر الأسبوع ده"]].forEach(function (s) {
+        if (!d[s[0]].length) return;
+        var sec = el("section", "side-box"); sec.appendChild(el("h3", "side-title", s[1]));
+        var grid = el("div", "members"); d[s[0]].forEach(function (u) { grid.appendChild(memberCard(u)); });
+        sec.appendChild(grid); body.appendChild(sec);
+      });
+      if (d.active.length) {
+        var sec = el("section", "side-box"); sec.appendChild(el("h3", "side-title", "الأكتر نشاطًا"));
+        var head = el("div", "mb-row mb-head"); ["الاسم", "شاف", "قوائم", "إعجابات"].forEach(function (h) { head.appendChild(el("span", "", h)); });
+        sec.appendChild(head);
+        d.active.forEach(function (u) {
+          var r = el("div", "mb-row"); var who = el("button", "mb-who"); who.appendChild(avatarSmall(u, "av"));
+          var tx = el("div", "tx"); tx.appendChild(el("b", "ltr", u.name));
+          if (u.counts && u.counts.reviews != null) tx.appendChild(el("small", "", u.counts.reviews + " مراجعة"));
+          who.appendChild(tx); who.onclick = function () { haptic(); openUser(u.id); }; r.appendChild(who);
+          var c = u.counts || {};
+          [c.watched, c.lists, c.likes].forEach(function (v) { r.appendChild(el("span", "num", v == null ? "–" : String(v))); });
+          sec.appendChild(r);
+        });
+        body.appendChild(sec);
+      }
+      if (!body.childNodes.length) body.appendChild(el("div", "empty", "لسه مفيش أعضاء نشطين"));
+    }).catch(function (e) { clear(body).appendChild(el("div", "empty", e.message)); });
+  }
+
+  // ---------- ملخص البروفايل (زي Letterboxd): آخر نشاط / المراجعات / التقييمات / اليوميات / القوائم ----------
+  function overviewBlock(box, uid, owner, p, showTab) {
+    var wrap = el("div", "pf-overview"); box.appendChild(wrap);
+    if (!apiReady()) return wrap;
+    call("GET", "/api/users/" + uid + "/overview").then(function (d) {
+      if (d.private) return;
+      var section = function (title, onAll) {
+        var hd = el("div", "ov-head"); hd.appendChild(el("div", "section-title", title));
+        if (onAll) { var a = el("button", "see-all", "عرض الكل"); a.onclick = onAll; hd.appendChild(a); }
+        wrap.appendChild(hd);
+      };
+      if (d.recent.length) {
+        section("آخر نشاط", function () { showTab("watched"); });
+        var g = el("div", "top-row");
+        d.recent.forEach(function (x) {
+          var it = el("button", "pg-item"); it.appendChild(posterImg(x.movie));
+          if (x.stars) it.appendChild(starsText(x.stars));
+          it.onclick = function () { openMovie(x.movie); }; g.appendChild(it);
+        });
+        wrap.appendChild(g);
+      }
+      if (d.recent_reviews.length) {
+        section("أحدث المراجعات", function () { showTab("reviews"); });
+        d.recent_reviews.forEach(function (r) { wrap.appendChild(reviewCard(r, true)); });
+      }
+      if (d.popular_reviews.length) {
+        section("المراجعات الأشهر");
+        d.popular_reviews.forEach(function (r) { wrap.appendChild(reviewCard(r, true)); });
+      }
+      if (d.ratings) {
+        var total = 0; Object.keys(d.ratings).forEach(function (k) { total += d.ratings[k]; });
+        if (total) {
+          section("التقييمات");
+          var hist = el("div", "hist"), max = 0;
+          Object.keys(d.ratings).forEach(function (k) { max = Math.max(max, d.ratings[k]); });
+          for (var s = 1; s <= 5; s++) {
+            var col = el("div", "hcol"), bar = el("i"); bar.style.height = Math.max(4, Math.round(d.ratings[String(s)] * 100 / (max || 1))) + "%";
+            bar.title = d.ratings[String(s)] + " تقييم"; col.appendChild(bar); col.appendChild(el("span", "", s + "★")); hist.appendChild(col);
+          }
+          wrap.appendChild(hist); wrap.appendChild(el("div", "hist-total", total + " تقييم"));
+        }
+      }
+      if (d.diary.length) {
+        section("اليوميات");
+        var month = "";
+        d.diary.forEach(function (x) {
+          var m = MONTHS[+x.date.slice(5, 7) - 1] + " " + x.date.slice(0, 4);
+          if (m !== month) { month = m; wrap.appendChild(el("div", "diary-month", m)); }
+          var r = el("button", "r-item diary-row"); r.appendChild(el("span", "day", String(+x.date.slice(8, 10))));
+          r.appendChild(posterImg(x.movie)); r.appendChild(el("span", "t ltr", x.movie.title));
+          if (x.stars) r.appendChild(starsText(x.stars));
+          r.onclick = function () { openMovie(x.movie); }; wrap.appendChild(r);
+        });
+      }
+      if (d.recent_lists.length) {
+        section("أحدث القوائم", function () { showTab("lists"); });
+        d.recent_lists.forEach(function (x) { wrap.appendChild(listRow(x)); });
+      }
+    }).catch(function () {});
+    return wrap;
+  }
+
   // ---------- اكتب منشور ----------
   function openComposer(mode, presetMovie) {
     if (!apiReady()) { notify("افتح الصفحة من زرار «اضغط هنا» في البوت"); return; }
@@ -2878,7 +3061,9 @@
   function findMovies(q, limit) {
     var n = norm(q).trim(); if (n.length < 2 || !DATA) return [];
     var seen = {}, out = [];
-    listIds("whatson").concat(listIds("comingsoon")).forEach(function (id) {
+    var pool = listIds("whatson").concat(listIds("comingsoon"));
+    if (SCREEN && SCREEN.c === country) pool = pool.concat(SCREEN.films, SCREEN.shows);   // + «على الشاشة»
+    pool.forEach(function (id) {
       var m = DATA.movies[String(id)]; if (!m || seen[m.id]) return; seen[m.id] = 1;
       if (norm(m.title).indexOf(n) >= 0 || norm(m.title_en || "").indexOf(n) >= 0) out.push(m);
     });
@@ -2886,7 +3071,7 @@
   }
   var SEARCH_T = null;
   function openSearch() {
-    go("s-search"); $("q-input").value = ""; clear($("q-body"));
+    go("s-search"); $("q-input").value = ""; clear($("q-body")); ensureScreen();
     setTimeout(function () { try { $("q-input").focus(); } catch (e) {} }, 50);
   }
   $("search-open").onclick = function () { haptic(); openSearch(); };
@@ -3023,7 +3208,12 @@
     var day = SHOW.byDay[dayKey] || {};
     return Object.keys(day).map(function (name) {
       var c = day[name];
-      var films = c.films.map(function (f) { var sc = liveScreens(dayKey, f.screens); return sc.length ? Object.assign({}, f, { screens: sc }) : null; }).filter(Boolean);
+      // «المواعيد»: المتاح للحجز بس (ميعاد من غير لينك حجز ما بيظهرش هنا - طلب صاحب البوت)
+      var films = c.films.map(function (f) {
+        var sc = liveScreens(dayKey, f.screens).map(function (s) { return Object.assign({}, s, { times: s.times.filter(function (t) { return t[1]; }) }); })
+          .filter(function (s) { return s.times.length; });
+        return sc.length ? Object.assign({}, f, { screens: sc }) : null;
+      }).filter(Boolean);
       return films.length ? Object.assign({}, c, { films: films }) : null;
     }).filter(Boolean).sort(function (a, b) {
       var va = a.src === "ec" ? 1 : 0, vb = b.src === "ec" ? 1 : 0;           // VOX الأول
@@ -3182,6 +3372,7 @@
       else if (to === "s-profile") $("avatar-btn").click();
       else if (to === "s-home") { haptic(); openHome(); }
       else if (to === "s-showtimes") { haptic(); openShowtimes(); }
+      else if (to === "s-screen") { haptic(); openScreen(); }
       if (from !== "s-list") LIST_POS = keep;
     };
   });
@@ -3233,17 +3424,6 @@
     var src = (code && CACHE[code]) || DATA;
     return (m.versions || [m.id]).map(function (id) { return src && src.movies[String(id)]; }).filter(Boolean);
   }
-  function versionsText(n) { return n === 2 ? "نسختين" : n + " نسخ"; }
-  function subLine(m) {                                 // كل جزء لوحده عشان التواريخ ما تتقلبش
-    var box = el("div", "sub");
-    var n = (m.versions || []).length;
-    [m.genre, m.section === "c" ? m.release : m.duration, n > 1 ? versionsText(n) : ""].filter(Boolean).forEach(function (part, i) {
-      if (i) box.appendChild(document.createTextNode(" • "));
-      var b = el("bdi", "", part); box.appendChild(b);
-    });
-    if (!box.childNodes.length) box.textContent = " ";
-    return box;
-  }
   function tilt(card) {                                 // نفس 3d-tilt.html: ميلان لحد 10° + لمعة بتتبع الماوس/الصباع
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     var glare = el("div", "glare"); card.appendChild(glare);
@@ -3272,7 +3452,7 @@
       watchedIds().forEach(function (id) {
         codes.forEach(function (c) {
           var m = CACHE[c] && CACHE[c].movies[id];
-          if (!m || isConcert(m) || m.bookable) return;
+          if (!m || isConcert(m) || m.bookable || m.src === "screen") return;   // «على الشاشة» مش في «مراقباتي» (السينما)
           var main = CACHE[c].movies[String((m.versions || [m.id])[0])] || m;      // الكارت = الفيلم (أي نسخة)
           if (!items.some(function (it) { return it.m.id === main.id && it.c === c; })) items.push({ m: main, c: c });
         });
@@ -3321,8 +3501,7 @@
       if (m.rating) card.appendChild(el("span", "badge rating ltr", m.rating));
       if (versionsOf(m, code).some(function (v) { return v.bookable || v.others; })) card.appendChild(el("span", "badge book", "احجز"));
       var info = el("div", "info");
-      info.appendChild(el("div", "title ltr", m.title));
-      info.appendChild(subLine(m));
+      info.appendChild(el("div", "title ltr", m.title));   // المدة والنوع والنسخ جوه صفحة الفيلم بس (طلب صاحب البوت)
       card.appendChild(info);
       if (code !== country) { var w = el("span", "badge where"); w.appendChild(flag(code)); card.appendChild(w); }
       card.onclick = function () {
@@ -3333,6 +3512,70 @@
       };
       tilt(card);
       return card;
+  }
+
+
+  // ---------- على الشاشة: أفلام ومسلسلات على المنصات (JustWatch) + أفلام خرجت من السينما ----------
+  var SCREEN = null, SCREEN_WAIT = null, scrTab = "films";
+  function ensureScreen(done) {
+    if (SCREEN && SCREEN.c === country) return done && done();
+    if (SCREEN_WAIT) { if (done) SCREEN_WAIT.push(done); return; }
+    SCREEN_WAIT = done ? [done] : [];
+    var code = country;
+    fetch(dataBase + "/" + code + "/screen.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+      .then(function (d) {
+        d = d || { films: [], shows: [], movies: {} };
+        Object.keys(d.movies).forEach(function (k) {
+          if (!DATA.movies[k]) DATA.movies[k] = d.movies[k];
+          if (CACHE[code] && !CACHE[code].movies[k]) CACHE[code].movies[k] = d.movies[k];
+        });
+        SCREEN = { c: code, films: d.films || [], shows: d.shows || [] };
+        var w = SCREEN_WAIT; SCREEN_WAIT = null; w.forEach(function (f) { f(); });
+      });
+  }
+  function openScreen() {
+    go("s-screen");
+    var grid = clear($("scr-grid")); grid.style.display = "";
+    for (var i = 0; i < 4; i++) grid.appendChild(el("div", "skeleton"));
+    ensureScreen(renderScreen);
+  }
+  function renderScreen() {
+    var tabs = clear($("scr-tabs")), grid = clear($("scr-grid"));
+    [["films", "أفلام"], ["shows", "مسلسلات"]].forEach(function (t) {
+      var b = el("button", "tab" + (t[0] === scrTab ? " active" : ""));
+      b.appendChild(document.createTextNode(t[1] + " "));
+      b.appendChild(el("small", "", "(" + ((SCREEN && SCREEN[t[0]]) || []).length + ")"));
+      b.onclick = function () { if (t[0] !== scrTab) { haptic(); scrTab = t[0]; renderScreen(); window.scrollTo(0, 0); } };
+      tabs.appendChild(b);
+    });
+    var ids = (SCREEN && SCREEN[scrTab]) || [];
+    if (!ids.length) {
+      grid.style.display = "block";
+      grid.appendChild(el("div", "empty", scrTab === "shows" ? "لسه مفيش مسلسلات هنا." : "لسه مفيش أفلام هنا."));
+      return;
+    }
+    grid.style.display = "";
+    ids.forEach(function (id, n) { var m = DATA.movies[String(id)]; if (m) grid.appendChild(cardFor(m, n, country)); });
+  }
+  function watchBox(m) {
+    var box = el("section", "watch-box"); box.id = "d-watch";
+    box.appendChild(el("h3", "", "تتفرج عليه فين"));
+    var offers = m.watch || [];
+    if (!offers.length) box.appendChild(el("div", "note", m.left ? "خرج من السينما، ولسه مش متاح على منصة في مصر." : "مش متاح للمشاهدة في مصر دلوقتي."));
+    offers.forEach(function (o) {
+      var b = el("button", "offer");
+      if (o.icon) { var im = el("img"); im.src = o.icon; im.alt = ""; im.loading = "lazy"; b.appendChild(im); }
+      var tx = el("div", "tx"); tx.appendChild(el("b", "ltr", o.name)); tx.appendChild(el("span", "", o.label)); b.appendChild(tx);
+      b.onclick = function () { haptic("medium"); if (tg && tg.openLink) tg.openLink(o.url); else window.open(o.url, "_blank"); };
+      box.appendChild(b);
+    });
+    if (m.watch_url) {
+      var jw = el("button", "linkish", "كل التفاصيل على JustWatch");
+      jw.onclick = function () { if (tg && tg.openLink) tg.openLink(m.watch_url); else window.open(m.watch_url, "_blank"); };
+      box.appendChild(jw);
+    }
+    return box;
   }
 
   // ---------- صفحة الفيلم ----------
@@ -3381,6 +3624,8 @@
       watch.onclick = function () { setWatched(m.id, true); sendToBot({ a: "watch", id: m.id }, "w_" + m.id); }; actions.appendChild(watch);
     }
     if (!any && m.section === "s") actions.appendChild(el("div", "btn note", "الحجز لسه ما فتحش"));
+    var oldWatch = $("d-watch"); if (oldWatch) oldWatch.remove();
+    if (m.src === "screen") actions.after(watchBox(m));        // «على الشاشة»: المنصات في مصر
 
     var desc = $("d-desc"); desc.textContent = m.description || ""; desc.classList.remove("open");
     $("d-more").style.display = (m.description || "").length > 140 ? "" : "none";

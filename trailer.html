@@ -12,36 +12,44 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>CFTRadar - التريلر</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
+  /* «أفيش زمان»: نفس ألوان وخامات صفحة الأفلام (ألوان تيليجرام لو موجودة لسه بتغطي الخلفية والنص زي الأول) */
   :root {
-    --bg: #0f1720; --text: #f2f5f8; --hint: #8aa0b4;
-    --button: #2ea6ff; --button-text: #ffffff; --card: #17212b;
+    --bg: #140D08; --text: #F6E7C6; --hint: #BFA987;
+    --button: #E9B949; --button-text: #140D08; --card: #22160D;
+    --gold: #E9B949; --red: #C9412C; --cream: #F6E7C6;
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0; min-height: 100%; background: var(--bg); color: var(--text);
-    font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+    font-family: "Tajawal", Tahoma, Arial, sans-serif;
   }
+  body { background-image: repeating-conic-gradient(from 0deg at 50% 100%, rgba(233,185,73,.12) 0deg 6deg, transparent 6deg 12deg); }
   .wrap {
-    display: flex; flex-direction: column; gap: 12px;
-    padding: 14px 14px calc(14px + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 14px 16px calc(16px + env(safe-area-inset-bottom));
   }
   .head { text-align: center; }
-  h1 { font-size: 19px; margin: 2px 0 0; line-height: 1.4; }
+  h1 { font-family: "Rakkas", serif; font-weight: 400; font-size: 26px; margin: 2px 0 0; line-height: 1.6;
+    color: var(--gold); text-shadow: 2px 2px 0 var(--red); }
   .player {
     position: relative; width: 100%; aspect-ratio: 16 / 9;
-    background: #000; border-radius: 12px; overflow: hidden;
+    background: #000; overflow: hidden; border: 3px solid var(--cream); box-shadow: 5px 5px 0 var(--red);
   }
   @supports not (aspect-ratio: 16 / 9) { .player { height: 0; padding-top: 56.25%; } }
   .player iframe, #yt { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .msg { display: none; padding: 14px; border-radius: 12px; background: var(--card); line-height: 1.7; }
-  .actions { display: flex; gap: 10px; }
+  .msg { display: none; padding: 14px; background: var(--card); line-height: 1.7; border: 2px solid var(--red); font-weight: 700; }
+  .actions { display: flex; gap: 12px; margin-top: 4px; }
   button {
-    flex: 1; padding: 12px 8px; border: 0; border-radius: 10px;
-    font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap;
+    flex: 1; min-height: 52px; padding: 10px 8px; border: 0;
+    font: inherit; font-size: 15px; font-weight: 800; cursor: pointer; white-space: nowrap;
   }
-  .done { background: #2ea043; color: #ffffff; }
-  .youtube { background: var(--card); color: var(--text); display: none; }
+  .done { background: var(--gold); color: #140D08; box-shadow: 5px 5px 0 var(--red);
+    font-family: "Rakkas", serif; font-weight: 400; font-size: 22px; }
+  .youtube { background: transparent; color: var(--text); border: 2px solid var(--cream); display: none; }
 </style>
 </head>
 <body>

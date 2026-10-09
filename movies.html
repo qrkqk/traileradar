@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>try { if (localStorage.getItem("cft_theme") === "light") document.documentElement.classList.add("light"); } catch (e) {}</script>
 <style>
   /* ============ «أفيش زمان» - دليل التصميم رقم 3 ============
      الألوان والخامات من دليل التصميم: خلفية بني غامق، كريمي للنص والإطارات، ذهبي للزرار الأساسي،
@@ -913,6 +914,114 @@
   .diary-month { margin: 10px 0 6px; color: var(--gold); font-weight: 800; font-size: 14px; }
   .diary-row .day { width: 30px; flex: none; text-align: center; font-family: var(--font-display); font-size: 22px; color: var(--cream); }
   .diary-row img { width: 36px; height: 52px; }
+
+  /* ============ الجولة 21 ============ */
+  /* تليجرام ديسكتوب (محرك أقدم) ما بيعرفش overflow-x: clip: الصفحة كانت بتتزحلق بالعرض (لوحة الإدارة مقصوصة) */
+  html { overflow-x: hidden; }
+  .edit, .comm, .home { max-width: 100%; overflow-wrap: anywhere; }
+  #a-seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: visible; }
+  #a-seg .pill { white-space: normal; line-height: 1.3; min-width: 0; }
+  #a-seg .pill:nth-child(3n+1) { border-inline-start: 0; }
+  #a-seg .pill:nth-child(n+4) { border-top: 2px solid var(--cream); }
+  #a-seg .pill:last-child:nth-child(3n+2) { grid-column: span 2; }
+  #a-body > .linkish { display: block; text-decoration: none; color: var(--muted); font-size: 13px; line-height: 1.7;
+    padding: 8px 10px; margin-bottom: 12px; border-inline-start: 3px solid var(--gold); background: var(--surface); }
+  .mod-card .who { unicode-bidi: plaintext; }
+  #s-admin { max-width: 100vw; overflow-x: hidden; }
+  .mod-card { min-width: 0; max-width: 100%; }
+  .mod-card .hd b { min-width: 0; overflow-wrap: anywhere; }
+  .mod-card .hd span { flex: none; }
+  /* الهيدر: اسم البوت في النص، واللوجو بتاعه بس اللي بياخد شكل اللوجو (مش صورة البروفايل) */
+  .brand { position: relative; min-height: 44px; }
+  .brand .name { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; pointer-events: none; }
+  .brand img { width: auto; height: auto; border: 0; box-shadow: none; border-radius: 0; }
+  .brand > img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--cream); box-shadow: var(--shadow-sm); }
+  .head-actions { gap: 6px; }
+  .avatar-btn { padding: 0; }
+  .avatar-btn img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .theme-btn { width: 40px; height: 40px; color: var(--gold); }
+  .theme-btn svg.i { width: 19px; height: 19px; }
+  @media (max-width: 360px) { .brand .name { font-size: 26px; } }
+
+  /* ============ الوضع الفاتح (ورق أفيش كريمي) ============ */
+  html.light { --bg: #F3E3C0; --surface: #EAD6AC; --surface-2: #E2CB9C; --cream: #1d140b; --muted: #6b5233;
+    --text: #1d140b; --line: rgba(29,20,11,.25); --gold: #B8861C; --gold-grad: #B8861C;
+    --dots: radial-gradient(rgba(29,20,11,.10) 1.2px, transparent 1.4px);
+    --burst: repeating-conic-gradient(from 0deg at 50% 100%, rgba(184,134,28,.20) 0deg 6deg, transparent 6deg 12deg);
+    --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d140b' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); }
+  html.light body { color: var(--cream); }
+  html.light .desc, html.light .post-text, html.light .lv-desc, html.light .pf-bio { color: #2b1e10; }
+  html.light .tab.active, html.light .pill.active, html.light .ctab.active { color: #F6E7C6; }
+  html.light .btn.primary, html.light .tile.on, html.light .pub, html.light .admin-btn, html.light .badge.book { color: #1d140b; }
+  html.light .bottom-nav button.on { color: #1d140b; }
+  html.light .rate-stars button { color: #c8b48c; }
+
+  /* ---- الجولة 21: نص نجمة ---- */
+  .rate-stars { --soff: #5b4a35; }
+  .stars { --soff: rgba(246,231,198,.25); }
+  html.light .rate-stars { --soff: #c8b48c; }
+  html.light .stars { color: rgba(29,20,11,.25); --soff: rgba(29,20,11,.25); }
+  .rate-stars button.half, .stars .half { background: linear-gradient(90deg, var(--gold) 50%, var(--soff) 50%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .review .stars .half { background-image: linear-gradient(90deg, var(--red-ink) 50%, var(--soff) 50%); }
+  .hist { gap: 4px; }
+  /* ---- النوع ---- */
+  .gsym { font-family: "Segoe UI Symbol", "Noto Sans Symbols", "DejaVu Sans", sans-serif; font-weight: 700; font-size: .95em;
+    margin-inline-start: 5px; display: inline-block; line-height: 1; }
+  .gsym.m { color: #5d9bd1; } .gsym.f { color: #e07aa5; }
+  /* ---- الريأكشنات ---- */
+  .rx { display: inline-flex; align-items: center; gap: 5px; }
+  .rx-stack { display: inline-flex; direction: ltr; }
+  .rx-stack .rx-face { width: 20px; height: 20px; margin-inline-start: -6px; }
+  .rx-stack .rx-face:first-child { margin-inline-start: 0; }
+  .rx-empty { font-size: 15px; }
+  .rx-mine { font-size: 12px; font-weight: 800; }
+  .rx.on .rx-mine { color: var(--gold); }
+  .rx-bg { position: fixed; inset: 0; z-index: 300; }
+  .rx-pop { position: fixed; z-index: 301; display: flex; gap: 2px; padding: 6px 8px; direction: ltr; background: var(--surface);
+    border: 2px solid var(--cream); border-radius: 30px; box-shadow: 4px 4px 0 var(--red); }
+  .rx-pop button { position: relative; width: 40px; height: 42px; display: grid; place-items: center; transform: scale(0);
+    animation: rxIn .32s cubic-bezier(.3,1.7,.5,1) forwards; }
+  .rx-pop .rx-face { width: 36px; height: 36px; transition: transform .15s; }
+  .rx-pop button:hover .rx-face, .rx-pop button:active .rx-face { transform: translateY(-6px) scale(1.18); }
+  .rx-pop button.cur::after { content: ""; position: absolute; bottom: -3px; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+  .rx-tip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 11px; font-weight: 800;
+    background: var(--cream); color: var(--bg); padding: 1px 6px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .rx-pop button:hover .rx-tip { opacity: 1; }
+  @keyframes rxIn { to { transform: scale(1); } }
+  /* ---- الاسمين ---- */
+  .card .title-alt { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .d-alt { color: var(--muted); font-size: 15px; font-weight: 700; margin: -4px 0 8px; }
+  .chip.red { background: var(--red); color: var(--cream); border-color: var(--red); }
+  /* ---- المواسم ---- */
+  .seasons-box { margin: 18px 0 6px; }
+  .seasons-box h3 { font-family: var(--font-display); font-size: 22px; font-weight: 400; color: var(--gold); margin: 0 0 10px; }
+  .seasons-box h3 small { font-family: var(--font-body); font-size: 13px; color: var(--muted); }
+  .season-strip { display: flex; gap: 12px; overflow-x: auto; padding: 4px 4px 12px; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; }
+  .season { flex: 0 0 104px; scroll-snap-align: start; display: flex; flex-direction: column; gap: 3px; opacity: 0; animation: seasonIn .4s ease forwards; }
+  .season .ph { position: relative; aspect-ratio: 2/3; border: 2px solid var(--cream); box-shadow: 4px 4px 0 var(--red); overflow: hidden;
+    background: var(--burst), var(--surface); }
+  .season .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .season .ph .big { position: absolute; bottom: 4px; inset-inline-start: 6px; font-family: var(--font-display); font-size: 34px; line-height: 1;
+    color: var(--gold); text-shadow: 2px 2px 0 var(--bg), 3px 3px 0 var(--red); }
+  .season b { font-family: var(--font-display); font-weight: 400; font-size: 18px; color: var(--cream); margin-top: 6px; }
+  .season span { font-size: 12px; color: var(--muted); font-weight: 700; }
+  @keyframes seasonIn { from { opacity: 0; transform: translateY(10px) rotate(-1deg); } to { opacity: 1; transform: none; } }
+  /* ---- «راقب»: المحافظة ← المنطقة ← السينما ---- */
+  .wf-dots { display: flex; gap: 6px; justify-content: center; margin: 4px 0 12px; }
+  .wf-dots i { width: 26px; height: 5px; background: var(--line); }
+  .wf-dots i.on { background: var(--gold); }
+  .wf-step { animation: wfIn .28s ease; }
+  .wf-q { font-family: var(--font-display); font-size: 24px; color: var(--gold); margin-bottom: 10px; text-align: center; }
+  .wf-list { display: flex; flex-direction: column; gap: 8px; max-height: 52vh; overflow-y: auto; padding: 2px 4px 6px; }
+  .wf-opt { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 46px; padding: 8px 14px; text-align: start;
+    background: var(--surface); border: 2px solid var(--cream); box-shadow: 3px 3px 0 var(--red); font-weight: 800; color: var(--cream); }
+  .wf-opt:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--red); }
+  .wf-opt small { font-size: 11px; color: var(--bg); background: var(--gold); padding: 1px 6px; font-weight: 800; }
+  .wf .linkish { display: block; margin: 10px auto 0; }
+  @keyframes wfIn { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+  .want-note { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); font-weight: 700; margin: 8px 2px 0; }
+  .want-note svg.i { width: 16px; height: 16px; color: var(--gold); }
 </style>
 </head>
 <body>
@@ -949,6 +1058,7 @@
     <div class="head-actions">
       <button class="country-btn" id="country-btn"></button>
       <button class="icon-btn" id="comm-btn" title="المجتمع" aria-label="المجتمع"></button>
+      <button class="icon-btn theme-btn" id="theme-btn" aria-label="الوضع الفاتح / الغامق"></button>
       <button class="avatar-btn" id="avatar-btn"></button>
     </div>
   </div>
@@ -980,6 +1090,7 @@
   </div>
   <div class="body">
     <h1 class="ltr" id="d-title"></h1>
+    <div class="d-alt" id="d-title-alt" dir="auto"></div>
     <div class="meta" id="d-meta"></div>
     <div class="chips" id="d-chips"></div>
     <div class="actions" id="d-actions"></div>
@@ -1131,6 +1242,7 @@
     <input type="file" id="e-file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
     <div class="field"><label>الاسم <span class="count" id="e-name-count"></span></label><input type="text" id="e-name" maxlength="32"></div>
     <div class="field"><label>البايو <span class="count" id="e-bio-count"></span></label><textarea id="e-bio" maxlength="160"></textarea></div>
+    <div class="field"><label>النوع</label><select id="e-gender"><option value="">مش عايز أقول</option><option value="m">ذكر</option><option value="f">أنثى</option></select></div>
     <div class="field"><label>الشكل</label><div class="swatches" id="e-presets"></div></div>
     <div class="field"><label>اللون</label><div class="media-row"><input type="color" id="e-accent">
       <span class="pills" id="e-effects"></span></div></div>
@@ -1272,9 +1384,10 @@
   }
   // مكان القايمة قبل ما تفتح فيلم: الرجوع بيرجّعك قدام نفس البوستر (مش من أول القايمة)
   // (m = الفيلم اللي اتداس على كارته - من تنبيه أو لينك مفيش كارت: الرجوع لنفس المكان بس)
-  var LIST_POS = null, CLICKED = null;
+  var LIST_POS = null, CLICKED = null, SCROLL = {};
   function go(id) {
     var from = document.querySelector(".screen.on").id;
+    SCROLL[from] = window.pageYOffset || 0;             // الرجوع بيرجّعك لنفس المكان (مش لأول الصفحة)
     if (from === "s-list") LIST_POS = { y: window.pageYOffset || 0, s: section, c: country, m: CLICKED };
     CLICKED = null;
     stack.push(from); show(id);
@@ -1295,6 +1408,8 @@
     var to = stack.pop() || "s-list";
     show(to);
     if (to === "s-list" && DATA) { renderHeader(); renderGrid(restoreList, true); }   // المراقبات/البلد ممكن يكونوا اتغيروا
+    else if (SCROLL[to]) window.scrollTo(0, SCROLL[to]);
+    if (to !== "s-list") delete SCROLL[to];
   }
   if (tg && tg.BackButton) tg.BackButton.onClick(function () { haptic(); back(); });
 
@@ -1458,7 +1573,7 @@
     head.appendChild(acts);
     pf.appendChild(head);
     var body = el("div", "pf-body");
-    body.appendChild(el("div", "pf-name ltr", p.name));
+    var pn = el("div", "pf-name ltr", p.name); addG(pn, p); body.appendChild(pn);
     if (p.username) {
       var ur = el("div", "user-row"), un = el("div", "pf-user" + (p.username_hidden ? " off" : ""), "@" + p.username);
       if (p.owner) {                                   // زرار العين: يخفي اليوزر عن الكل (في كل حتة)
@@ -1479,8 +1594,8 @@
     if (p.bio) body.appendChild(el("div", "pf-bio ltr", p.bio));
     var stats = el("div", "pf-stats");
     var nums = p.stats || {};                          // زي Letterboxd: شاف / السنة دي / قوائم / بيتابع / متابعين
-    [["watched", p.owner ? "شفتهم" : "شافهم"], ["this_year", "السنة دي"], ["lists", "قوائم"],
-     ["following", p.owner ? "أتابع" : "بيتابع"], ["followers", "متابعين"]].forEach(function (x) {
+    [["watched", p.owner ? "شفتهم" : g(p, "شافهم", "شافتهم")], ["this_year", "السنة دي"], ["lists", "قوائم"],
+     ["following", p.owner ? "أتابع" : g(p, "بيتابع", "بتتابع")], ["followers", "متابعين"]].forEach(function (x) {
       var v = nums[x[0]], cell = el("div" + "");
       cell.appendChild(el("b", "", v == null ? "–" : String(v))); cell.appendChild(el("span", "", x[1]));
       if (x[0] === "followers" || x[0] === "following") { cell.className = "tap"; cell.onclick = function () { haptic(); openPeople(p, x[0]); }; }
@@ -1519,7 +1634,7 @@
     EDIT = { preset: ME.theme.preset, accent: ME.theme.accent, effect: ME.theme.effect, privacy: Object.assign({}, ME.privacy),
              cover_y: ME.theme.cover_y != null ? ME.theme.cover_y : 50, cover_zoom: ME.theme.cover_zoom || 100 };
     $("e-name").value = ME.custom_name || ""; $("e-name").placeholder = ME.tg_name || "";
-    $("e-bio").value = ME.bio || ""; $("e-msg").textContent = "";
+    $("e-bio").value = ME.bio || ""; $("e-msg").textContent = ""; $("e-gender").value = ME.gender || "";
     counts(); renderEditMedia(); renderThemeControls(); renderPrivacy();
     go("s-edit");
   }
@@ -1612,7 +1727,7 @@
   $("e-cover-del").onclick = function () { busy(true); call("DELETE", "/api/me/cover").then(function (p) { afterChange(p); busy(false); }).catch(fail); };
   $("e-save").onclick = function () {
     haptic("medium"); busy(true);
-    call("PATCH", "/api/me", { name: $("e-name").value, bio: $("e-bio").value,
+    call("PATCH", "/api/me", { name: $("e-name").value, bio: $("e-bio").value, gender: $("e-gender").value,
       theme: { preset: EDIT.preset, accent: EDIT.accent, effect: EDIT.effect, cover_y: EDIT.cover_y, cover_zoom: EDIT.cover_zoom },
       privacy: EDIT.privacy })
       .then(function (p) { ME = p; busy(false); renderProfileCard(p); renderHeader(); back(); })
@@ -1626,10 +1741,28 @@
     window.alert(text);
   }
   function starsText(n) {
-    var w = el("span", "stars");
-    for (var i = 1; i <= 5; i++) w.appendChild(el("span", i <= (n || 0) ? "on" : "", "★"));
+    var w = el("span", "stars"); n = +n || 0;
+    for (var i = 1; i <= 5; i++) w.appendChild(el("span", i <= n ? "on" : i - 0.5 <= n ? "half" : "", "★"));
     return w;
   }
+  // النجوم بأنصاص (الجولة 21): النص الشمال من النجمة = نص نجمة، النص اليمين = نجمة كاملة
+  function halfStars(get, onPick, box) {
+    var st = box || el("div", "rate-stars");
+    var paint = function () {
+      st.textContent = ""; var cur = +get() || 0;
+      for (var k = 1; k <= 5; k++) (function (k) {
+        var b = el("button", cur >= k ? "on" : cur >= k - 0.5 ? "half" : "", "★");
+        b.setAttribute("aria-label", k + " نجوم");
+        b.onclick = function (e) {
+          var r = b.getBoundingClientRect(), half = e && e.clientX && (e.clientX - r.left) < r.width / 2;
+          onPick(half ? k - 0.5 : k); paint();
+        };
+        st.appendChild(b);
+      })(k);
+    };
+    paint(); return st;
+  }
+  function starsLabel(v) { return String(v).replace(".5", "½"); }
   function loadFilm(m) {
     var box = $("d-score"), comm = $("d-community");
     box.style.display = "none"; comm.style.display = "none"; FILM = null; FILM_MOVIE = m;
@@ -1676,15 +1809,8 @@
     r.appendChild(el("span", "box" + (on ? " on" : "") + (red ? " red" : ""), on ? "✓" : "")); return r;
   }
   function starPicker(value, onChange) {
-    var st = el("div", "rate-stars"), cur = value || 0;
-    var paint = function () {
-      st.textContent = "";
-      for (var k = 1; k <= 5; k++) (function (k) {
-        var b = el("button", k <= cur ? "on" : "", "★");
-        b.onclick = function () { haptic(); cur = (cur === k ? 0 : k); paint(); onChange(cur); }; st.appendChild(b);
-      })(k);
-    };
-    paint(); return st;
+    var cur = value || 0;
+    return halfStars(function () { return cur; }, function (v) { haptic(); cur = (cur === v ? 0 : v); onChange(cur); });
   }
   // صفحات: «عرض المزيد» (ما بنحملش آلاف الحاجات مرة واحدة)
   function pager(list, holder, fetchPage, renderItem, emptyText) {
@@ -1741,6 +1867,11 @@
       prev = b;
       if (isNew && !fresh) { void b.offsetWidth; requestAnimationFrame(function () { b.classList.remove("entering"); }); }
     });
+    var wn = $("d-want-note"); if (wn) wn.remove();
+    if (want && !showing && L.want_cinema) {
+      wn = el("div", "want-note"); wn.id = "d-want-note"; wn.innerHTML = ICON.clock;
+      wn.appendChild(document.createTextNode(" بتراقبه في " + L.want_cinema)); row.after(wn);
+    }
   }
   function openWatchSheet() {
     var m = FILM_MOVIE, w = FILM.watch || {}, pick = "today", stars = FILM.my_rating || 0, fav = !!FILM.lists.fav;
@@ -1825,15 +1956,60 @@
       sh.appendChild(mk); sh.appendChild(msg);
     });
   }
-  function toggleList(kind) {
+  function toggleList(kind, cinema) {
     var m = FILM_MOVIE, on = !FILM.lists[kind];
-    call(on ? "PUT" : "DELETE", "/api/films/" + m.id + "/list/" + kind).then(function (x) {
+    // «راقب» فيلم حجزه لسه ما فتحش: نسأل عن السينما الأول (التنبيه بيوصل لما الحجز يفتح فيها هي)
+    if (kind === "want" && on && cinema === undefined && !m.bookable && m.src !== "screen" && m.section === "c" && DATA && (DATA.cinemas || []).length)
+      return openWatchFlow(m);
+    call(on ? "PUT" : "DELETE", "/api/films/" + m.id + "/list/" + kind, on && cinema ? { cinema: cinema } : undefined).then(function (x) {
       if (FILM_MOVIE !== m) return;
       FILM.lists = x.lists; renderLists();
       if (kind === "want" || kind === "seen") { setWatched(m.id, x.lists.want); syncWant(); }
       if (kind === "want" && on)                        // الحجز مفتوح = مفيش تنبيه يستناه
-        notify(m.bookable || m.src === "screen" ? "اتضاف لـ«هشوفهم بعدين»" : "هيوصلك تنبيه أول ما حجز الفيلم ده يفتح");
+        notify(m.bookable || m.src === "screen" ? "اتضاف لـ«هشوفهم بعدين»"
+               : "هيوصلك تنبيه أول ما حجز الفيلم ده يفتح" + (cinema ? " في " + cinema : ""));
     }).catch(function (e) { notify(e.message); });
+  }
+  // سؤال واحد في كل خطوة، وبيتغير مع كل دوسة: محافظتك إيه؟ ← منطقتك إيه؟ ← السينما
+  function openWatchFlow(m) {
+    var all = DATA.cinemas || [], gov = null, area = null;
+    openSheet("راقب", function (sh) {
+      sh.appendChild(el("div", "sub ltr", m.title));
+      var stage = el("div", "wf"); sh.appendChild(stage);
+      var step = function (n, q, items, onPick, backTo) {
+        clear(stage);
+        var dots = el("div", "wf-dots"); for (var i = 1; i <= 3; i++) dots.appendChild(el("i", i <= n ? "on" : ""));
+        stage.appendChild(dots);
+        var box = el("div", "wf-step"); box.appendChild(el("div", "wf-q", q));
+        var list = el("div", "wf-list");
+        items.forEach(function (it) {
+          var b = el("button", "wf-opt"); b.appendChild(el("span", "", it.label));
+          if (it.tag) b.appendChild(el("small", "", it.tag));
+          b.onclick = function () { haptic(); onPick(it.value); }; list.appendChild(b);
+        });
+        box.appendChild(list);
+        if (backTo) { var bk = el("button", "linkish", "رجوع"); bk.onclick = function () { haptic(); backTo(); }; box.appendChild(bk); }
+        stage.appendChild(box);
+        sh.scrollTop = 0;
+      };
+      var uniq = function (arr) { var s = {}, o = []; arr.forEach(function (x) { if (x && !s[x]) { s[x] = 1; o.push(x); } }); return o; };
+      var askGov = function () {
+        var present = uniq(all.map(function (c) { return c.gov; }));
+        var order = uniq((DATA.govs || []).filter(function (x) { return present.indexOf(x) >= 0; }).concat(present));
+        step(1, "محافظتك إيه؟", order.map(function (x) { return { label: x, value: x }; }), function (v) { gov = v; askArea(); });
+      };
+      var askArea = function () {
+        var areas = uniq(all.filter(function (c) { return c.gov === gov; }).map(function (c) { return c.area; }));
+        if (areas.length <= 1) { area = areas[0] || null; return askCinema(true); }
+        step(2, "منطقتك إيه؟", areas.map(function (x) { return { label: x, value: x }; }), function (v) { area = v; askCinema(false); }, askGov);
+      };
+      var askCinema = function (skippedArea) {
+        var list = all.filter(function (c) { return c.gov === gov && (!area || c.area === area); });
+        step(3, "اختار السينما", list.map(function (c) { return { label: c.name, value: c.name, tag: c.vox ? "VOX" : "" }; }),
+             function (name) { closeSheet(); toggleList("want", name); }, skippedArea ? askGov : askArea);
+      };
+      askGov();
+    });
   }
   function syncWant() {                                // «أريد مشاهدتها» من السيرفر (أحدث من لينك البوت)
     var uid = tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id;
@@ -1856,8 +2032,10 @@
     avg.appendChild(el("small", "", FILM.count ? FILM.count + " تقييم" : "لسه محدش قيّم"));
     top.appendChild(avg);
     var bars = el("div", "bars");
+    var buckets = {};                                    // الأنصاص بتتجمع على أقرب نجمة (4½ مع الـ5)
+    Object.keys(FILM.distribution || {}).forEach(function (k) { var b = Math.max(1, Math.round(+k)); buckets[b] = (buckets[b] || 0) + FILM.distribution[k]; });
     for (var i = 5; i >= 1; i--) {
-      var n = FILM.distribution[String(i)] || 0, row = el("div", "bar");
+      var n = buckets[i] || 0, row = el("div", "bar");
       row.appendChild(el("span", "", i + "★"));
       var track = el("i"), fill = el("b"); fill.style.width = (FILM.count ? Math.round(n * 100 / FILM.count) : 0) + "%";
       track.appendChild(fill); row.appendChild(track); row.appendChild(el("span", "", String(n))); bars.appendChild(row);
@@ -1868,11 +2046,7 @@
     var rr = el("div", "rate-row"), lbl = el("span", "lbl", FILM.my_rating ? "تقييمك" : "قيّم الفيلم");
     if (FILM.my_rating) { var rm = el("button", "linkish", "شيل"); rm.style.marginInlineStart = "8px"; rm.onclick = function () { rate(0); }; lbl.appendChild(rm); }
     rr.appendChild(lbl);
-    var st = el("div", "rate-stars");
-    for (var k = 1; k <= 5; k++) (function (k) {
-      var b = el("button", k <= (FILM.my_rating || 0) ? "on" : "", "★");
-      b.onclick = function () { haptic("medium"); rate(k); }; st.appendChild(b);
-    })(k);
+    var st = halfStars(function () { return FILM.my_rating || 0; }, function (v) { haptic("medium"); rate(v); });
     rr.appendChild(st); box.appendChild(rr);
     // «اكتب مراجعة» مكان واحد بس (للفيلم كله - مش لنسخة)
     var wb = el("button", "btn outline", !FILM.my_review ? "اكتب مراجعة" : FILM.my_review.locked ? "مراجعتك" : "عدّل مراجعتك");
@@ -1895,7 +2069,7 @@
     var c = el("div", "review" + (r.mine ? " mine" : ""));
     if (withMovie && r.movie) { var mt = el("div", "rv-movie ltr", r.movie.title); c.appendChild(mt); }
     var h = el("div", "rv-head"); var who = el("div", "rv-who");
-    h.appendChild(avatarSmall(r.author)); who.appendChild(el("b", "ltr", r.author.name));
+    h.appendChild(avatarSmall(r.author)); who.appendChild(addG(el("b", "ltr", r.author.name), r.author));
     var sub = el("span"); if (r.stars) sub.appendChild(starsText(r.stars));
     sub.appendChild(document.createTextNode(" " + r.date + (r.edited ? " • اتعدلت" : ""))); who.appendChild(sub);
     h.appendChild(who); h.style.cursor = "pointer";
@@ -1904,14 +2078,8 @@
     var t = el("div", "rv-text ltr" + (r.spoiler && !r.mine ? " spoil" : ""), r.text);
     if (r.spoiler && !r.mine) { t.onclick = function () { t.classList.remove("spoil"); }; c.appendChild(t); c.appendChild(el("div", "spoil-tag", "فيها حرق، دوس عشان تشوفها")); }
     else c.appendChild(t);
-    var f = el("div", "rv-foot"); var heart = el("button", "heart" + (r.liked ? " on" : ""));
-    var paint = function () { heart.className = "heart" + (r.liked ? " on" : ""); heart.textContent = (r.liked ? "♥ " : "♡ ") + r.likes; };
-    paint();
-    heart.onclick = function () {
-      if (r.mine) return; haptic();
-      call(r.liked ? "DELETE" : "POST", "/api/reviews/" + r.id + "/like").then(function (x) { r.likes = x.likes; r.liked = x.liked; paint(); }).catch(function () {});
-    };
-    f.appendChild(heart);
+    var f = el("div", "rv-foot");
+    f.appendChild(reactBtn(r, "/api/reviews/" + r.id + "/like", "heart", r.mine));
     var tools = el("span");
     if (ME && ME.comments_enabled) {
       var cb = el("button", "heart"); cb.innerHTML = ICON.chat; cb.appendChild(document.createTextNode(" " + (r.comments || 0)));
@@ -1974,10 +2142,7 @@
     go("s-review");
   }
   function paintWriterStars() {
-    var st = $("w-stars"); st.textContent = "";
-    for (var k = 1; k <= 5; k++) (function (k) {
-      var b = el("button", k <= W_STARS ? "on" : "", "★"); b.onclick = function () { haptic(); W_STARS = k; paintWriterStars(); }; st.appendChild(b);
-    })(k);
+    halfStars(function () { return W_STARS; }, function (v) { haptic(); W_STARS = v; }, $("w-stars"));
   }
   function wCount() { $("w-count").textContent = ""; $("w-msg").textContent = ""; }   // حد المراجعة (5000) ما بيظهرش للمستخدم
   $("w-text").oninput = wCount;
@@ -2003,9 +2168,10 @@
     overviewBlock(box, uid, owner, p, function (k) { show(k); seg.scrollIntoView({ block: "start" }); });
     var seg = el("div", "ptabs"), body = el("div");
     // حسابي: هشوفهم بعدين / شفتهم / تقييماتي ... - حساب حد تاني: هيشوفهم بعدين / شافهم / تقييماته ...
-    var tabs = [["want", owner ? "هشوفهم بعدين" : "هيشوفهم بعدين"], ["watched", owner ? "شفتهم" : "شافهم"],
-                ["ratings", owner ? "تقييماتي" : "تقييماته"], ["reviews", owner ? "مراجعاتي" : "مراجعاته"], ["lists", owner ? "قوائمي" : "قوائمه"],
-                ["posts", owner ? "منشوراتي" : "منشوراته"]];
+    var f = p && p.gender === "f";                       // حساب بنت: هتشوفهم / شافتهم / تقييماتها ...
+    var tabs = [["want", owner ? "هشوفهم بعدين" : f ? "هتشوفهم بعدين" : "هيشوفهم بعدين"], ["watched", owner ? "شفتهم" : f ? "شافتهم" : "شافهم"],
+                ["ratings", owner ? "تقييماتي" : f ? "تقييماتها" : "تقييماته"], ["reviews", owner ? "مراجعاتي" : f ? "مراجعاتها" : "مراجعاته"],
+                ["lists", owner ? "قوائمي" : f ? "قوائمها" : "قوائمه"], ["posts", owner ? "منشوراتي" : f ? "منشوراتها" : "منشوراته"]];
     var show = function (k) {
       seg.querySelectorAll(".pill").forEach(function (b) { b.classList.toggle("active", b.dataset.k === k); });
       body.textContent = ""; TAB[k](body, uid, owner, p);
@@ -2326,7 +2492,7 @@
       hd.appendChild(el("b", "ltr", w.title + (w.title_ar && w.title_ar !== w.title ? " • " + w.title_ar : "")));
       hd.appendChild(el("span", "", w.kind === "s" ? "يعرض حاليًا" : "قريبًا"));
       card.appendChild(hd);
-      var st = w.linked && w.linked.vox ? "نفس فيلم VOX «" + w.linked.title + "»" : "فيلم لوحده (مش في VOX)";
+      var st = w.linked && w.linked.vox ? "نفس فيلم VOX «\u2068" + w.linked.title + "\u2069»" : "فيلم لوحده (مش في VOX)";
       if (w.mode === "manual") st += " • بإيد الأدمن"; else if (w.mode === "split") st += " • مفصول بإيد الأدمن";
       card.appendChild(el("div", "who", st));
       var acts = el("div", "mod-acts");
@@ -2538,7 +2704,7 @@
   }
   function personRow(u, extra) {
     var r = el("div", "person"); r.appendChild(avatarSmall(u, "av"));
-    var who = el("div", "who"); who.appendChild(el("b", "ltr", u.name)); if (u.username) who.appendChild(el("span", "", "@" + u.username));
+    var who = el("div", "who"); who.appendChild(addG(el("b", "ltr", u.name), u)); if (u.username) who.appendChild(el("span", "", "@" + u.username));
     who.onclick = function () { haptic(); openUser(u.id); }; r.appendChild(who);
     (extra || []).forEach(function (b) { r.appendChild(b); });
     return r;
@@ -2568,23 +2734,32 @@
       row = personRow(u, [ok, no]); l.appendChild(row);
     }, "مفيش طلبات");
   }
+  // النوع (الجولة 21): ♂ / ♀ جنب الاسم، والأفعال على حسب النوع (شاف / شافت)
+  function g(a, m, f) { return a && a.gender === "f" ? f : m; }
+  function addG(node, a) {
+    if (a && (a.gender === "m" || a.gender === "f")) {
+      var s = el("span", "gsym " + a.gender, a.gender === "f" ? "\u2640\uFE0E" : "\u2642\uFE0E");
+      s.title = a.gender === "f" ? "أنثى" : "ذكر"; node.appendChild(s);
+    }
+    return node;
+  }
   function activityText(x) {
-    var t = x.movie ? "«" + x.movie.title + "»" : "";
+    var t = x.movie ? "«" + x.movie.title + "»" : "", a = x.actor;
     switch (x.kind) {
-      case "watched": return "شاف " + t + (x.date ? " • " + fmtDate(x.date) : "");
-      case "rated": return "قيّم " + t;
-      case "reviewed": return "كتب مراجعة عن " + t;
-      case "liked_review": return "أعجبته مراجعة " + (x.target ? x.target.name : "") + " عن " + t;
-      case "fav": return "ضاف " + t + " للمفضلة";
-      case "want": return "عايز يشوف " + t;
-      case "listed": return "ضاف " + t + " لقائمة «" + (x.list ? x.list.title : "") + "»";
-      case "followed": return "بدأ يتابع " + (x.target ? x.target.name : "");
+      case "watched": return g(a, "شاف ", "شافت ") + t + (x.date ? " • " + fmtDate(x.date) : "");
+      case "rated": return g(a, "قيّم ", "قيّمت ") + t;
+      case "reviewed": return g(a, "كتب", "كتبت") + " مراجعة عن " + t;
+      case "liked_review": return g(a, "أعجبته", "أعجبتها") + " مراجعة " + (x.target ? x.target.name : "") + " عن " + t;
+      case "fav": return g(a, "ضاف ", "ضافت ") + t + " للمفضلة";
+      case "want": return g(a, "عايز يشوف ", "عايزة تشوف ") + t;
+      case "listed": return g(a, "ضاف ", "ضافت ") + t + " لقائمة «" + (x.list ? x.list.title : "") + "»";
+      case "followed": return g(a, "بدأ يتابع ", "بدأت تتابع ") + (x.target ? x.target.name : "");
     }
     return "";
   }
   function activityRow(x) {
     var r = el("button", "act"); r.appendChild(avatarSmall(x.actor, "av"));
-    var txt = el("div", "txt"); txt.appendChild(el("b", "ltr", x.actor.name)); txt.appendChild(document.createTextNode(" " + activityText(x)));
+    var txt = el("div", "txt"); txt.appendChild(addG(el("b", "ltr", x.actor.name), x.actor)); txt.appendChild(document.createTextNode(" " + activityText(x)));
     if (x.stars) { txt.appendChild(document.createTextNode(" ")); txt.appendChild(starsText(x.stars)); }
     txt.appendChild(el("span", "when", ago(x.at))); r.appendChild(txt);
     if (x.movie) r.appendChild(posterImg(x.movie));
@@ -2599,6 +2774,7 @@
   }
   // ---------- المجتمع (زي الصورة: تابات + اكتب منشور + الرائج + أعضاء مقترحون) ----------
   var PICON = {
+    tv: '<svg class="i" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 3l4 4 4-4"/></svg>',
     repost: '<svg class="i" viewBox="0 0 24 24"><path d="M17 2l3 3-3 3"/><path d="M4 11V9a4 4 0 0 1 4-4h12"/><path d="M7 22l-3-3 3-3"/><path d="M20 13v2a4 4 0 0 1-4 4H4"/></svg>',
     save: '<svg class="i" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
     image: '<svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/></svg>',
@@ -2664,7 +2840,7 @@
     fake.onclick = function () { haptic(); openComposer(""); };
     col.appendChild(fake);
     var row = el("div", "tools");
-    [["image", PICON.image, "صورة"], ["gif", PICON.gif, "GIF"], ["poll", PICON.poll, "استفتاء"]].forEach(function (t) {
+    [["poll", PICON.poll, "استفتاء"], ["film", ICON.ticket, "فيلم"], ["show", PICON.tv, "مسلسل"]].forEach(function (t) {
       var b = el("button", "tool"); b.innerHTML = t[1]; b.setAttribute("aria-label", t[2]);
       b.onclick = function () { haptic(); openComposer(t[0]); }; row.appendChild(b);
     });
@@ -2713,10 +2889,10 @@
   // ---------- كارت المنشور ----------
   function postCard(p) {
     var c = el("article", "post-card");
-    if (p.repost_by) { var rb = el("div", "repost-by"); rb.innerHTML = PICON.repost; rb.appendChild(el("span", "ltr", p.repost_by.name + " شارك"));
+    if (p.repost_by) { var rb = el("div", "repost-by"); rb.innerHTML = PICON.repost; rb.appendChild(el("span", "ltr", p.repost_by.name + " " + g(p.repost_by, "شارك", "شاركت")));
       rb.onclick = function () { openUser(p.repost_by.id); }; c.appendChild(rb); }
     var hd = el("div", "post-head"); var av = avatarSmall(p.author, "av"); hd.appendChild(av);
-    var who = el("div", "pwho"); who.appendChild(el("b", "ltr", p.author.name));
+    var who = el("div", "pwho"); who.appendChild(addG(el("b", "ltr", p.author.name), p.author));
     var when = el("span", "when", ago(p.at)); if (p.public) when.insertAdjacentHTML("afterbegin", PICON.globe); who.appendChild(when);
     hd.appendChild(who); av.onclick = who.onclick = function () { haptic(); openUser(p.author.id); };
     var more = el("button", "more-btn-i"); more.innerHTML = PICON.more; more.setAttribute("aria-label", "اختيارات");
@@ -2768,12 +2944,7 @@
   function postActions(p) {
     var row = el("div", "post-actions");
     var mk = function (cls, icon, n, on) { var b = el("button", "pa " + cls + (on ? " on" : "")); b.innerHTML = icon; b.appendChild(el("span", "", String(n || 0))); return b; };
-    var like = mk("like", ICON.heart, p.likes, p.liked);
-    like.onclick = function () {
-      haptic(); var on = !p.liked;
-      call(on ? "POST" : "DELETE", "/api/posts/" + p.id + "/like").then(function (x) { p.liked = x.liked; p.likes = x.likes; row.replaceWith(postActions(p)); })
-        .catch(function (e) { notify(e.message); });
-    };
+    var like = reactBtn(p, "/api/posts/" + p.id + "/like", "pa like", false);
     var cm = mk("cm", ICON.chat, p.comments); cm.onclick = function () { haptic(); openPost(p.id); };
     var rp = mk("rp", PICON.repost, p.reposts, p.reposted);
     if (p.mine) rp.disabled = true;
@@ -2837,7 +3008,7 @@
   }
   function postCommentRow(c) {
     var w = el("div", "cmt"), hd = el("div", "hd");
-    var name = el("b", "ltr", c.author.name); name.onclick = function () { openUser(c.author.id); };
+    var name = addG(el("b", "ltr", c.author.name), c.author); name.onclick = function () { openUser(c.author.id); };
     hd.appendChild(name); hd.appendChild(el("span", "", ago(c.at))); w.appendChild(hd);
     w.appendChild(el("div", "bd ltr", c.text));
     var ft = el("div", "ft");
@@ -2940,9 +3111,10 @@
           section("التقييمات");
           var hist = el("div", "hist"), max = 0;
           Object.keys(d.ratings).forEach(function (k) { max = Math.max(max, d.ratings[k]); });
-          for (var s = 1; s <= 5; s++) {
-            var col = el("div", "hcol"), bar = el("i"); bar.style.height = Math.max(4, Math.round(d.ratings[String(s)] * 100 / (max || 1))) + "%";
-            bar.title = d.ratings[String(s)] + " تقييم"; col.appendChild(bar); col.appendChild(el("span", "", s + "★")); hist.appendChild(col);
+          for (var s = 0.5; s <= 5; s += 0.5) {             // 10 عواميد: ½ لحد 5
+            var key = String(s), n = d.ratings[key] || 0;
+            var col = el("div", "hcol"), bar = el("i"); bar.style.height = Math.max(4, Math.round(n * 100 / (max || 1))) + "%";
+            bar.title = n + " تقييم"; col.appendChild(bar); col.appendChild(el("span", "", s % 1 ? (s < 1 ? "½" : "") : s + "★")); hist.appendChild(col);
           }
           wrap.appendChild(hist); wrap.appendChild(el("div", "hist-total", total + " تقييم"));
         }
@@ -2970,37 +3142,25 @@
   // ---------- اكتب منشور ----------
   function openComposer(mode, presetMovie) {
     if (!apiReady()) { notify("افتح الصفحة من زرار «اضغط هنا» في البوت"); return; }
-    var file = null, movie = presetMovie || null, poll = mode === "poll" ? ["", ""] : null;
+    var movie = presetMovie || null, poll = mode === "poll" ? ["", ""] : null;
+    ensureScreen();                                     // المسلسلات (وأفلام «على الشاشة») تبقى جاهزة للبحث
     openSheet("منشور جديد", function (sh) {
-      var ta = el("textarea", "post-input"); ta.maxLength = 2000; ta.placeholder = "شارك رأيك عن فيلم أو ابدأ مناقشة...";
+      var ta = el("textarea", "post-input"); ta.maxLength = 2000; ta.placeholder = "شارك رأيك عن فيلم أو مسلسل أو ابدأ مناقشة...";
       sh.appendChild(ta);
       var att = el("div", "attach"); sh.appendChild(att);
       var pollBox = el("div", "poll-edit"); sh.appendChild(pollBox);
       var filmBox = el("div", "film-pick"); sh.appendChild(filmBox);
-      var input = el("input"); input.type = "file"; input.accept = "image/jpeg,image/png,image/webp,image/gif"; input.hidden = true;
-      sh.appendChild(input);
       var drawAttach = function () {
         clear(att);
-        if (file) {
-          var pv = el("div", "img-prev"), im = el("img"); im.src = URL.createObjectURL(file); pv.appendChild(im);
-          var x = el("button", "x-mini", "✕"); x.onclick = function () { file = null; drawAttach(); }; pv.appendChild(x); att.appendChild(pv);
-        }
         var tools = el("div", "tools");
-        [["image", PICON.image, "صورة", "image/jpeg,image/png,image/webp"], ["gif", PICON.gif, "GIF", "image/gif"]].forEach(function (t) {
-          var b = el("button", "tool"); b.innerHTML = t[1]; b.appendChild(el("span", "", t[2]));
-          b.onclick = function () { input.accept = t[3]; input.click(); }; tools.appendChild(b);
-        });
         var pb = el("button", "tool" + (poll ? " on" : "")); pb.innerHTML = PICON.poll; pb.appendChild(el("span", "", "استفتاء"));
         pb.onclick = function () { poll = poll ? null : ["", ""]; drawPoll(); drawAttach(); }; tools.appendChild(pb);
-        var fb = el("button", "tool" + (movie ? " on" : "")); fb.innerHTML = ICON.ticket; fb.appendChild(el("span", "", "فيلم"));
-        fb.onclick = function () { drawFilm(true); }; tools.appendChild(fb);
+        [["film", ICON.ticket, "فيلم"], ["show", PICON.tv, "مسلسل"]].forEach(function (k) {
+          var on = movie && (k[0] === "show") === (movie.kind === "show");
+          var fb = el("button", "tool" + (on ? " on" : "")); fb.innerHTML = k[1]; fb.appendChild(el("span", "", k[2]));
+          fb.onclick = function () { drawFilm(k[0]); }; tools.appendChild(fb);
+        });
         att.appendChild(tools);
-      };
-      input.onchange = function () {
-        var f = input.files && input.files[0]; input.value = "";
-        if (!f) return;
-        if (f.size > 8 * 1024 * 1024) { msg.textContent = "الصورة كبيرة، أقصى حجم 8 ميجا"; return; }
-        file = f; drawAttach();
       };
       var drawPoll = function () {
         clear(pollBox);
@@ -3011,36 +3171,35 @@
         });
         if (poll.length < 4) { var add = el("button", "linkish", "+ اختيار"); add.onclick = function () { poll.push(""); drawPoll(); }; pollBox.appendChild(add); }
       };
-      var drawFilm = function (searching) {
+      var drawFilm = function (searching) {             // searching: "film" / "show" (البحث مفتوح) - غير كده: اللي اختاره
         clear(filmBox);
         if (movie && !searching) {
           var card = filmCard(movie); card.onclick = null; filmBox.appendChild(card);
-          var rm = el("button", "linkish", "شيل الفيلم"); rm.onclick = function () { movie = null; drawFilm(false); drawAttach(); }; filmBox.appendChild(rm);
+          var rm = el("button", "linkish", movie.kind === "show" ? "شيل المسلسل" : "شيل الفيلم");
+          rm.onclick = function () { movie = null; drawFilm(false); drawAttach(); }; filmBox.appendChild(rm);
           return;
         }
         if (!searching) return;
-        var q2 = el("input"); q2.type = "search"; q2.placeholder = "اسم الفيلم"; filmBox.appendChild(q2);
+        var q2 = el("input"); q2.type = "search"; q2.placeholder = searching === "show" ? "اسم المسلسل" : "اسم الفيلم"; filmBox.appendChild(q2);
         var res = el("div", "film-results"); filmBox.appendChild(res);
         q2.oninput = function () {
           clear(res);
-          findMovies(q2.value, 6).forEach(function (m) {
+          findMovies(q2.value, 6, searching).forEach(function (m) {
             var r = el("button", "r-item"); r.appendChild(posterImg(m)); r.appendChild(el("span", "t ltr", m.title));
-            r.onclick = function () { movie = { id: m.id, title: m.title, poster: m.poster, country: country, genre: m.genre }; drawFilm(false); drawAttach(); };
+            r.onclick = function () { movie = { id: m.id, title: m.title, poster: m.poster, country: country, genre: m.genre, kind: m.kind }; drawFilm(false); drawAttach(); };
             res.appendChild(r);
           });
         };
         q2.focus();
       };
-      drawAttach(); drawPoll(); drawFilm(false);
+      drawAttach(); drawPoll(); drawFilm(mode === "film" || mode === "show" ? mode : false);
       var msg = el("div", "msg"), pub = el("button", "btn primary", "نشر");
       pub.onclick = function () {
-        var fd = new FormData();
-        fd.append("text", ta.value);
-        if (movie) fd.append("movie_id", String(movie.id));
-        if (poll) fd.append("poll", JSON.stringify(poll.filter(function (v) { return v.trim(); })));
-        if (file) fd.append("file", file, file.name);
+        var body = { text: ta.value };
+        if (movie) body.movie_id = movie.id;
+        if (poll) body.poll = poll.filter(function (v) { return v.trim(); });
         pub.disabled = true; msg.textContent = "";
-        call("POST", "/api/posts", fd).then(function () {
+        call("POST", "/api/posts", body).then(function () {
           closeSheet(); haptic("medium");
           var on = document.querySelector(".screen.on").id;
           if (on === "s-community") renderCommunity(CTAB === "all" || CTAB === "posts" ? CTAB : "all");
@@ -3049,7 +3208,6 @@
         }).catch(function (e) { pub.disabled = false; msg.textContent = e.message; });
       };
       sh.appendChild(pub); sh.appendChild(msg);
-      if (mode === "image" || mode === "gif") { input.accept = mode === "gif" ? "image/gif" : "image/jpeg,image/png,image/webp"; input.click(); }
     });
   }
 
@@ -3058,14 +3216,15 @@
     return String(s || "").normalize("NFKC").toLowerCase().replace(/[ً-ْـ]/g, "")
       .replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي");
   }
-  function findMovies(q, limit) {
+  function findMovies(q, limit, kind) {                 // kind: "film" = أفلام بس، "show" = مسلسلات بس
     var n = norm(q).trim(); if (n.length < 2 || !DATA) return [];
-    var seen = {}, out = [];
-    var pool = listIds("whatson").concat(listIds("comingsoon"));
-    if (SCREEN && SCREEN.c === country) pool = pool.concat(SCREEN.films, SCREEN.shows);   // + «على الشاشة»
+    var seen = {}, out = [], scr = SCREEN && SCREEN.c === country;
+    var pool = kind === "show" ? [] : listIds("whatson").concat(listIds("comingsoon"));
+    if (scr) pool = pool.concat(kind === "show" ? SCREEN.shows : kind === "film" ? SCREEN.films : SCREEN.films.concat(SCREEN.shows));
     pool.forEach(function (id) {
       var m = DATA.movies[String(id)]; if (!m || seen[m.id]) return; seen[m.id] = 1;
-      if (norm(m.title).indexOf(n) >= 0 || norm(m.title_en || "").indexOf(n) >= 0) out.push(m);
+      // الاسم العربي والإنجليزي الاتنين (ديجر = Digger)
+      if (norm(m.title).indexOf(n) >= 0 || norm(m.title_en || "").indexOf(n) >= 0 || norm(m.title_alt || "").indexOf(n) >= 0) out.push(m);
     });
     return out.slice(0, limit || 8);
   }
@@ -3331,15 +3490,11 @@
   }
   function commentRow(c) {
     var w = el("div", "cmt"), hd = el("div", "hd");
-    var name = el("b", "ltr", c.author.name); name.onclick = function () { openUser(c.author.id); };
+    var name = addG(el("b", "ltr", c.author.name), c.author); name.onclick = function () { openUser(c.author.id); };
     hd.appendChild(name); hd.appendChild(el("span", "", ago(c.at))); w.appendChild(hd);
     w.appendChild(el("div", "bd ltr", c.text));
-    var ft = el("div", "ft"), heart = el("button", "heart" + (c.liked ? " on" : ""));
-    var paint = function () { heart.className = "heart" + (c.liked ? " on" : ""); heart.textContent = (c.liked ? "♥ " : "♡ ") + c.likes; };
-    paint();
-    heart.onclick = function () { if (c.mine) return; haptic();
-      call(c.liked ? "DELETE" : "POST", "/api/comments/" + c.id + "/like").then(function (x) { c.likes = x.likes; c.liked = x.liked; paint(); }).catch(function (e) { notify(e.message); }); };
-    ft.appendChild(heart);
+    var ft = el("div", "ft");
+    ft.appendChild(reactBtn(c, "/api/comments/" + c.id + "/like", "heart", c.mine));
     if (!c.mine) { var rp = el("button", "linkish", "إبلاغ"); rp.onclick = function () { reportSheet("comment", c.id); }; ft.appendChild(rp); }
     if (c.can_delete) { var del = el("button", "linkish", "مسح"); del.onclick = function () { confirmBox("تمسح التعليق؟", function () {
       call("DELETE", "/api/comments/" + c.id).then(function () { w.remove(); }).catch(function (e) { notify(e.message); }); }); }; ft.appendChild(del); }
@@ -3408,6 +3563,95 @@
   };
   function syncCountry(code) {                          // البلد = بلد تنبيهاتك في البوت كمان
     if (apiReady()) call("PUT", "/api/me/country", { c: code }).catch(function () {});
+  }
+
+
+  // ---------- الوضع الفاتح / الغامق (الجولة 21) - بيتفتكر على الجهاز ----------
+  var THEME_ICON = {
+    light: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+    dark: '<svg class="i" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>'
+  };
+  function applyTheme(mode) {
+    var light = mode === "light";
+    document.documentElement.classList.toggle("light", light);
+    $("theme-btn").innerHTML = light ? THEME_ICON.dark : THEME_ICON.light;
+    try { if (tg) { tg.setHeaderColor(light ? "#F3E3C0" : "#140D08"); tg.setBackgroundColor(light ? "#F3E3C0" : "#140D08"); } } catch (e) {}
+  }
+  (function () { var m = "dark"; try { m = localStorage.getItem("cft_theme") || "dark"; } catch (e) {} applyTheme(m); })();
+  $("theme-btn").onclick = function () {
+    haptic();
+    var next = document.documentElement.classList.contains("light") ? "dark" : "light";
+    try { localStorage.setItem("cft_theme", next); } catch (e) {}
+    applyTheme(next);
+  };
+
+
+  // ---------- الريأكشنات (الجولة 21): 7 وشوش مرسومة على ستايل أفيش زمان ----------
+  // دوسة على الزرار = الوشوش تطلع فوقه؛ تختار واحد، أو تدوس على اللي اخترته عشان تشيله
+  var REACTS = [["like", "أعجبني"], ["love", "حبيته"], ["care", "دعم"], ["haha", "هههه"], ["wow", "واو"], ["sad", "زعلني"], ["angry", "عصّبني"]];
+  var RX_INK = 'stroke="#1d140b" stroke-linecap="round" stroke-linejoin="round"';
+  var RX_FACE = {
+    like: ['#F6E7C6', '<path d="M9.4 15h3.7v8.6H9.4z" fill="#F2C14E" ' + RX_INK + ' stroke-width="1.5"/><path d="M13.1 15l3.6-6.2c1.6 0 2.6 1.1 2.3 2.7l-.6 2.6h4c1.3 0 2.2 1.2 1.9 2.4l-1.4 5.6c-.3 1-1.1 1.5-2 1.5h-7.8z" fill="#F2C14E" ' + RX_INK + ' stroke-width="1.5"/>'],
+    love: ['#F6E7C6', '<path d="M15.5 24s-7.4-4.5-7.4-9.6a4 4 0 0 1 7.4-2.2 4 4 0 0 1 7.4 2.2c0 5.1-7.4 9.6-7.4 9.6z" fill="#B3261E" ' + RX_INK + ' stroke-width="1.5"/><path d="M11 13.6a2 2 0 0 1 1.8-1.6" fill="none" stroke="#F6E7C6" stroke-width="1.3" stroke-linecap="round"/>'],
+    care: ['#F2C14E', '<path d="M9.4 12.6q1.6-1.7 3.2 0M18.4 12.6q1.6-1.7 3.2 0M12.2 16.4q3.3 2.3 6.6 0" fill="none" ' + RX_INK + ' stroke-width="1.6"/><path d="M15.5 27.4s-4.6-2.7-4.6-5.8a2.4 2.4 0 0 1 4.6-1.4 2.4 2.4 0 0 1 4.6 1.4c0 3.1-4.6 5.8-4.6 5.8z" fill="#B3261E" ' + RX_INK + ' stroke-width="1.3"/><path d="M6.6 20.4q2.6 2.4 5.4 1.6M24.4 20.4q-2.6 2.4-5.4 1.6" fill="none" ' + RX_INK + ' stroke-width="1.5"/>'],
+    haha: ['#F2C14E', '<path d="M8.6 11.2l2.8 1.6-2.8 1.6M22.4 11.2l-2.8 1.6 2.8 1.6" fill="none" ' + RX_INK + ' stroke-width="1.6"/><path d="M8.8 17.4h13.4c0 3.9-3 6.8-6.7 6.8s-6.7-2.9-6.7-6.8z" fill="#1d140b"/><path d="M12.2 22.6q3.3-2.3 6.6 0q-1.4 1.5-3.3 1.6q-1.9-.1-3.3-1.6z" fill="#B3261E"/>'],
+    wow: ['#F2C14E', '<path d="M8.8 9.4q2.1-1.7 4.2 0M18 9.4q2.1-1.7 4.2 0" fill="none" ' + RX_INK + ' stroke-width="1.5"/><ellipse cx="11" cy="13.2" rx="1.6" ry="2.2" fill="#1d140b"/><ellipse cx="20" cy="13.2" rx="1.6" ry="2.2" fill="#1d140b"/><ellipse cx="15.5" cy="21.2" rx="3.1" ry="3.9" fill="#1d140b"/>'],
+    sad: ['#F2C14E', '<path d="M8.8 11.2l3.6-1.5M22.2 11.2l-3.6-1.5M11.6 22.2q3.9-3.3 7.8 0" fill="none" ' + RX_INK + ' stroke-width="1.6"/><circle cx="11" cy="14.4" r="1.6" fill="#1d140b"/><circle cx="20" cy="14.4" r="1.6" fill="#1d140b"/><path d="M9.4 16.8q-1.8 2.5-1.8 3.5a1.8 1.8 0 0 0 3.6 0q0-1-1.8-3.5z" fill="#5d9bd1" stroke="#1d140b" stroke-width="1"/>'],
+    angry: ['#E0702F', '<path d="M8.4 10.4l4.6 2.2M22.6 10.4l-4.6 2.2M12 22q3.5-2.2 7 0" fill="none" ' + RX_INK + ' stroke-width="1.9"/><circle cx="11.2" cy="15" r="1.5" fill="#1d140b"/><circle cx="19.8" cy="15" r="1.5" fill="#1d140b"/>']
+  };
+  function rxSvg(kind) {
+    var f = RX_FACE[kind] || RX_FACE.like;
+    return '<svg class="rx-face" viewBox="0 0 32 32" aria-hidden="true"><circle cx="17.3" cy="17.3" r="13" fill="#B3261E"/>' +
+      '<circle cx="15.5" cy="15.5" r="13" fill="' + f[0] + '" stroke="#1d140b" stroke-width="1.8"/>' + f[1] + '</svg>';
+  }
+  function rxLabel(kind) { for (var i = 0; i < REACTS.length; i++) if (REACTS[i][0] === kind) return REACTS[i][1]; return "أعجبني"; }
+  function rxNorm(o) {                                 // بيانات قديمة (من غير ريأكشنات) = «أعجبني» بس
+    if (!o.reactions) o.reactions = o.likes ? { like: o.likes } : {};
+    if (o.my_reaction === undefined) o.my_reaction = o.liked ? "like" : null;
+  }
+  function reactBtn(o, url, cls, own) {
+    rxNorm(o);
+    var b = el("button", cls);
+    var paint = function () {
+      var total = 0, kinds = Object.keys(o.reactions).filter(function (k) { total += o.reactions[k]; return o.reactions[k] > 0; });
+      kinds.sort(function (a, c) { return o.reactions[c] - o.reactions[a]; });
+      b.className = cls + " rx" + (o.my_reaction ? " on" : "");
+      b.innerHTML = "";
+      if (kinds.length) { var stack = el("span", "rx-stack"); stack.innerHTML = kinds.slice(0, 3).map(rxSvg).join(""); b.appendChild(stack); }
+      else b.innerHTML = cls.indexOf("pa") === 0 ? ICON.heart : '<span class="rx-empty">♡</span>';
+      b.appendChild(el("span", "rx-n", String(total)));
+      if (o.my_reaction) b.appendChild(el("span", "rx-mine", rxLabel(o.my_reaction)));
+      b.setAttribute("aria-label", o.my_reaction ? rxLabel(o.my_reaction) : "تفاعل");
+    };
+    var send = function (kind) {
+      var off = kind === o.my_reaction;
+      haptic(off ? "light" : "medium");
+      call(off ? "DELETE" : "POST", url, off ? undefined : { kind: kind }).then(function (x) {
+        o.likes = x.likes; o.liked = x.liked;
+        if (x.reactions) { o.reactions = x.reactions; o.my_reaction = x.my_reaction || null; }
+        else { o.reactions = x.likes ? { like: x.likes } : {}; o.my_reaction = x.liked ? "like" : null; }
+        paint();
+      }).catch(function (e) { notify(e.message); });
+    };
+    b.onclick = function (e) { if (e) e.stopPropagation(); if (own) return; haptic(); rxPicker(b, o.my_reaction, send); };
+    paint(); return b;
+  }
+  function rxPicker(anchor, current, pick) {
+    var bg = el("div", "rx-bg"), pop = el("div", "rx-pop");
+    var close = function () { bg.remove(); pop.remove(); };
+    bg.onclick = close;
+    REACTS.forEach(function (r, i) {
+      var b = el("button", r[0] === current ? "cur" : ""); b.innerHTML = rxSvg(r[0]);
+      b.appendChild(el("span", "rx-tip", r[1])); b.setAttribute("aria-label", r[1]); b.dataset.k = r[0];
+      b.style.animationDelay = i * 28 + "ms";
+      b.onclick = function (e) { e.stopPropagation(); close(); pick(r[0]); };
+      pop.appendChild(b);
+    });
+    document.body.appendChild(bg); document.body.appendChild(pop);
+    var a = anchor.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+    var left = Math.min(window.innerWidth - w - 8, Math.max(8, a.left + a.width / 2 - w / 2));
+    var top = a.top - h - 8; if (top < 8) top = a.bottom + 8;
+    pop.style.left = left + "px"; pop.style.top = top + "px";
   }
 
   // ---------- القايمة ----------
@@ -3502,6 +3746,7 @@
       if (versionsOf(m, code).some(function (v) { return v.bookable || v.others; })) card.appendChild(el("span", "badge book", "احجز"));
       var info = el("div", "info");
       info.appendChild(el("div", "title ltr", m.title));   // المدة والنوع والنسخ جوه صفحة الفيلم بس (طلب صاحب البوت)
+      if (m.title_alt) { var alt = el("div", "title-alt", m.title_alt); alt.dir = "auto"; info.appendChild(alt); }   // الاسم التاني (عربي / إنجليزي)
       card.appendChild(info);
       if (code !== country) { var w = el("span", "badge where"); w.appendChild(flag(code)); card.appendChild(w); }
       card.onclick = function () {
@@ -3570,11 +3815,30 @@
       b.onclick = function () { haptic("medium"); if (tg && tg.openLink) tg.openLink(o.url); else window.open(o.url, "_blank"); };
       box.appendChild(b);
     });
-    if (m.watch_url) {
-      var jw = el("button", "linkish", "كل التفاصيل على JustWatch");
-      jw.onclick = function () { if (tg && tg.openLink) tg.openLink(m.watch_url); else window.open(m.watch_url, "_blank"); };
-      box.appendChild(jw);
-    }
+    return box;
+  }
+
+  function episodesText(n) {
+    return n === 1 ? "حلقة واحدة" : n === 2 ? "حلقتين" : n >= 3 && n <= 10 ? n + " حلقات" : n + " حلقة";
+  }
+  // المواسم (الجولة 21): شريط تذاكر - كل موسم ببوستره ورقمه وعدد حلقاته
+  function seasonsBox(m) {
+    var box = el("section", "seasons-box"); box.id = "d-seasons";
+    var hd = el("h3"); hd.appendChild(document.createTextNode("المواسم "));
+    hd.appendChild(el("small", "", m.seasons.length === 1 ? "موسم واحد" : m.seasons.length === 2 ? "موسمين" : m.seasons.length + (m.seasons.length <= 10 ? " مواسم" : " موسم")));
+    box.appendChild(hd);
+    var strip = el("div", "season-strip");
+    m.seasons.forEach(function (s, i) {
+      var c = el("div", "season"); c.style.animationDelay = Math.min(i, 8) * 50 + "ms";
+      var ph = el("div", "ph");
+      if (s.poster) { var im = el("img"); im.src = s.poster; im.alt = ""; im.loading = "lazy"; im.onerror = function () { im.remove(); }; ph.appendChild(im); }
+      ph.appendChild(el("span", "big", String(s.n)));
+      c.appendChild(ph);
+      c.appendChild(el("b", "", "موسم " + s.n));
+      if (s.episodes) c.appendChild(el("span", "", episodesText(s.episodes)));
+      strip.appendChild(c);
+    });
+    box.appendChild(strip);
     return box;
   }
 
@@ -3599,9 +3863,11 @@
     $("add-open").innerHTML = ICON.plus + " "; $("add-open").appendChild(document.createTextNode("إضافة تريلر"));
 
     $("d-title").textContent = m.title;
+    $("d-title-alt").textContent = m.title_alt || ""; $("d-title-alt").style.display = m.title_alt ? "" : "none";
     // كل البيانات في صف واحد (كل chip لوحدها - العربي والإنجليزي ما يتلخبطوش في سطر واحد)
     var meta = $("d-meta"); meta.textContent = ""; meta.style.display = "none";
     var chips = $("d-chips"); chips.textContent = "";
+    if (m.kind === "show") chips.appendChild(el("span", "chip red", "مسلسل"));
     if (m.rating) chips.appendChild(el("span", "chip gold ltr", m.rating));
     [m.genre, m.duration, m.release, m.language].filter(Boolean).forEach(function (v) { chips.appendChild(el("span", "chip ltr", v)); });
     if (DATA && DATA.bot) { var shc = el("button", "chip share-chip"); shc.innerHTML = ICON.share; shc.appendChild(document.createTextNode(" شارك"));
@@ -3625,7 +3891,11 @@
     }
     if (!any && m.section === "s") actions.appendChild(el("div", "btn note", "الحجز لسه ما فتحش"));
     var oldWatch = $("d-watch"); if (oldWatch) oldWatch.remove();
-    if (m.src === "screen") actions.after(watchBox(m));        // «على الشاشة»: المنصات في مصر
+    var oldSeasons = $("d-seasons"); if (oldSeasons) oldSeasons.remove();
+    if (m.src === "screen") {                                  // «على الشاشة»: المنصات في مصر (+ المواسم للمسلسل)
+      var wbx = watchBox(m); actions.after(wbx);
+      if (m.seasons && m.seasons.length) wbx.after(seasonsBox(m));
+    }
 
     var desc = $("d-desc"); desc.textContent = m.description || ""; desc.classList.remove("open");
     $("d-more").style.display = (m.description || "").length > 140 ? "" : "none";
@@ -3939,6 +4209,25 @@
     var next = AFTER_MAINT; AFTER_MAINT = null;
     if (next) next();
   }
+  // نبض كل 8 ثواني (الجولة 21): البوت اتقفل = اللي جوه الصفحة يخرجوا لـ«حاليًا في صيانة» على طول،
+  // وأول ما يرجع يكملوا من نفس المكان. (فشلتين ورا بعض - عشان نت ضعيف لحظة ما يتحسبش)
+  var HB_FAILS = 0;
+  setInterval(function () {
+    var base = apiBase(), on = document.querySelector(".screen.on");
+    if (!base || document.hidden || !on || on.id === "s-maint" || MAINT_TIMER) return;
+    var beat = function () {
+      ping(base, function (ok) {
+        if (ok) { HB_FAILS = 0; return; }
+        if (++HB_FAILS < 2) return setTimeout(beat, 1500);
+        HB_FAILS = 0;
+        if (document.querySelector(".screen.on").id === "s-maint") return;
+        closeSheet(); var f = $("hero").querySelector("iframe"); if (f) f.remove();
+        var was = document.querySelector(".screen.on").id;
+        enterMaint(function () { show(was); });
+      });
+    };
+    beat();
+  }, 8000);
   $("maint-retry").onclick = function () {
     haptic(); this.disabled = true; var btn = this;
     API_FRESH_AT = 0;                                   // الزرار: نسأل GitHub عن العنوان الجديد على طول

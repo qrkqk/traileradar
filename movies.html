@@ -944,17 +944,24 @@
   @media (max-width: 360px) { .brand .name { font-size: 26px; } }
 
   /* ============ الوضع الفاتح (ورق أفيش كريمي) ============ */
-  html.light { --bg: #F3E3C0; --surface: #EAD6AC; --surface-2: #E2CB9C; --cream: #1d140b; --muted: #6b5233;
-    --text: #1d140b; --line: rgba(29,20,11,.25); --gold: #B8861C; --gold-grad: #B8861C;
+  html.light { --bg: #F3E3C0; --surface: #EAD6AC; --surface-2: #E2CB9C; --cream: #1d140b; --muted: #5f4626;
+    --text: #1d140b; --line: rgba(29,20,11,.25); --gold: #8E6210; --gold-grad: #8E6210; --red-ink: #9E2C1A;
     --dots: radial-gradient(rgba(29,20,11,.10) 1.2px, transparent 1.4px);
     --burst: repeating-conic-gradient(from 0deg at 50% 100%, rgba(184,134,28,.20) 0deg 6deg, transparent 6deg 12deg);
     --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d140b' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); }
   html.light body { color: var(--cream); }
   html.light .desc, html.light .post-text, html.light .lv-desc, html.light .pf-bio { color: #2b1e10; }
   html.light .tab.active, html.light .pill.active, html.light .ctab.active { color: #F6E7C6; }
-  html.light .btn.primary, html.light .tile.on, html.light .pub, html.light .admin-btn, html.light .badge.book { color: #1d140b; }
-  html.light .bottom-nav button.on { color: #1d140b; }
-  html.light .rate-stars button { color: #c8b48c; }
+  /* الذهبي في الفاتح أغمق (مقروء على الكريمي)، والكتابة على الذهبي كريمي */
+  html.light .btn.primary, html.light .tile.on, html.light .pub, html.light .admin-btn, html.light .badge.book,
+  html.light .tag.founder, html.light .bottom-nav button.on { color: #F6E7C6; }
+  html.light .rate-stars button { color: #8f7a57; }
+  /* المراجعة في الفاتح: ورقة فاتحة ونص غامق (مش ورقة غامقة ونص غامق) */
+  html.light .review { background: #FFF8EA; color: #1d140b; }
+  html.light .review .rv-who b, html.light .review .rv-text { color: #1d140b; }
+  html.light .review .rv-who span, html.light .review .heart, html.light .review .linkish { color: #6b5233; }
+  html.light .review .stars { color: rgba(29,20,11,.3); --soff: rgba(29,20,11,.3); }
+  html.light .time .price { color: var(--bg); }
 
   /* ---- الجولة 21: نص نجمة ---- */
   .rate-stars { --soff: #5b4a35; }
@@ -1026,12 +1033,6 @@
   /* ============ الجولة 22 ============ */
   /* على الشاشة: سكشن لكل تصنيف */
   #scr-grid { padding: 6px 0 22px; }
-  .scr-sec { margin-top: 18px; }
-  .scr-sec-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 0 18px; }
-  .scr-sec-head h3 { font-family: var(--font-display); font-weight: 400; font-size: 24px; color: var(--gold); margin: 0;
-    text-shadow: 2px 2px 0 var(--bg); }
-  .scr-sec .grid { padding-top: 10px; padding-bottom: 6px; }
-  .scr-sec + .scr-sec { border-top: 2px dashed var(--line); padding-top: 14px; }
   #sl-more { margin: 4px 0 24px; text-align: center; }
   .scr-tabs .tab { min-width: 0; }
   .tag.founder { background: var(--gold); color: var(--ink); box-shadow: 3px 3px 0 var(--red); font-weight: 800; }
@@ -1075,6 +1076,52 @@
   .season-head .avg { color: var(--gold) !important; }
   .tag.titled { background: var(--blue); color: var(--cream); }
   .title-btn { color: var(--gold); }
+
+  /* ============ الجولة 25 ============ */
+  /* تباين: نجوم فاضية أوضح، ورموز النوع مقروءة على الغامق والفاتح */
+  .rate-stars { --soff: #7a6446; }
+  .rate-stars button { color: #7a6446; }
+  .stars { --soff: rgba(246,231,198,.38); color: rgba(246,231,198,.38); }
+  .gsym.m { color: #3f80c6; } .gsym.f { color: #c9467f; }
+  html.light .gsym.m { color: #245c9c; } html.light .gsym.f { color: #a8326a; }
+  .review .gsym.m { color: #245c9c; } .review .gsym.f { color: #a8326a; }
+  html.light .stars { color: rgba(29,20,11,.42); --soff: rgba(29,20,11,.42); }
+
+  /* «على الشاشة» زي Letterboxd: رفوف بوسترات (3 في السطر على الموبايل، 6 على الشاشات الواسعة) */
+  .shelf { margin: 22px 0 6px; }
+  .shelf-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 0 16px 10px;
+    border-bottom: 2px solid var(--line); margin: 0 16px 12px; padding-inline: 0; }
+  .shelf-head h3 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 22px; color: var(--gold); line-height: 1.5; }
+  .shelf-head small { display: block; font-family: var(--font-body); font-size: 12px; color: var(--muted); font-weight: 700; line-height: 1.3; }
+  .shelf-head .see-all { flex: none; }
+  .pgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 10px; padding: 0 16px; }
+  @media (min-width: 640px) { .pgrid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+  .pcard { position: relative; display: block; padding: 0; background: var(--surface); border: 2px solid var(--cream);
+    aspect-ratio: 2 / 3; overflow: hidden; box-shadow: 3px 3px 0 var(--red); transition: transform .15s; min-width: 0; }
+  .pcard:nth-child(3n+2) { box-shadow: 3px 3px 0 var(--blue); }
+  .pcard:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--red); }
+  .pcard img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .pcard .nt { position: absolute; inset: 0; display: grid; place-items: center; padding: 6px; text-align: center;
+    font-size: 12px; font-weight: 800; color: var(--cream); }
+  .pcard .score { position: absolute; bottom: 4px; inset-inline-start: 4px; background: rgba(20,13,8,.82); color: #E9B949;
+    font-size: 11px; font-weight: 800; padding: 1px 5px; direction: ltr; }
+  .shelf-lists { display: flex; flex-direction: column; gap: 10px; padding: 0 16px; }
+  #scr-grid { padding: 0 0 22px; }
+  /* صفحة «عرض الكل»: ترتيب وتصفية */
+  .sl-tools { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 0 16px 14px; }
+  .sl-tools select { width: 100%; height: 40px; padding: 0 10px; background-color: var(--surface); color: var(--cream);
+    border: 2px solid var(--cream); font-weight: 700; font-size: 13px; min-width: 0; }
+  .sl-count { padding: 0 16px 10px; font-size: 12px; color: var(--muted); font-weight: 700; }
+  #sl-more { padding: 16px; }
+  /* اختياراتي: 4 مربعات (الفيلم في الخانة الرابعة) */
+  .pick.movie { grid-column: auto; display: flex; flex-direction: column; }
+  .pick.movie .pm { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .pick.movie img { width: 34px; flex: none; aspect-ratio: 2/3; object-fit: cover; border: 2px solid var(--cream); }
+  #sheet > input[type=search] { display: block; width: 100%; height: 44px; padding: 0 12px; background: var(--surface); color: var(--cream);
+    border: 2px solid var(--cream); font-weight: 700; font-size: 15px; }
+  .dir-list { display: flex; flex-direction: column; max-height: 52vh; overflow-y: auto; border: 2px solid var(--cream); margin-top: 8px; }
+  .dir-list button { text-align: start; padding: 11px 14px; font-weight: 700; border-bottom: 1px solid var(--line); direction: ltr; }
+  .dir-list button.on { background: var(--gold); color: var(--bg); }
 </style>
 </head>
 <body>
@@ -1191,7 +1238,9 @@
 </section>
 <section class="screen" id="s-scrlist">
   <div class="st-head"><h2 id="sl-title"></h2><p id="sl-sub"></p></div>
-  <div class="grid" id="sl-grid"></div>
+  <div class="sl-tools" id="sl-tools"></div>
+  <div class="sl-count" id="sl-count"></div>
+  <div class="pgrid" id="sl-grid"></div>
   <div class="center-act" id="sl-more"></div>
 </section>
 
@@ -2353,9 +2402,10 @@
     };
     var slotSheet = function (index) {
       var mv = films[index];
-      openSheet(mv.title || "فيلم", function (sh) {
-        var o = el("button", "btn outline", "افتح الفيلم"); o.onclick = function () { closeSheet(); openMovie(mv); }; sh.appendChild(o);
-        var c = el("button", "btn outline", "غيّره بفيلم تاني"); c.style.marginTop = "8px";
+      var what = shows ? "المسلسل" : "الفيلم";             // «المسلسلات المفضلة»: الكلام عن مسلسل
+      openSheet(mv.title || (shows ? "مسلسل" : "فيلم"), function (sh) {
+        var o = el("button", "btn outline", "افتح " + what); o.onclick = function () { closeSheet(); openMovie(mv); }; sh.appendChild(o);
+        var c = el("button", "btn outline", shows ? "غيّره بمسلسل تاني" : "غيّره بفيلم تاني"); c.style.marginTop = "8px";
         c.onclick = function () { closeSheet(); pickSheet(index); }; sh.appendChild(c);
         if (index > 0) {
           var u = el("button", "btn outline", "قدّمه خطوة"); u.style.marginTop = "8px";
@@ -2380,18 +2430,10 @@
     };
     draw();
   }
-  // ---------- اختياراتي (الجولة 22): أفضل مخرج / أفضل ممثل / أفضل ممثلة / فيلم ترشحه لأي حد ----------
+  // ---------- اختياراتي: أفضل مخرج (من قايمة) / أفضل ممثل / أفضل ممثلة / فيلم أرشحه ----------
   var PICKS = [["director", "أفضل مخرج"], ["actor", "أفضل ممثل"], ["actress", "أفضل ممثلة"]];
-  function knownNames(field) {                         // اقتراحات من بيانات الأفلام اللي في الصفحة (المخرج / النجوم)
-    var keys = field === "director" ? ["المخرج"] : ["النجوم", "بطولة"], seen = {}, out = [];
-    Object.keys((DATA && DATA.movies) || {}).forEach(function (k) {
-      (DATA.movies[k].details || []).forEach(function (d) {
-        if (keys.indexOf(d[0]) < 0) return;
-        String(d[1] || "").split(/[,،]/).forEach(function (n) { n = n.trim(); if (n && !seen[n]) { seen[n] = 1; out.push(n); } });
-      });
-    });
-    return out.slice(0, 400);
-  }
+  // أشهر 100 مخرج (الجولة 25): «أفضل مخرج» بيتختار منهم
+  var DIRECTORS = ["Steven Spielberg", "Martin Scorsese", "Christopher Nolan", "Stanley Kubrick", "Alfred Hitchcock", "Quentin Tarantino", "Francis Ford Coppola", "David Fincher", "Ridley Scott", "James Cameron", "Denis Villeneuve", "Akira Kurosawa", "Ingmar Bergman", "Federico Fellini", "Andrei Tarkovsky", "Orson Welles", "Billy Wilder", "Sergio Leone", "Paul Thomas Anderson", "Wes Anderson", "Joel & Ethan Coen", "Peter Jackson", "Guillermo del Toro", "Alfonso Cuarón", "Alejandro González Iñárritu", "Bong Joon-ho", "Park Chan-wook", "Hayao Miyazaki", "Wong Kar-wai", "Ang Lee", "Clint Eastwood", "Steven Soderbergh", "Darren Aronofsky", "David Lynch", "Spike Lee", "Spike Jonze", "Sofia Coppola", "Greta Gerwig", "Jordan Peele", "Damien Chazelle", "Tony Scott", "Michael Mann", "Brian De Palma", "Roman Polanski", "Woody Allen", "Sidney Lumet", "Elia Kazan", "John Ford", "Howard Hawks", "Frank Capra", "Fritz Lang", "Jean-Luc Godard", "François Truffaut", "Luis Buñuel", "Pedro Almodóvar", "Michael Haneke", "Lars von Trier", "Krzysztof Kieślowski", "Yasujirō Ozu", "Satyajit Ray", "Werner Herzog", "Wim Wenders", "Terrence Malick", "Robert Zemeckis", "Ron Howard", "Guy Ritchie", "Danny Boyle", "Edgar Wright", "Sam Raimi", "Tim Burton", "John Carpenter", "Wes Craven", "George Lucas", "Mel Gibson", "Kathryn Bigelow", "Jane Campion", "Chloé Zhao", "Barry Jenkins", "Yorgos Lanthimos", "Ari Aster", "Robert Eggers", "Taika Waititi", "Matthew Vaughn", "Zack Snyder", "J.J. Abrams", "Sam Mendes", "Paul Greengrass", "Rian Johnson", "Jean-Pierre Jeunet", "Luc Besson", "Hirokazu Kore-eda", "Satoshi Kon", "Zhang Yimou", "Abbas Kiarostami", "Asghar Farhadi", "Miloš Forman", "David Lean", "Mike Nichols", "Oliver Stone", "Martin McDonagh"];
   function picksBlock(box, owner, p) {
     var pk = p.picks || {}, any = pk.director || pk.actor || pk.actress || pk.movie;
     if (!owner && !any) return;
@@ -2399,17 +2441,33 @@
     var sec = el("div", "picks"), grid = el("div", "picks-grid");
     sec.appendChild(el("div", "section-title", owner ? "اختياراتي" : f ? "اختياراتها" : "اختياراته"));
     sec.appendChild(grid); box.appendChild(sec);
-    var save = function (patch, done) {
+    var save = function (patch) {
       call("PATCH", "/api/me", { picks: patch }).then(function (np) {
-        ME = np; p.picks = np.picks; pk = np.picks; closeSheet(); draw(); haptic("medium"); if (done) done();
+        ME = np; p.picks = np.picks; pk = np.picks; closeSheet(); draw(); haptic("medium");
       }).catch(function (e) { notify(e.message); });
     };
-    var nameSheet = function (k, label) {
+    var directorSheet = function () {                  // من القايمة بس (بحث جواها)
+      openSheet("أفضل مخرج", function (sh) {
+        var q = el("input"); q.type = "search"; q.placeholder = "دوّر على مخرج"; q.setAttribute("autocomplete", "off"); sh.appendChild(q);
+        var list = el("div", "dir-list"); sh.appendChild(list);
+        var draw2 = function () {
+          clear(list); var n = norm(q.value).trim();
+          DIRECTORS.forEach(function (d) {
+            if (n && norm(d).indexOf(n) < 0) return;
+            var b = el("button", d === pk.director ? "on" : "", d);
+            b.onclick = function () { haptic(); save({ director: d }); }; list.appendChild(b);
+          });
+          if (!list.childNodes.length) list.appendChild(el("div", "empty", "مفيش مخرج بالاسم ده في القايمة"));
+        };
+        q.oninput = draw2; draw2();
+        if (pk.director) { var rm = el("button", "logout", "شيله"); rm.onclick = function () { save({ director: "" }); }; sh.appendChild(rm); }
+      });
+    };
+    var nameSheet = function (k, label) {             // الممثل / الممثلة: بتكتب الاسم (من غير اقتراحات)
       openSheet(label, function (sh) {
         var inp = el("input"); inp.type = "text"; inp.maxLength = 60; inp.value = pk[k] || ""; inp.placeholder = "اكتب الاسم";
-        var dl = el("datalist"); dl.id = "dl-" + k; inp.setAttribute("list", dl.id);
-        knownNames(k === "director" ? "director" : "cast").forEach(function (n) { var o = el("option"); o.value = n; dl.appendChild(o); });
-        var fld = el("div", "field"); fld.appendChild(inp); fld.appendChild(dl); sh.appendChild(fld);
+        inp.setAttribute("autocomplete", "off");
+        var fld = el("div", "field"); fld.appendChild(inp); sh.appendChild(fld);
         var ok = el("button", "btn primary", "حفظ"); ok.onclick = function () { var x = {}; x[k] = inp.value; save(x); }; sh.appendChild(ok);
         if (pk[k]) { var rm = el("button", "logout", "شيله"); rm.onclick = function () { var x = {}; x[k] = ""; save(x); }; sh.appendChild(rm); }
         setTimeout(function () { try { inp.focus(); } catch (e) {} }, 60);
@@ -2417,8 +2475,8 @@
     };
     var movieSheet = function () {
       ensureScreen();
-      openSheet("فيلم ترشحه لأي حد", function (sh) {
-        var q = el("input"); q.type = "search"; q.placeholder = "اسم الفيلم"; sh.appendChild(q);
+      openSheet("فيلم أرشحه", function (sh) {
+        var q = el("input"); q.type = "search"; q.placeholder = "اسم الفيلم"; q.setAttribute("autocomplete", "off"); sh.appendChild(q);
         var res = el("div", "film-results"); sh.appendChild(res);
         q.oninput = function () {
           clear(res);
@@ -2438,14 +2496,14 @@
         var b = el("button", "pick" + (pk[x[0]] ? "" : " empty"));
         b.appendChild(el("span", "lbl", x[1]));
         b.appendChild(el("b", "ltr", pk[x[0]] || "+ اختار"));
-        b.onclick = function () { if (owner) { haptic(); nameSheet(x[0], x[1]); } };
+        b.onclick = function () { if (!owner) return; haptic(); if (x[0] === "director") directorSheet(); else nameSheet(x[0], x[1]); };
         grid.appendChild(b);
       });
-      if (owner || pk.movie) {
+      if (owner || pk.movie) {                           // الخانة الرابعة (جنب أفضل ممثلة)
         var mb = el("button", "pick movie" + (pk.movie ? "" : " empty"));
-        mb.appendChild(el("span", "lbl", owner ? "فيلم أرشحه لأي حد" : f ? "فيلم بترشحه لأي حد" : "فيلم بيرشحه لأي حد"));
-        if (pk.movie) { mb.appendChild(posterImg(pk.movie)); mb.appendChild(el("b", "ltr", pk.movie.title)); }
-        else mb.appendChild(el("b", "", "+ اختار فيلم"));
+        mb.appendChild(el("span", "lbl", owner ? "فيلم أرشحه" : f ? "فيلم بترشحه" : "فيلم بيرشحه"));
+        if (pk.movie) { var row = el("span", "pm"); row.appendChild(posterImg(pk.movie)); row.appendChild(el("b", "ltr", pk.movie.title)); mb.appendChild(row); }
+        else mb.appendChild(el("b", "", "+ اختار"));
         mb.onclick = function () {
           haptic();
           if (!owner) return openMovie(pk.movie);
@@ -3684,7 +3742,7 @@
     call("GET", "/api/reviews/" + id).then(function (r) {
       clear(box); box.appendChild(el("h2", "", "مراجعة"));
       box.appendChild(reviewCard(r, true));
-      if (r.movie) { var om = el("button", "btn outline", "افتح الفيلم"); om.style.width = "100%"; om.onclick = function () { openMovie(r.movie); }; box.appendChild(om); }
+      if (r.movie) { var om = el("button", "btn outline", r.movie.kind === "show" ? "افتح المسلسل" : "افتح الفيلم"); om.style.width = "100%"; om.onclick = function () { openMovie(r.movie); }; box.appendChild(om); }
       if (!(ME && ME.comments_enabled)) return;
       box.appendChild(el("div", "section-title", "التعليقات"));
       if (!ME.comments_public) box.appendChild(el("div", "beta", "التعليقات لسه تجربة للأدمن بس، وهتتفتح للكل قريب."));
@@ -3971,7 +4029,8 @@
   var SCREEN = null, SCREEN_WAIT = null, scrTab = "films", SC_BUCKETS = 64, SC_LOADED = {};
   function liteMovie(id, v) {
     return { id: +id, title: v[0], title_alt: v[1] || "", poster: v[2] || null, kind: v[3] ? "show" : "movie",
-             genres: v[4] ? v[4].split(",") : [], year: v[5] || null, src: "screen", section: "x", versions: [+id], version: "",
+             genres: v[4] ? v[4].split(",") : [], year: v[5] || null, imdb: v[6] || 0, nseasons: v[7] || 0,
+             src: "screen", section: "x", versions: [+id], version: "",
              bookable: false, others: false, showtimes: false, watch: [], seasons: [], lite: true };
   }
   function ensureScreen(done) {
@@ -4027,28 +4086,59 @@
     return ids.map(function (id, i) { return [id, hot[String(id)] || 0, i]; })
       .sort(function (a, b) { return b[1] - a[1] || a[2] - b[2]; }).map(function (x) { return x[0]; });
   }
-  function scrIds(tab) { return hotSort((SCREEN && SCREEN[tab]) || []); }
-  function genreName(code) {
-    var g = ((SCREEN && SCREEN.genres) || []).filter(function (x) { return x[0] === code; })[0];
-    return g ? g[1] : code;
-  }
   function openScreen() {
     go("s-screen");
     var grid = clear($("scr-grid")); grid.style.display = "";
     for (var i = 0; i < 4; i++) grid.appendChild(el("div", "skeleton"));
     ensureScreen(renderScreen);
   }
-  // السكاشن: [العنوان، الأرقام، مفتاح «عرض الكل»]
-  function screenSections(tab) {
-    var ids = scrIds(tab), out = [];
-    if (tab === "films" && scrIds("left").length) out.push(["خرجت من السينما", scrIds("left"), "left"]);
-    if (ids.length) out.push(["الأشهر", ids, "top"]);
-    ((SCREEN && SCREEN.genres) || []).forEach(function (g) {
-      if (tab === "anime" && g[0] === "ani") return;    // الأنمي كله رسوم
-      var inG = ids.filter(function (id) { var m = DATA.movies[String(id)]; return m && (m.genres || []).indexOf(g[0]) >= 0; });
-      if (inG.length) out.push([g[1], inG, g[0]]);
-    });
+  // ---------- الرفوف (الجولة 25 - زي Letterboxd) ----------
+  // كل رف = [العنوان، سطر صغير تحته، الأرقام بترتيبها]. كلها من البيانات الحقيقية: ترتيب الشهرة (JustWatch)،
+  // تقييم IMDb، السنة، عدد المواسم، وتفاعل الناس في CFTRadar. رف من غير أعمال ما بيظهرش.
+  var SHELF_SIZE = 6;
+  function mv(id) { return DATA.movies[String(id)]; }
+  function noDocs(ids) { return ids.filter(function (id) { var m = mv(id); return m && (m.genres || []).indexOf("doc") < 0; }); }
+  function byScore(ids) {
+    return ids.map(function (id, i) { return [id, (mv(id) || {}).imdb || 0, i]; })
+      .sort(function (a, b) { return b[1] - a[1] || a[2] - b[2]; }).map(function (x) { return x[0]; });
+  }
+  function shelves(tab) {
+    var base = (SCREEN && SCREEN[tab]) || [], hot = (SCREEN && SCREEN.hot) || {}, out = [];
+    var year = new Date().getFullYear(), top = base.slice(0, 2500);
+    var popular = hotSort(base);
+    var add = function (key, title, sub, ids) { if (ids.length) out.push({ key: key, title: title, sub: sub, ids: ids }); };
+    add("hot", "الأكثر تفاعلًا في CFTRadar", "اللي الناس بتشوفه وبتقيّمه وبتكتب عنه هنا",
+        popular.filter(function (id) { return hot[String(id)] > 0; }));
+    if (tab === "films") add("left", "خرجت من السينما", "لسه نازلة من السينما وبقت على المنصات", (SCREEN.left || []).slice());
+    add("popular", "الأكثر شعبية", "الأكتر مشاهدة في مصر دلوقتي", popular);
+    add("top", "الأعلى تقييمًا", "أعلى تقييم IMDb", byScore(noDocs(top).filter(function (id) { return mv(id).imdb >= 7.5; })));
+    add("new", tab === "shows" ? "أحدث المسلسلات" : tab === "anime" ? "أحدث الأنمي" : "أحدث الأفلام", "من " + (year - 1) + " لدلوقتي",
+        base.filter(function (id) { var m = mv(id); return m && m.year >= year - 1; }));
+    if (tab === "films") {
+      add("gems", "أفلام تستحق المشاهدة", "تقييمها عالي ومش مشهورة قوي",
+          byScore(noDocs(base.slice(400)).filter(function (id) { return mv(id).imdb >= 7.3; })));
+      add("classics", "كلاسيكيات السينما", "قبل 1980",
+          byScore(noDocs(base).filter(function (id) { var m = mv(id); return m.year && m.year < 1980 && m.imdb >= 7; })));
+    } else if (tab === "shows") {
+      add("mini", "مسلسلات قصيرة", "موسم واحد - تخلص في كام يوم",
+          noDocs(base).filter(function (id) { return mv(id).nseasons === 1; }));
+      add("classics", "كلاسيكيات التلفزيون", "قبل 2008",
+          byScore(noDocs(base).filter(function (id) { var m = mv(id); return m.year && m.year < 2008 && m.imdb >= 7.5; })));
+    } else {
+      add("anime-films", "أفلام أنمي", "", base.filter(function (id) { return mv(id).kind === "movie"; }));
+      add("anime-shows", "مسلسلات أنمي", "", base.filter(function (id) { return mv(id).kind === "show"; }));
+    }
     return out;
+  }
+  function posterCard(m) {
+    var c = el("button", "pcard"); c.dataset.id = m.id; c.setAttribute("aria-label", m.title + (m.title_alt ? " - " + m.title_alt : ""));
+    if (m.poster) {
+      var im = el("img"); im.src = m.poster; im.alt = ""; im.loading = "lazy"; im.decoding = "async";
+      im.onerror = function () { im.remove(); c.appendChild(el("span", "nt ltr", m.title)); };
+      c.appendChild(im);
+    } else c.appendChild(el("span", "nt ltr", m.title));
+    c.onclick = function () { haptic(); CLICKED = String(m.id); showDetail(m); };
+    return c;
   }
   function renderScreen() {
     var tabs = clear($("scr-tabs")), grid = clear($("scr-grid"));
@@ -4057,39 +4147,91 @@
       b.onclick = function () { if (t[0] !== scrTab) { haptic(); scrTab = t[0]; renderScreen(); window.scrollTo(0, 0); } };
       tabs.appendChild(b);
     });
-    var secs = screenSections(scrTab);
     grid.style.display = "block";
-    if (!secs.length) {
+    var list = shelves(scrTab);
+    if (!list.length) {
       grid.appendChild(el("div", "empty", scrTab === "shows" ? "لسه مفيش مسلسلات هنا." : scrTab === "anime" ? "لسه مفيش أنمي هنا." : "لسه مفيش أفلام هنا."));
       return;
     }
-    secs.forEach(function (s) {
-      var sec = el("section", "scr-sec"), hd = el("div", "scr-sec-head");
-      hd.appendChild(el("h3", "", s[0]));
-      if (s[1].length > 4) {
+    list.forEach(function (s) {
+      var sec = el("section", "shelf"), hd = el("div", "shelf-head"), tt = el("div");
+      tt.appendChild(el("h3", "", s.title)); if (s.sub) tt.appendChild(el("small", "", s.sub));
+      hd.appendChild(tt);
+      if (s.ids.length > SHELF_SIZE) {
         var all = el("button", "see-all", "عرض الكل");
-        all.onclick = function () { haptic(); openScreenList(s[0], s[1]); };
+        all.onclick = function () { haptic(); openScreenList(s); };
         hd.appendChild(all);
       }
       sec.appendChild(hd);
-      var g = el("div", "grid scr-mini");
-      s[1].slice(0, 4).forEach(function (id, n) { var m = DATA.movies[String(id)]; if (m) g.appendChild(cardFor(m, n, country)); });
+      var g = el("div", "pgrid");
+      s.ids.slice(0, SHELF_SIZE).forEach(function (id) { var m = mv(id); if (m) g.appendChild(posterCard(m)); });
       sec.appendChild(g); grid.appendChild(sec);
     });
+    if (scrTab === "films" && apiReady()) {            // «قوائم مختارة»: قوائم الناس العامة (لو فيه)
+      var sec = el("section", "shelf"); sec.style.display = "none"; grid.appendChild(sec);
+      call("GET", "/api/community").then(function (d) {
+        var lists = (d.lists || []).slice(0, 4);
+        if (!lists.length) return;
+        var hd = el("div", "shelf-head"), tt = el("div");
+        tt.appendChild(el("h3", "", "قوائم مختارة ومميزة")); tt.appendChild(el("small", "", "قوائم عملها أعضاء CFTRadar"));
+        hd.appendChild(tt); sec.appendChild(hd);
+        var box = el("div", "shelf-lists"); lists.forEach(function (x) { box.appendChild(listRow(x)); });
+        sec.appendChild(box); sec.style.display = "";
+      }).catch(function () {});
+    }
   }
-  // «عرض الكل»: كل اللي في التصنيف، 30 30
-  function openScreenList(title, ids) {
+  // «عرض الكل»: كل اللي في الرف - ترتيب (الافتراضي / الأشهر / الأعلى تقييمًا / الأحدث / الأقدم / أ - ي)
+  // وتصفية (التصنيف / العقد). 3 في السطر (6 على الشاشة الواسعة)، والباقي بيتحمّل وانت نازل.
+  var SORTS = [["", "ترتيب الرف"], ["pop", "الأشهر"], ["rating", "الأعلى تقييمًا"], ["new", "الأحدث"], ["old", "الأقدم"], ["az", "أ - ي"]];
+  function openScreenList(shelf) {
     go("s-scrlist");
-    $("sl-title").textContent = title;
-    $("sl-sub").textContent = scrTab === "shows" ? "مسلسلات" : scrTab === "anime" ? "أنمي" : "أفلام";
-    var grid = clear($("sl-grid")), more = clear($("sl-more")), shown = 0;
-    var page = function () {
-      ids.slice(shown, shown + 30).forEach(function (id, n) { var m = DATA.movies[String(id)]; if (m) grid.appendChild(cardFor(m, n, country)); });
-      shown += 30;
-      clear(more);
-      if (shown < ids.length) { var b = el("button", "more-btn", "عرض المزيد"); b.onclick = function () { haptic(); page(); }; more.appendChild(b); }
+    $("sl-title").textContent = shelf.title;
+    $("sl-sub").textContent = shelf.sub || (scrTab === "shows" ? "مسلسلات" : scrTab === "anime" ? "أنمي" : "أفلام");
+    var state = { sort: "", genre: "", decade: "" }, tools = clear($("sl-tools"));
+    var popIndex = {}; ((SCREEN && SCREEN[scrTab]) || []).forEach(function (id, i) { popIndex[id] = i; });
+    var select = function (opts, key) {
+      var s = el("select"); opts.forEach(function (o) { var op = el("option", "", o[1]); op.value = o[0]; s.appendChild(op); });
+      s.onchange = function () { haptic(); state[key] = s.value; draw(); }; tools.appendChild(s);
     };
-    page();
+    select(SORTS, "sort");
+    var present = {}; shelf.ids.forEach(function (id) { ((mv(id) || {}).genres || []).forEach(function (g) { present[g] = 1; }); });
+    select([["", "كل التصنيفات"]].concat(((SCREEN && SCREEN.genres) || []).filter(function (g) { return present[g[0]]; })
+      .map(function (g) { return [g[0], g[1]]; })), "genre");
+    var decades = {}; shelf.ids.forEach(function (id) { var y = (mv(id) || {}).year; if (y) decades[Math.floor(y / 10) * 10] = 1; });
+    select([["", "كل السنين"]].concat(Object.keys(decades).sort(function (a, b) { return b - a; })
+      .map(function (d) { return [d, "الـ" + d + "s"]; })), "decade");
+    var grid = $("sl-grid"), more = $("sl-more"), ids = [], shown = 0, PAGE_N = 36, obs = null;
+    var page = function () {
+      ids.slice(shown, shown + PAGE_N).forEach(function (id) { var m = mv(id); if (m) grid.appendChild(posterCard(m)); });
+      shown += PAGE_N;
+      clear(more);
+      if (shown < ids.length) {
+        var b = el("button", "more-btn", "عرض المزيد"); b.onclick = function () { haptic(); page(); }; more.appendChild(b);
+        if (window.IntersectionObserver) {             // بيتحمّل لوحده وانت قرّبت من الآخر
+          if (obs) obs.disconnect();
+          obs = new IntersectionObserver(function (es) { if (es[0].isIntersecting && document.querySelector("#s-scrlist.on")) page(); },
+                                         { rootMargin: "600px" });
+          obs.observe(b);
+        }
+      } else if (obs) { obs.disconnect(); obs = null; }
+    };
+    var draw = function () {
+      ids = shelf.ids.filter(function (id) {
+        var m = mv(id); if (!m) return false;
+        if (state.genre && (m.genres || []).indexOf(state.genre) < 0) return false;
+        if (state.decade && !(m.year && Math.floor(m.year / 10) * 10 === +state.decade)) return false;
+        return true;
+      });
+      var key = { pop: function (m) { return popIndex[m.id] != null ? popIndex[m.id] : 1e9; },
+                  rating: function (m) { return -(m.imdb || 0); }, new: function (m) { return -(m.year || 0); },
+                  old: function (m) { return m.year || 9999; } }[state.sort];
+      if (key) ids = ids.map(function (id, i) { return [id, key(mv(id)), i]; }).sort(function (a, b) { return a[1] - b[1] || a[2] - b[2]; })
+                        .map(function (x) { return x[0]; });
+      if (state.sort === "az") ids = ids.slice().sort(function (a, b) { return String(mv(a).title).localeCompare(String(mv(b).title)); });
+      $("sl-count").textContent = ids.length ? "" : "مفيش أعمال بالاختيارات دي";
+      clear(grid); shown = 0; page(); window.scrollTo(0, 0);
+    };
+    draw();
   }
   function watchBox(m) {
     var box = el("section", "watch-box"); box.id = "d-watch";

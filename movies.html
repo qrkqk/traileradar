@@ -392,6 +392,10 @@
     background: #7a2e18; color: var(--gold); font-weight: 800; font-size: 42px; position: relative;
     border: 4px solid var(--pf-accent); box-shadow: var(--shadow-hard); }
   .pf-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  /* اللي محطش صورة: رسمة الشخص بلون الدايرة، والكتاف نازلة لتحت زي الأفيشات */
+  svg.face { width: 66%; height: 66%; display: block; margin-top: 12%; }
+  .pf-avatar svg.face { filter: drop-shadow(2px 2px 0 rgba(0,0,0,.35)); }
+  .media-row .thumb { display: grid; place-items: center; color: var(--gold); }
   .pf[data-effect="glow"] .pf-avatar { animation: pf-glow 2.6s ease-in-out infinite; }
   @keyframes pf-glow { 0%, 100% { box-shadow: var(--shadow-hard), 0 0 8px var(--pf-accent); }
                        50% { box-shadow: var(--shadow-hard), 0 0 24px var(--pf-accent); } }
@@ -1557,10 +1561,15 @@
   }
 
   // ---------- صورة الحساب ----------
+  // اللي محطش صورة: رسمة شخص بخط واحد بلون الدايرة (currentColor) بدل أول حرف من اسمه
+  var FACE_SVG = '<svg class="face" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="currentColor" ' +
+    'stroke-width="7" stroke-linecap="round"><circle cx="50" cy="38" r="17"/>' +
+    '<path d="M37 59 Q16 67 15 90"/><path d="M63 59 Q84 67 85 90"/></svg>';
+  function blankFace(box) { box.insertAdjacentHTML("beforeend", FACE_SVG); return box; }
   function pic(cls) {
     var p = el("div", cls);
     if (user && user.photo_url) { var im = el("img"); im.src = user.photo_url; im.alt = ""; p.appendChild(im); }
-    else p.textContent = ((user && user.first_name) || "؟").trim().charAt(0).toUpperCase();
+    else blankFace(p);
     return p;
   }
   function fullName() { return user ? [user.first_name, user.last_name].filter(Boolean).join(" ") : "ضيف"; }
@@ -1653,7 +1662,7 @@
   function avatarEl(p, cls) {
     var a = el("div", cls);
     if (p && p.avatar) { var im = el("img"); im.src = media(p.avatar); im.alt = ""; a.appendChild(im); }
-    else a.textContent = ((p && p.name) || fullName() || "؟").trim().charAt(0).toUpperCase();
+    else blankFace(a);
     return a;
   }
   function renderProfileCard(p, target) {
@@ -1809,7 +1818,7 @@
     im.style.transform = "scale(" + z + ")";
   }
   function renderEditMedia() {
-    var a = $("e-avatar"); a.textContent = ""; if (ME.avatar) { var i = el("img"); i.src = media(ME.avatar); a.appendChild(i); }
+    var a = $("e-avatar"); a.textContent = ""; if (ME.avatar) { var i = el("img"); i.src = media(ME.avatar); a.appendChild(i); } else blankFace(a);
     var c = $("e-cover"); c.textContent = ""; c.style.background = "";
     if (ME.cover) {
       c.appendChild(coverImg(ME.cover, EDIT));
@@ -2199,7 +2208,7 @@
   function avatarSmall(a, cls) {
     var d = el("div", cls || "av");
     if (a.avatar) { var im = el("img"); im.src = media(a.avatar); im.alt = ""; d.appendChild(im); }
-    else d.textContent = (a.name || "؟").trim().charAt(0).toUpperCase();
+    else blankFace(d);
     return d;
   }
   function reviewCard(r, withMovie) {
@@ -3805,7 +3814,7 @@
     var a = $("avatar-btn"); a.textContent = "";
     if (ME && ME.avatar) { var ia = el("img"); ia.src = media(ME.avatar); ia.alt = ""; a.appendChild(ia); }
     else if (user && user.photo_url) { var im = el("img"); im.src = user.photo_url; im.alt = ""; a.appendChild(im); }
-    else a.textContent = ((user && user.first_name) || "؟").trim().charAt(0).toUpperCase();
+    else blankFace(a);
     updateBell();
     $("count-s").textContent = "(" + listIds("whatson").length + ")";
     $("count-c").textContent = "(" + listIds("comingsoon").length + ")";

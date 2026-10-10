@@ -524,6 +524,7 @@
     border: 2px solid var(--cream); margin-bottom: 10px; width: 100%; text-align: right; }
   .r-item img { width: 44px; height: 64px; object-fit: cover; background: var(--surface); flex: none; border: 2px solid var(--cream); }
   .r-item .t { flex: 1; font-weight: 800; font-size: 14px; }
+  .r-item .sub { flex: none; font-size: 12px; color: var(--muted); font-weight: 700; }
   .toggle { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; }
   .toggle input { width: 20px; height: 20px; accent-color: var(--gold); }
   .edits-note { font-size: 12.5px; color: var(--muted); margin: -4px 0 10px; font-weight: 700; }
@@ -1018,6 +1019,47 @@
   .season b { font-family: var(--font-display); font-weight: 400; font-size: 18px; color: var(--cream); margin-top: 6px; }
   .season span { font-size: 12px; color: var(--muted); font-weight: 700; }
   @keyframes seasonIn { from { opacity: 0; transform: translateY(10px) rotate(-1deg); } to { opacity: 1; transform: none; } }
+  /* ---- Top Cast (الجولة 26 - من TMDB): دواير صور الممثلين زي ختم الأفيش ---- */
+  .cast-box { margin: 18px 0 6px; }
+  .cast-box h3 { font-family: var(--font-display); font-size: 22px; font-weight: 400; color: var(--gold); margin: 0 0 10px; }
+  .cast-strip { display: flex; gap: 12px; overflow-x: auto; padding: 4px 4px 12px; overscroll-behavior-x: contain; scrollbar-width: none; }
+  .cast-strip::-webkit-scrollbar { display: none; }
+  .actor { flex: 0 0 84px; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+  .actor .ph { width: 76px; height: 76px; border-radius: 50%; overflow: hidden; border: 2px solid var(--cream); box-shadow: 3px 3px 0 var(--red);
+    background: var(--surface); color: var(--gold); display: grid; place-items: center; }
+  .actor:nth-child(3n+2) .ph { box-shadow: 3px 3px 0 var(--blue); }
+  .actor .ph img { width: 100%; height: 100%; object-fit: cover; }
+  .actor b { font-size: 12px; font-weight: 800; color: var(--cream); line-height: 1.25; margin-top: 6px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .actor span { font-size: 11px; color: var(--muted); font-weight: 700; line-height: 1.25;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  /* ذكر TMDB (شرط استخدام الـ API): سطر صغير زي Letterboxd */
+  /* سطر TMDB (زي «Film data from TMDB» في Letterboxd): سطر واحد صغير بيفتح صفحة «بيانات الأفلام» */
+  .tmdb-line { display: flex; align-items: center; gap: 8px; width: calc(100% - 32px); margin: 0 16px 12px; padding: 6px 2px;
+    background: none; border: 0; border-bottom: 1px dashed var(--line); color: var(--muted); font-size: 11px; font-weight: 700; text-align: start; }
+  .tmdb-line[hidden] { display: none; }
+  .tmdb-line span { flex: 1; }
+  .tmdb-line b { color: var(--gold); font-weight: 800; flex: none; }
+  #p-sources { width: 100%; margin: 20px 0 6px; }
+  /* اللوجو الرسمي زي ما هو (من غير تغيير ألوانه) - صغير وأقل من لوجو CFTRadar زي ما الشرط بيقول */
+  .tmdb-logo { height: 12px; width: auto; flex: none; }
+  .tmdb-link { color: var(--gold); font-weight: 800; text-decoration: none; }
+  /* صفحة «بيانات الأفلام» */
+  .filmdata { padding-bottom: 30px; }
+  .filmdata p { margin: 0 16px 12px; font-size: 14px; line-height: 1.8; color: var(--cream); }
+  .filmdata h3 { margin: 22px 16px 8px; font-family: var(--font-display); font-weight: 400; font-size: 22px; color: var(--gold); }
+  .filmdata a { color: var(--gold); font-weight: 800; }
+  .filmdata .fd-logo { display: inline-block; margin: 4px 16px 14px; line-height: 0; }
+  .filmdata .fd-logo .tmdb-logo { height: 22px; }
+  .filmdata .fd-notice { direction: ltr; font-size: 12px; color: var(--muted); }
+  .watch-src { margin-top: 8px; font-size: 11px; color: var(--muted); font-weight: 700; }
+  .tmdb-note { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 10px; color: var(--muted); font-weight: 700; }
+  .tmdb-note .tmdb-link { margin-top: 0; }
+  .tmdb-link { display: inline-block; margin-top: 10px; font-size: 12px; border-bottom: 1px dashed var(--gold); }
+  .pcard.loading, .r-item.loading { opacity: .5; }
+  .actor .ph svg.face { margin-top: 18%; }
+  .pcard .yr { position: absolute; bottom: 4px; inset-inline-end: 4px; background: rgba(20,13,8,.82); color: var(--cream);
+    font-size: 10px; font-weight: 800; padding: 1px 5px; direction: ltr; }
   /* ---- «راقب»: المحافظة ← المنطقة ← السينما ---- */
   .wf-dots { display: flex; gap: 6px; justify-content: center; margin: 4px 0 12px; }
   .wf-dots i { width: 26px; height: 5px; background: var(--line); }
@@ -1103,6 +1145,9 @@
     font-size: 11px; font-weight: 800; padding: 1px 5px; direction: ltr; }
   /* «على الشاشة» (الجولة 26): كل الأفلام / المسلسلات / الأنمي في شاشة واحدة - ترتيب + السنين */
   .sl-tools { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 14px 16px; }
+  .scr-sub { margin: 14px 16px 0; }                    /* الأنمي: أفلام / مسلسلات */
+  .scr-sub .pill { flex: 1 1 0; }
+  .scr-sub[hidden] { display: none; }
   .sl-tools select { width: 100%; height: 40px; padding: 0 10px; background-color: var(--surface); color: var(--cream);
     border: 2px solid var(--cream); font-weight: 700; font-size: 13px; min-width: 0; }
   .sl-count { padding: 0 16px 10px; font-size: 12px; color: var(--muted); font-weight: 700; }
@@ -1228,8 +1273,12 @@
 <section class="screen" id="s-screen">
   <div class="st-head"><h2>على الشاشة</h2><p>أفلام ومسلسلات تتفرج عليها في البيت</p></div>
   <div class="scr-tabs" id="scr-tabs"></div>
+  <div class="seg scr-sub" id="scr-sub" hidden></div>
   <div class="sl-tools" id="sl-tools"></div>
   <div class="sl-count" id="sl-count"></div>
+  <!-- شرط TMDB (البند 3): سطر واحد باين فوق الشبكة (زي سطر Letterboxd «Film data from TMDB») - والتفاصيل في صفحة «بيانات الأفلام» -->
+  <button class="tmdb-line" id="tmdb-credit" hidden><img class="tmdb-logo" src="tmdb_logo.svg" alt="TMDB" onerror="this.remove()">
+    <span>بيانات الأفلام من TMDB، ومش معتمد منهم</span><b>اعرف أكتر ←</b></button>
   <div class="pgrid" id="scr-grid"></div>
   <div class="center-act" id="sl-more"></div>
 </section>
@@ -1260,6 +1309,21 @@
     <div id="c-body"></div>
     <aside class="comm-side" id="c-side"></aside>
   </div>
+</div></section>
+
+<!-- ============ بيانات الأفلام (زي letterboxd.com/about/film-data) - الإسناد المطلوب في شروط TMDB ============ -->
+<section class="screen" id="s-filmdata"><div class="comm filmdata">
+  <div class="comm-hero"><h2>بيانات الأفلام</h2><p class="lead">الأفلام والمسلسلات والبوسترات في CFTRadar جاية منين</p></div>
+  <a class="fd-logo" href="https://www.themoviedb.org/" target="_blank" rel="noopener"><img class="tmdb-logo" src="tmdb_logo.svg" alt="TMDB" onerror="this.remove()"></a>
+  <p>كل بيانات الأفلام والمسلسلات في «على الشاشة»: الأسامي، والقصة، والممثلين، وصناع العمل، وتواريخ العرض، والتريلرات، والبوسترات،
+    جاية من <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">The Movie Database (TMDB)</a>.</p>
+  <p>CFTRadar بيستخدم TMDB وواجهات TMDB البرمجية، بس TMDB مش بيتبناه ولا بيعتمده ولا موافق عليه بأي شكل.</p>
+  <p class="ltr fd-notice">This application uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB.</p>
+  <h3>فيلم ناقص أو فيه غلط؟</h3>
+  <p>ضيفه أو صلّحه على موقع <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a> (محتاج حساب هناك)، والتعديل بيظهر هنا لوحده
+    خلال يوم للأعمال الجديدة، وخلال أسبوع للعناوين اللي اتفتحت قبل كده.</p>
+  <h3>منصات المشاهدة</h3>
+  <p>منصات المشاهدة في مصر، زي <bdi>Netflix</bdi> أو <bdi>Shahid</bdi>، بياناتها من <b><bdi>JustWatch</bdi></b>.</p>
 </div></section>
 
 <!-- ============ الأعضاء (زي Letterboxd) ============ -->
@@ -1319,6 +1383,9 @@
     <div class="pf" id="pf"></div>
     <div id="me-tabs"></div>
     <button class="logout" id="p-logout">تسجيل خروج</button>
+    <!-- مكان ثابت في التطبيق لصفحة «بيانات الأفلام» (زي «Film data» في قايمة Letterboxd) -->
+    <button class="tmdb-line" id="p-sources"><img class="tmdb-logo" src="tmdb_logo.svg" alt="TMDB" onerror="this.remove()">
+      <span>بيانات الأفلام</span><b>←</b></button>
   </div>
 </section>
 
@@ -1623,7 +1690,7 @@
     var base = apiBase();
     return fetch(base + path, opts).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (j) {
-        if (!r.ok) { var err = new Error(j.error || "حصلت مشكلة، جرّب تاني"); err.data = j; throw err; }
+        if (!r.ok) { var err = new Error(j.error || "حصلت مشكلة، جرّب تاني"); err.data = j; err.status = r.status; throw err; }
         if (j && j.new_badges && j.new_badges.length) celebrate(j.new_badges);
         return j;
       });
@@ -2635,8 +2702,13 @@
     }).catch(function (e) { clear(lv).appendChild(el("div", "empty", e.message)); });
   }
   function openMovie(mv) {                            // فيلم من قايمة حد (ممكن يكون من بلد تانية)
+    var fromLibrary = function () {                   // الجولة 26: عنوان من مكتبة TMDB (مش في بيانات الصفحة)
+      if (!apiReady()) return;
+      call("GET", "/api/catalog/movie/" + mv.id).then(function (d) { DATA.movies[String(d.movie.id)] = d.movie; showDetail(d.movie); })
+        .catch(function (e) { notify(e.message); });
+    };
     var open = function () { var m = DATA.movies[String(mv.id)]; if (m) showDetail(m); else ensureScreen(function () {
-      var s = DATA.movies[String(mv.id)]; if (s) showDetail(s); }); };
+      var s = DATA.movies[String(mv.id)]; if (s) showDetail(s); else fromLibrary(); }); };
     if (mv.country && mv.country !== country) { store.set("country", mv.country); loadCountry(mv.country, function () { renderHeader(); open(); }); }
     else open();
   }
@@ -3454,9 +3526,10 @@
     return String(s || "").normalize("NFKC").toLowerCase().replace(/[ً-ْـ]/g, "")
       .replace(/[أإآ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي");
   }
-  function findMovies(q, limit, kind) {                 // kind: "film" = أفلام بس، "show" = مسلسلات بس
+  function findMovies(q, limit, kind) {                 // kind: "film" = أفلام بس، "show" = مسلسلات بس، "cinema" = السينما بس
     var n = norm(q).trim(); if (n.length < 2 || !DATA) return [];
-    var seen = {}, out = [], scr = SCREEN && SCREEN.c === country;
+    var seen = {}, out = [], scr = kind !== "cinema" && SCREEN && SCREEN.c === country;
+    if (kind === "cinema") kind = "film";
     var pool = kind === "show" ? [] : listIds("whatson").concat(listIds("comingsoon"));
     if (scr) pool = pool.concat(SCREEN.left, SCREEN.films, SCREEN.shows, SCREEN.anime);
     pool.forEach(function (id) {
@@ -3481,15 +3554,30 @@
   function runSearch(q) {
     var body = clear($("q-body"));
     if (norm(q).trim().length < 2) return;
-    var films = findMovies(q, 8);
+    // الجولة 26: لو المكتبة شغالة - هنا أفلام السينما بس، والباقي (مليون فيلم ومسلسل) من بحث المكتبة تحت
+    var films = useCatalog() ? findMovies(q, 8, "cinema") : findMovies(q, 8);
     if (films.length) {
-      body.appendChild(el("div", "section-title", "أفلام"));
+      body.appendChild(el("div", "section-title", useCatalog() ? "في السينما" : "أفلام"));
       films.forEach(function (m) {
         var r = el("button", "r-item"); r.appendChild(posterImg(m)); r.appendChild(el("span", "t ltr", m.title));
         r.onclick = function () { showDetail(m); }; body.appendChild(r);
       });
     }
     if (!apiReady()) { if (!films.length) body.appendChild(el("div", "empty", "مفيش نتايج")); return; }
+    var lib = el("div"); body.appendChild(lib);
+    var libItems = [];
+    if (useCatalog()) call("GET", "/api/catalog/search?q=" + encodeURIComponent(q)).then(function (d) {
+      if ($("q-input").value !== q || !d.items.length) return;
+      libItems = d.items;
+      var none = body.querySelector(".empty"); if (none) none.remove();   // «مفيش نتايج» سبقت المكتبة
+      lib.appendChild(el("div", "section-title", "أفلام ومسلسلات"));
+      d.items.forEach(function (it) {                  // [رقمه، الاسم، الاسم التاني، البوستر، السنة، مسلسل؟]
+        var r = el("button", "r-item"); r.appendChild(posterImg({ poster: it[3] }));
+        var t = el("span", "t ltr", it[1]); r.appendChild(t);
+        r.appendChild(el("span", "sub", [it[5] ? "مسلسل" : "فيلم", it[4] || ""].filter(Boolean).join(" • ")));
+        r.onclick = function () { openCatalogTitle(it[0], r); }; lib.appendChild(r);
+      });
+    }).catch(function () {});
     var more = el("div"); body.appendChild(more);
     call("GET", "/api/search?q=" + encodeURIComponent(q)).then(function (d) {
       if ($("q-input").value !== q) return;
@@ -3498,7 +3586,7 @@
         d.users.forEach(function (u) { var r = personRow(u); if (u.followers != null) r.querySelector(".who").appendChild(el("span", "", u.followers + " متابع")); more.appendChild(r); });
       }
       if (d.posts.length) { more.appendChild(el("div", "section-title", "منشورات")); d.posts.forEach(function (p) { more.appendChild(postCard(p)); }); }
-      if (!films.length && !d.users.length && !d.posts.length) more.appendChild(el("div", "empty", "مفيش نتايج"));
+      if (!films.length && !d.users.length && !d.posts.length && !libItems.length) more.appendChild(el("div", "empty", "مفيش نتايج"));
     }).catch(function (e) { more.appendChild(el("div", "empty", e.message)); });
   }
 
@@ -4037,7 +4125,7 @@
       if (!SCREEN || SCREEN.c !== code) return;
       SCREEN.hot = d.hot || {};
       var on = document.querySelector(".screen.on");
-      if (on && on.id === "s-screen") renderScreen();
+      if (on && on.id === "s-screen" && !useCatalog()) renderScreen();   // المكتبة ترتيبها من السيرفر
     }).catch(function () {});
   }
   function hotSort(ids) {
@@ -4047,6 +4135,10 @@
   }
   function openScreen() {
     go("s-screen");
+    if (useCatalog()) {                                  // المكتبة: من السيرفر على طول (من غير الكتالوج القديم)
+      if (!$("scr-grid").querySelector("[data-cid]")) renderScreen();       // راجع لها؟ نفس المكان
+      return;
+    }
     var grid = clear($("scr-grid")); grid.style.display = "";
     for (var i = 0; i < 4; i++) grid.appendChild(el("div", "skeleton"));
     ensureScreen(renderScreen);
@@ -4073,15 +4165,114 @@
     return hotSort(ids);
   }
   var SORTS = [["", "ترتيب CFTRadar"], ["rating", "الأعلى تقييمًا"], ["new", "الأحدث"], ["old", "الأقدم"], ["az", "أ - ي"]];
-  var SCR_STATE = { sort: "", decade: "" }, SCR_OBS = null;
+  var SCR_STATE = { sort: "", decade: "" }, SCR_OBS = null, scrAnime = "movie";
+  // ---------- المكتبة (الجولة 26): كل الأفلام والمسلسلات من TMDB - 72 عنوان في المرة من السيرفر زي Letterboxd ----------
+  // لو سيرفر البوت مش متاح أو المكتبة مقفولة: الكتالوج القديم (eg/screen.json) زي ما هو.
+  var CAT_SORTS = [["", "ترتيب CFTRadar"], ["rating", "الأعلى تقييمًا"], ["new", "الأحدث"], ["soon", "قريبًا"], ["old", "الأقدم"], ["az", "أ - ي"]];
+  var CAT_DECADES = [2020, 2010, 2000, 1990, 1980, 1970, 1960];
+  var CAT_SUBS = { films: [["movie", "أجنبية"], ["movie_ar", "عربية"]], shows: [["tv", "أجنبية"], ["tv_ar", "عربية"]],
+                   anime: [["anime_movie", "أفلام"], ["anime_tv", "مسلسلات"]] };
+  var catSub = { films: "movie", shows: "tv", anime: "anime_movie" }, CATALOG_OK = null, CAT_SEQ = 0;
+  function useCatalog() { return apiReady() && CATALOG_OK !== false; }
+  Array.prototype.forEach.call(document.querySelectorAll("#s-filmdata a"), function (a) {   // لينكات TMDB جوه تيليجرام
+    a.onclick = function (ev) { if (tg && tg.openLink) { ev.preventDefault(); tg.openLink(a.href); } };
+  });
+  function openFilmData() { haptic(); go("s-filmdata"); window.scrollTo(0, 0); }   // «بيانات الأفلام» (زي Letterboxd)
+  $("tmdb-credit").onclick = openFilmData;
+  $("p-sources").onclick = openFilmData;
   function renderScreen() {
-    var tabs = clear($("scr-tabs")), tools = clear($("sl-tools")), grid = $("scr-grid"), more = $("sl-more");
+    var tabs = clear($("scr-tabs"));
     [["films", "أفلام"], ["shows", "مسلسلات"], ["anime", "أنمي"]].forEach(function (t) {
       var b = el("button", "tab" + (t[0] === scrTab ? " active" : ""), t[1]); b.dataset.k = t[0];
       b.onclick = function () { if (t[0] !== scrTab) { haptic(); scrTab = t[0]; renderScreen(); window.scrollTo(0, 0); } };
       tabs.appendChild(b);
     });
+    if (SCR_OBS) { SCR_OBS.disconnect(); SCR_OBS = null; }
+    $("tmdb-credit").hidden = !useCatalog();
+    if (useCatalog()) renderCatalog(); else renderScreenStatic();
+  }
+  function catalogCard(it) {                           // [رقمه، الاسم، الاسم التاني، البوستر، السنة، مسلسل؟]
+    var c = el("button", "pcard"); c.dataset.cid = it[0];
+    c.setAttribute("aria-label", it[1] + (it[2] ? " - " + it[2] : "") + (it[4] ? " (" + it[4] + ")" : ""));
+    if (it[3]) {
+      var im = el("img"); im.src = it[3]; im.alt = ""; im.loading = "lazy"; im.decoding = "async";
+      im.onerror = function () { im.remove(); c.appendChild(el("span", "nt ltr", it[1])); };
+      c.appendChild(im);
+    } else c.appendChild(el("span", "nt ltr", it[1]));
+    if (it[4]) c.appendChild(el("span", "yr", String(it[4])));
+    c.onclick = function () { haptic(); openCatalogTitle(it[0], c); };
+    return c;
+  }
+  function openCatalogTitle(cid, btn) {               // العنوان بيتفتح: السيرفر بيجيب التفاصيل (التريلر، Top Cast، المنصات)
+    if (btn) btn.classList.add("loading");
+    call("GET", "/api/catalog/title/" + cid).then(function (d) {
+      if (btn) btn.classList.remove("loading");
+      var m = d.cinema_id ? DATA.movies[String(d.cinema_id)] : d.movie;
+      if (!m) { notify("الفيلم ده بيتعرض في السينما دلوقتي - دوّر عليه في «في السينما»"); return; }
+      if (!d.cinema_id) DATA.movies[String(m.id)] = m;
+      CLICKED = String(m.id); showDetail(m);
+    }).catch(function (e) { if (btn) btn.classList.remove("loading"); haptic("heavy"); notify(e.message); });
+  }
+  function renderCatalog() {
+    var sub = clear($("scr-sub")), tools = clear($("sl-tools")), grid = clear($("scr-grid")), more = clear($("sl-more"));
+    sub.hidden = false;
+    CAT_SUBS[scrTab].forEach(function (t) {           // أجنبية / عربية (والأنمي: أفلام / مسلسلات)
+      var b = el("button", "pill small" + (t[0] === catSub[scrTab] ? " active" : ""), t[1]); b.dataset.k = t[0];
+      b.onclick = function () { if (t[0] !== catSub[scrTab]) { haptic(); catSub[scrTab] = t[0]; renderScreen(); window.scrollTo(0, 0); } };
+      sub.appendChild(b);
+    });
+    var select = function (opts, key) {
+      var s = el("select"); opts.forEach(function (o) { var op = el("option", "", o[1]); op.value = o[0]; s.appendChild(op); });
+      s.value = SCR_STATE[key]; if (s.value !== String(SCR_STATE[key])) { SCR_STATE[key] = ""; s.value = ""; }
+      s.onchange = function () { haptic(); SCR_STATE[key] = s.value; renderScreen(); window.scrollTo(0, 0); }; tools.appendChild(s);
+    };
+    select(CAT_SORTS, "sort");
+    select([["", "كل السنين"]].concat(CAT_DECADES.map(function (d) { return [String(d), "الـ" + d + "s"]; })), "decade");
+    var seq = ++CAT_SEQ, page = 0, busy = false, shelf = catSub[scrTab];
+    $("sl-count").textContent = "";
+    for (var i = 0; i < 6; i++) grid.appendChild(el("div", "skeleton"));
+    var load = function () {
+      if (busy) return; busy = true;
+      call("GET", "/api/catalog?shelf=" + shelf + "&sort=" + SCR_STATE.sort + "&decade=" + SCR_STATE.decade + "&page=" + page).then(function (d) {
+        if (seq !== CAT_SEQ) return;
+        CATALOG_OK = true; busy = false;
+        if (page === 0) clear(grid);
+        d.items.forEach(function (it) { grid.appendChild(catalogCard(it)); });
+        page++;
+        if (page === 1 && !d.items.length)
+          $("sl-count").textContent = d.ready ? "مفيش أعمال بالاختيارات دي" : "المكتبة بتتجهز لأول مرة (أكتر من مليون فيلم ومسلسل)، ارجع كمان شوية.";
+        clear(more);
+        if (SCR_OBS) { SCR_OBS.disconnect(); SCR_OBS = null; }
+        if (d.more) {
+          var b = el("button", "more-btn", "عرض المزيد"); b.onclick = function () { haptic(); load(); }; more.appendChild(b);
+          if (window.IntersectionObserver) {           // بيتحمّل لوحده وانت قرّبت من الآخر
+            SCR_OBS = new IntersectionObserver(function (es) { if (es[0].isIntersecting && document.querySelector("#s-screen.on")) load(); },
+                                               { rootMargin: "800px" });
+            SCR_OBS.observe(b);
+          }
+        }
+      }).catch(function (e) {
+        if (seq !== CAT_SEQ) return;
+        busy = false;
+        if (e.status === 503 && page === 0) { CATALOG_OK = false; ensureScreen(renderScreen); return; }   // المكتبة مقفولة: الكتالوج القديم
+        if (page === 0) clear(grid);
+        clear(more); more.appendChild(el("div", "error", e.message));
+        var again = el("button", "more-btn", "جرّب تاني"); again.onclick = function () { haptic(); clear(more); load(); }; more.appendChild(again);
+      });
+    };
+    load();
+  }
+  function renderScreenStatic() {
+    var tools = clear($("sl-tools")), grid = $("scr-grid"), more = $("sl-more");
+    if (!SCREEN || SCREEN.c !== country) { clear(grid); return ensureScreen(renderScreen); }
+    var sub = clear($("scr-sub")); sub.hidden = scrTab !== "anime";   // الأنمي: أفلام لوحدها ومسلسلات لوحدها
+    [["movie", "أفلام"], ["show", "مسلسلات"]].forEach(function (t) {
+      var b = el("button", "pill small" + (t[0] === scrAnime ? " active" : ""), t[1]); b.dataset.k = t[0];
+      b.onclick = function () { if (t[0] !== scrAnime) { haptic(); scrAnime = t[0]; renderScreen(); window.scrollTo(0, 0); } };
+      sub.appendChild(b);
+    });
     var all = screenIds(scrTab), decades = {};
+    if (scrTab === "anime") all = all.filter(function (id) { return mv(id).kind === scrAnime; });
     all.forEach(function (id) { var y = mv(id).year; if (y) decades[Math.floor(y / 10) * 10] = 1; });
     if (SCR_STATE.decade && !decades[SCR_STATE.decade]) SCR_STATE.decade = "";    // العقد مش موجود في التاب ده
     var select = function (opts, key) {
@@ -4136,9 +4327,26 @@
       b.onclick = function () { haptic("medium"); if (tg && tg.openLink) tg.openLink(o.url); else window.open(o.url, "_blank"); };
       box.appendChild(b);
     });
+    if (offers.length) box.appendChild(el("div", "watch-src", "بيانات المنصات من JustWatch"));   // شرط مصدر بيانات المنصات
     return box;
   }
 
+  // Top Cast (الجولة 26): الممثلين بالترتيب - الصورة والاسم والدور (اللي مالوش صورة: رسمة الشخص)
+  function castBox(m) {
+    var box = el("section", "cast-box"); box.id = "d-cast";
+    box.appendChild(el("h3", "", "الممثلين"));
+    var strip = el("div", "cast-strip");
+    m.cast.forEach(function (c) {
+      var a = el("div", "actor"), ph = el("div", "ph");
+      if (c[2]) { var im = el("img"); im.src = c[2]; im.alt = ""; im.loading = "lazy"; im.onerror = function () { im.remove(); blankFace(ph); }; ph.appendChild(im); }
+      else blankFace(ph);
+      var nm = el("b", "", c[0]); nm.dir = "auto"; a.appendChild(ph); a.appendChild(nm);   // الاسم ممكن يبقى عربي أو إنجليزي
+      if (c[1]) { var role = el("span", "", c[1]); role.dir = "auto"; a.appendChild(role); }
+      strip.appendChild(a);
+    });
+    box.appendChild(strip);
+    return box;
+  }
   function episodesText(n) {
     return n === 1 ? "حلقة واحدة" : n === 2 ? "حلقتين" : n >= 3 && n <= 10 ? n + " حلقات" : n + " حلقة";
   }
@@ -4264,9 +4472,20 @@
     if (!any && m.section === "s") actions.appendChild(el("div", "btn note", "الحجز لسه ما فتحش"));
     var oldWatch = $("d-watch"); if (oldWatch) oldWatch.remove();
     var oldSeasons = $("d-seasons"); if (oldSeasons) oldSeasons.remove();
+    ["d-cast", "d-tmdb"].forEach(function (id) { var o = $(id); if (o) o.remove(); });
     if (m.src === "screen") {                                  // «على الشاشة»: المنصات في مصر (+ المواسم للمسلسل)
-      var wbx = watchBox(m); actions.after(wbx);
-      if (m.seasons && m.seasons.length) wbx.after(seasonsBox(m));
+      var wbx = watchBox(m), last = wbx; actions.after(wbx);
+      if (m.seasons && m.seasons.length) { last = seasonsBox(m); wbx.after(last); }
+      if (m.cast && m.cast.length) { var cb = castBox(m); last.after(cb); last = cb; }      // الجولة 26: Top Cast من TMDB
+      if (m.tmdb) {                                    // ذكر TMDB (اللوجو + الإشعار) + صفحة العنوان عندهم (زي «More at TMDB» في Letterboxd)
+        var note = el("div", "tmdb-note"); note.id = "d-tmdb";
+        var lg = el("img", "tmdb-logo"); lg.src = "tmdb_logo.svg"; lg.alt = "TMDB"; lg.onerror = function () { lg.remove(); };
+        var tl = el("a", "tmdb-link", "صفحته على TMDB ↗"); tl.href = m.tmdb; tl.target = "_blank"; tl.rel = "noopener";
+        tl.onclick = function (ev) { if (tg && tg.openLink) { ev.preventDefault(); tg.openLink(m.tmdb); } };
+        note.appendChild(lg); note.appendChild(tl);
+        note.appendChild(el("span", "", "البيانات من TMDB - مش معتمد منهم"));
+        last.after(note);
+      }
     }
 
     var desc = $("d-desc"); desc.textContent = m.description || ""; desc.classList.remove("open");
